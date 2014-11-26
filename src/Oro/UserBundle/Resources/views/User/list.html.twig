@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block toplinks %}
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <a class='link' href="{{ path('logout') }}">Logout</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>Users</h1>
+
+    <ul id="links">
+        <li><a href="{{ path('dashboard') }}">Dashboard</a></li>
+    </ul>
+
+    <div id="buttons">
+        <a href="{{ path('user_new') }}">New User</a>
+    </div>
+{% endblock %}

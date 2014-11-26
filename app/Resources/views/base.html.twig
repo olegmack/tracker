@@ -2,12 +2,26 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Tracker{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% stylesheets '@bootstrap_css' %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('public/css/styles.css') }}" />
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=2') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div id="main">
+            <div id="toplinks">{% block toplinks %}{% endblock %}</div>
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
         {% block javascripts %}{% endblock %}
+
+        {% javascripts '@bootstrap_js' '@jquery' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
     </body>
 </html>

@@ -1,0 +1,5 @@
+oro_user:
+    resource: "@OroUserBundle/Controller"
+    prefix:   /
+    type:     annotation
+
