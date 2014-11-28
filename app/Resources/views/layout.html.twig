@@ -1,0 +1,32 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div id="main">
+        <div id="menu">
+            {% block menu %}
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{ path('dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ path('user') }}">Users</a></li>
+                        </ul>
+
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{{ path('logout') }}">Sign out</a></li>
+                        </ul>
+                        {% endif %}
+
+                        {{  render(controller("OroUserBundle:Auth:status")) }}
+                    </div>
+                </div>
+            </nav>
+            {% endblock %}
+        </div>
+
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

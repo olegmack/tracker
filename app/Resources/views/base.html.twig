@@ -12,15 +12,10 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=2') }}" />
     </head>
     <body>
-        <div id="main">
-            <div id="toplinks">{% block toplinks %}{% endblock %}</div>
-            <div id="content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
+        {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
 
-        {% javascripts '@bootstrap_js' '@jquery' %}
+        {% javascripts '@jquery' '@bootstrap_js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     </body>

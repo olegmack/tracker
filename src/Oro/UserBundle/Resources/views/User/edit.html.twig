@@ -1,13 +1,13 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>User creation</h1>
+    <h1>User edit</h1>
 
     <p>
         <a href="{{ path('user') }}">&laquo; Back to the list</a>
     </p>
 
-    <form action="{{ path('user_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+    <form action="{{ path('user_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
         {{ form_errors(form) }}
 
         <div class="form-group">
@@ -46,7 +46,8 @@
             {{ form_widget(form.roles) }}
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
         {{ form_rest(form) }}
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
+</ul>
 {% endblock %}

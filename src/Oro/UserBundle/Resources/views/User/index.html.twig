@@ -1,0 +1,49 @@
+{% extends '::layout.html.twig' %}
+
+{% block content -%}
+    <h1>User list</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="50">User</th>
+                <th></th>
+                <th>Email</th>
+                <th>Fullname</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>
+                    <img class='image-round-50' src="
+                    {% if entity.avatar is not empty %}
+                        {{ '/' ~ entity.getWebPath() }}
+                    {% else %}
+                        {{ '/' ~ entity.getUploadDir() ~ '/default/default50.png' }}
+                    {% endif %}
+                    "/>
+                </td>
+                <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.fullname }}</td>
+                <td>
+                    {% for role in entity.roles %}
+                        {{ role.name}}<br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('user_new') }}">
+        + Add User
+    </a>
+
+{% endblock %}

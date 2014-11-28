@@ -1,0 +1,34 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <h1>User</h1>
+
+    <p>
+        <a href="{{ path('user') }}">&laquo; Back to the list</a>
+    </p>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ entity.username }}</td>
+            </tr>
+            <tr>
+                <th>Fullname</th>
+                <td>{{ entity.fullname }}</td>
+            </tr>
+            <tr>
+                <th>Avatar</th>
+                <td>{{ entity.avatar }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+    </p>
+{% endblock %}

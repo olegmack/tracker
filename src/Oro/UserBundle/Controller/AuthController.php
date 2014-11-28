@@ -42,6 +42,19 @@ class AuthController extends Controller
     }
 
     /**
+     * Render status block
+     *
+     * @Template
+     */
+    public function statusAction()
+    {
+        $user = $this->getUser();
+        return array(
+            'user' => $user
+        );
+    }
+
+    /**
      * @Route("/login_check", name="login_check")
      */
     public function loginCheckAction()
