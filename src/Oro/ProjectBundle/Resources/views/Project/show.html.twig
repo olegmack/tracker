@@ -1,0 +1,44 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <h1>Project "{{ entity.name }}"
+        <div class="pull-right">
+            <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+        </div>
+    </h1>
+
+    <p>
+        <a href="{{ path('project') }}">&laquo; Back to the Projects list</a>
+    </p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Overview
+        </div>
+        <div class="panel-body">
+            {{ entity.summary }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Users</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        {% for user in entity.users %}
+                            <li><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Activity Stream</div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

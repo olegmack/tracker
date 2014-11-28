@@ -1,3 +1,1 @@
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="{{ path('user_show', { 'id': user.id }) }}">Hi, {{ user.username }}</a></li>
-</ul>
+<p class="navbar-text navbar-right">Hi, <a href="{{ path('user_show', { 'id': user.id }) }}" class="navbar-link">{{ user.username }}</a></p>

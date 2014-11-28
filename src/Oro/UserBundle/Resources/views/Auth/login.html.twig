@@ -6,7 +6,21 @@
 
 {% block body %}
     <form id="login_form" action="{{ path('login_check') }}" method="post" role="form" class="form-horizontal">
-        <h1>Login</h1>
+        <div class="panel panel-info">
+            <div class="panel-heading">Predefined accounts</div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Administrator</dt>
+                    <dd>admin<br/>admin123</dd>
+                    <dt>Manager</dt>
+                    <dd>manager<br/>manager123</dd>
+                    <dt>Operator</dt>
+                    <dd>operator<br/>operator123</dd>
+                </dl>
+            </div>
+        </div>
+
+        <h1>Tracker - Sign In</h1>
         {% if error %}
             <div class=" form-group has-error">
                 <label class="col-sm-2 control-label"></label>
@@ -38,4 +52,5 @@
             </div>
         </div>
     </form>
+
 {% endblock %}

@@ -1,3 +1,8 @@
+oro_project:
+    resource: "@OroProjectBundle/Controller"
+    prefix:   /
+    type:     annotation
+
 oro_user:
     resource: "@OroUserBundle/Controller"
     prefix:   /

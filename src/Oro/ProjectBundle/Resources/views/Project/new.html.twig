@@ -1,0 +1,40 @@
+{% extends '::layout.html.twig' %}
+
+{% block content -%}
+    <h1>Create New Project</h1>
+
+    <p>
+        <a href="{{ path('project') }}">&laquo; Back to the Projects list</a>
+    </p>
+
+    <form action="{{ path('project_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_errors(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.code) }}
+            {{ form_errors(form.code) }}
+            {{ form_widget(form.code) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.summary) }}
+            {{ form_errors(form.summary) }}
+            {{ form_widget(form.summary) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.users) }}
+            {{ form_errors(form.users) }}
+            {{ form_widget(form.users) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Project</button>
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

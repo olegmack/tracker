@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Oro\UserBundle\Entity\Role;
+use Oro\ProjectBundle\Entity\Project;
 
 /**
  * User
@@ -81,7 +82,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var Role[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="Role")
+     * @ORM\ManyToMany(targetEntity="Oro\UserBundle\Entity\Role")
      * @ORM\JoinTable(name="user_roles",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -89,10 +90,19 @@ class User implements UserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @var ArrayCollection Project[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\ProjectBundle\Entity\Project", mappedBy="users")
+     * @ORM\JoinTable(name="user_projects")
+     */
+    protected $projects;
+
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     /**
@@ -434,5 +444,41 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * User string representation
+     */
+    public function getName()
+    {
+        return $this->getFullname() . ' (' . $this->getUsername() . ')';
+    }
+
+    /**
+     * User string representation
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Get User Projects
+     *
+     * @return ArrayCollection Project[]
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @param ArrayCollection $projects
+     * @return User
+     */
+    public function setProjects($projects)
+    {
+        $this->projects = $projects;
+        return $this;
     }
 }
