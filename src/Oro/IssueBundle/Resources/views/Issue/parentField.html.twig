@@ -1,0 +1,14 @@
+<script type="text/javascript">
+    jQuery('document').ready(function() {
+        jQuery('#oro_issuebundle_issue_issueType').change(function () {
+            var issueType = jQuery(this).val();
+            if (issueType == 'subtask') {
+                jQuery('#parent-block').removeClass('hidden');
+            } else {
+                jQuery('#parent-block').addClass('hidden');
+            }
+        });
+
+        jQuery('#oro_issuebundle_issue_issueType').trigger("change");
+    });
+</script>

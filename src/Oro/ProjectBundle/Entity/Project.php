@@ -56,10 +56,18 @@ class Project
      */
     private $users;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Oro\IssueBundle\Entity\Issue", mappedBy="project", fetch="EXTRA_LAZY")
+     */
+    private $issues;
+
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->issues = new ArrayCollection();
     }
 
     /**
@@ -195,4 +203,16 @@ class Project
         return $this->getUsers()->contains($user);
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getIssues()
+    {
+        return $this->issues;
+    }
 }

@@ -1,0 +1,120 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <div>
+        <a href="{{ path('project_show', { 'id': entity.project.id }) }}">{{ entity.project.name }}</a> /
+        {% if (entity.issueType.code == 'subtask') %}
+            <a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">{{ entity.parent }}</a> /
+        {% endif %}
+        <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a>
+    </div>
+    <h1>{{ entity.summary }}
+        <div class="pull-right">
+            <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': entity.id }) }}">Edit</a>
+            {% if (entity.issueType.code == 'story') %}
+            <a class="btn btn-success" role="button" href="{{ path('issue_new', { 'parent': entity.id }) }}">+ Create Sub-task</a>
+            {% endif %}
+        </div>
+    </h1>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <dl class="dl-horizontal">
+                                <dt>Type</dt>
+                                <dd>{{ entity.issueType.name }}</dd>
+                                <dt>Priority</dt>
+                                <dd>{{ entity.issuePriority.name }}</dd>
+                                <dt>Status</dt>
+                                <dd>{{ entity.issueStatus.name }}</dd>
+                                <dt>Resolution</dt>
+                                <dd>{{ entity.issueResolution.name }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-6">
+                            <dl class="dl-horizontal">
+                                <dt>Created At</dt>
+                                <dd>{{ entity.createdAt|date('d/m/Y H:i:s') }}</dd>
+                                <dt>Updated At</dt>
+                                <dd>{{ entity.updatedAt|date('d/m/Y H:i:s') }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if (entity.issueType.code == 'story') %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Sub-tasks</div>
+                <div class="panel-body">
+                    {% if entity.children|length > 0 %}
+                        <table class="table table-striped">
+                            <col width="50" />
+                            <col />
+                            <col width="150"/>
+                            {% for subtask in entity.children %}
+                                <tr>
+                                    <td><a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{  subtask.code }}</a></td>
+                                    <td>{{ subtask.summary|truncate(200, true) }}</td>
+                                    <td>{{ subtask.assignee.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        There are no sub-task issues yet.
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Description</div>
+                <div class="panel-body">
+                    {{ entity.description }}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Comments</div>
+                <div class="panel-body">
+                    #TODO
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">People</div>
+                <div class="panel-body">
+                    <div>
+                        Assignee:
+                        <a href="{{ path('user_show', { 'id': entity.assignee.id }) }}">{{ entity.assignee.name }}</a>
+                    </div>
+                    <div>
+                        Reporter:
+                        <a href="{{ path('user_show', { 'id': entity.reporter.id }) }}">{{ entity.reporter.name }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Collaborators</div>
+                <div class="panel-body">
+                    {% if entity.collaborators|length > 0 %}
+                        <ul class="list-unstyled">
+                        {% for user in entity.collaborators %}
+                            <li><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.name}}</a></li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        There are no collaborators
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

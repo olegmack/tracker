@@ -125,8 +125,18 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $issues = $this->getDoctrine()
+            ->getRepository('OroIssueBundle:Issue')
+            ->findBy(
+                array(
+                'issueStatus' => 'open',
+                'assignee' => $id)
+            );
+
+
         return array(
-            'entity'      => $entity
+            'entity' => $entity,
+            'issues' => $issues
         );
     }
 

@@ -1,0 +1,82 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <h1>Create New Issue</h1>
+
+    <form action="{{ path('issue_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            {{ form_label(form.project) }}
+            {{ form_errors(form.project) }}
+            {{ form_widget(form.project) }}
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            {{ form_label(form.summary) }}
+            {{ form_errors(form.summary) }}
+            {{ form_widget(form.summary) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_errors(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            {{ form_label(form.issueType) }}
+            {{ form_errors(form.issueType) }}
+            {{ form_widget(form.issueType) }}
+        </div>
+
+        <div class="form-group hidden" id="parent-block">
+            {{ form_label(form.parent) }}
+            {{ form_errors(form.parent) }}
+            {{ form_widget(form.parent) }}
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            {{ form_label(form.issuePriority) }}
+            {{ form_errors(form.issuePriority) }}
+            {{ form_widget(form.issuePriority) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.issueStatus) }}
+            {{ form_errors(form.issueStatus) }}
+            {{ form_widget(form.issueStatus) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.issueResolution) }}
+            {{ form_errors(form.issueResolution) }}
+            {{ form_widget(form.issueResolution) }}
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            {{ form_label(form.assignee) }}
+            {{ form_errors(form.assignee) }}
+            {{ form_widget(form.assignee) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.collaborators) }}
+            {{ form_errors(form.collaborators) }}
+            {{ form_widget(form.collaborators) }}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Create Issue</button>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
+
+    {% include 'OroIssueBundle:Issue:parentField.html.twig' %}
+{% endblock %}

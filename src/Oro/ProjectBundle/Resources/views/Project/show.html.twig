@@ -4,6 +4,7 @@
     <h1>Project "{{ entity.name }}"
         <div class="pull-right">
             <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+            <a class="btn btn-success" role="button" href="{{ path('issue_new') }}">+ Create Issue</a>
         </div>
     </h1>
 
@@ -21,9 +22,48 @@
     </div>
 
     <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Issues</div>
+                <div class="panel-body">
+                    {% if entity.issues|length > 0 %}
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th width="50">Code</th>
+                                <th>Summary</th>
+                                <th width="200">Reporter</th>
+                                <th width="200">Assignee</th>
+                                <th width="100">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for issue in entity.issues %}
+                                <tr>
+                                    <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{  issue.code }}</a></td>
+                                    <td>{{ issue.summary|truncate(200, true) }}</td>
+                                    <td>{{ issue.reporter }}</td>
+                                    <td>{{ issue.assignee }}</td>
+                                    <td>
+                                        <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': issue.id }) }}">Edit</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        There are no issues
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-default">
-                <div class="panel-heading">Users</div>
+                <div class="panel-heading">Members</div>
                 <div class="panel-body">
                     <ul class="list-unstyled">
                         {% for user in entity.users %}
@@ -37,6 +77,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Activity Stream</div>
                 <div class="panel-body">
+                    #TODO
                 </div>
             </div>
         </div>

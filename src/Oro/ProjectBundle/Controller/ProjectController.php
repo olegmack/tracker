@@ -114,6 +114,8 @@ class ProjectController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
+        $this->setLastVisitedProject($entity);
+
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -239,5 +241,14 @@ class ProjectController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
             ->getForm()
         ;
+    }
+
+    /**
+     * Store last visited project id in session
+     */
+    protected function setLastVisitedProject($project)
+    {
+        $this->get('session')->set('last_visited_project_id', $project->getId());
+        return $this;
     }
 }

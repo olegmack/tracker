@@ -9,14 +9,14 @@
         {% endstylesheets %}
         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('public/css/styles.css') }}" />
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=2') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         {% javascripts '@jquery' '@bootstrap_js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

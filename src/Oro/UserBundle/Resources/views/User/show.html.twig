@@ -1,7 +1,11 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h1>User</h1>
+    <h1>User
+        <div class="pull-right">
+            <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+        </div>
+    </h1>
 
     <p>
         <a href="{{ path('user') }}">&laquo; Back to the Users list</a>
@@ -46,16 +50,32 @@
                     </div>
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Activity stream</div>
+                <div class="panel-body">
+                    <b>#TODO</b>
+                </div>
+            </div>
         </div>
         <div class="col-sm-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Projects</div>
+                <div class="panel-heading">Open Issues</div>
                 <div class="panel-body">
-                    <ul class="list-unstyled">
-                    {% for project in entity.projects %}
-                        <li><a href="{{ path('project_show', { 'id': project.id }) }}">{{ project.name}}</a></li>
-                    {% endfor %}
-                    </ul>
+                    {% if issues|length > 0 %}
+                        <table class="table table-striped">
+                            <col width="50" />
+                            <col />
+                            {% for issue in issues %}
+                                <tr>
+                                    <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{  issue.code }}</a></td>
+                                    <td>{{ issue.summary|truncate(200, true) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        There are no opened issues.
+                    {% endif %}
                 </div>
             </div>
         </div>
