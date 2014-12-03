@@ -11,12 +11,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Oro\UserBundle\Entity\Role;
 use Oro\ProjectBundle\Entity\Project;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Oro\UserBundle\Entity\UserRepository")
+ * @UniqueEntity(fields="username", message="This username is already used")
+ * @UniqueEntity(fields="email", message="This email is already used")
  */
 class User implements UserInterface, \Serializable
 {
@@ -33,6 +36,8 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
@@ -40,6 +45,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -47,6 +53,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="fullname", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $fullname;
 

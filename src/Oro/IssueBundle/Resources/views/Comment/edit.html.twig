@@ -1,0 +1,41 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('project_show', { 'id': entity.issue.project.id }) }}">{{ entity.issue.project.name }}</a></li>
+        {% if (entity.issue.issueType.code == 'subtask') %}
+            <li><a href="{{ path('issue_show', { 'id': entity.issue.parent.id }) }}">{{ entity.issue.parent }}</a></li>
+        {% endif %}
+        <li><a href="{{ path('issue_show', { 'id': entity.issue.id }) }}">{{ entity.issue.code }}</a></li>
+    </ol>
+
+    <h1>Edit Comment</h1>
+
+    <form action="{{ path('comment_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            <label>Author</label>
+            <span><a href="{{ path('user_show', { 'id': entity.author.id }) }}">{{ entity.author }}</a></span>
+        </div>
+
+        <div class="form-group">
+            <label>Created</label>
+            <span>{{ entity.createdAt|date('F j, Y H:i') }}</span>
+        </div>
+
+
+        <div class="form-group">
+            {{ form_label(form.body) }}
+            {{ form_errors(form.body) }}
+            {{ form_widget(form.body) }}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Update</button>&nbsp;
+            <a href="{{ path('issue_show', { 'id': entity.issue.id }) }}">Cancel</a>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

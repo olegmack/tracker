@@ -17,7 +17,6 @@ use Oro\UserBundle\Form\UserType;
  */
 class UserController extends Controller
 {
-
     /**
      * Lists all User entities.
      *
@@ -52,7 +51,7 @@ class UserController extends Controller
             $entity->avatarUpload();
 
             //store password
-            $plainPassword = $form->get('plain_password')->getData();
+            $plainPassword = $form->get('plainPassword')->getData();
             if (!empty($plainPassword)) {
                 $entity->setPassword($this->encodePassword($entity, $plainPassword));
             } else {
@@ -63,6 +62,9 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+
+            $request->getSession()->getFlashbag()
+                ->add('success', 'User is successfully added');
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
@@ -217,7 +219,10 @@ class UserController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            $request->getSession()->getFlashbag()
+                ->add('success', 'User information is updated');
+
+            return $this->redirect($this->generateUrl('user_show', array('id' => $id)));
         }
 
         return array(

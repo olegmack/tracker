@@ -32,3 +32,8 @@
     -moz-border-radius:50px;
     border-radius:50px;
 }
+
+.comment {
+    border-bottom: 1px solid #dddddd;
+    padding: 5px 0 10px;
+}

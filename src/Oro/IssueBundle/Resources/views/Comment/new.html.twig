@@ -1,0 +1,19 @@
+<div class="panel panel-info">
+    <div class="panel-heading">Add comment</div>
+    <div class="panel-body">
+        <form action="{{ path('comment_create', {'issueId' : issue_id}) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+            {{ form_errors(form) }}
+
+            <div class="form-group">
+                {{ form_errors(form.body) }}
+                {{ form_widget(form.body) }}
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

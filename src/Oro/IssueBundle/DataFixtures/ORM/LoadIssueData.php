@@ -1,35 +1,39 @@
 <?php
-namespace Oro\UserBundle\DataFixtures\ORM;
+namespace Oro\IssueBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Oro\IssueBundle\Entity\Issue;
 use Oro\UserBundle\Entity\User;
 use Oro\ProjectBundle\Entity\Project;
 
-class LoadIssueData implements FixtureInterface, DependentFixtureInterface
+class LoadIssueData extends AbstractFixture implements FixtureInterface, DependentFixtureInterface
 {
     public function getDependencies()
     {
         return array(
-            'Oro\UserBundle\DataFixtures\ORM\LoadIssuePriorityData',
-            'Oro\UserBundle\DataFixtures\ORM\LoadIssueResolutionData',
-            'Oro\UserBundle\DataFixtures\ORM\LoadIssueStatusData',
-            'Oro\UserBundle\DataFixtures\ORM\LoadIssueTypeData'
+            'Oro\IssueBundle\DataFixtures\ORM\LoadIssuePriorityData',
+            'Oro\IssueBundle\DataFixtures\ORM\LoadIssueResolutionData',
+            'Oro\IssueBundle\DataFixtures\ORM\LoadIssueStatusData',
+            'Oro\IssueBundle\DataFixtures\ORM\LoadIssueTypeData'
         );
     }
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
+        $bapProject = $manager->getRepository('OroProjectBundle:Project')->findOneByCode('BAP');
+        $oroProject = $manager->getRepository('OroProjectBundle:Project')->findOneByCode('CRM');
+        $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
+        $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
+        $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
+
         $issue1 = new Issue();
         $issue1->setSummary('Replace calendar picker tool');
         $issue1->setDescription('The usability of our calendar picker control is bad and we should replace it with the more convenient one.');
-
-        $bapProject = $manager->getRepository('OroProjectBundle:Project')->findOneByCode('BAP');
-        $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
-        $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
 
         $issue1->setProject($bapProject);
         $issue1->setReporter($managerUser);
@@ -42,6 +46,69 @@ class LoadIssueData implements FixtureInterface, DependentFixtureInterface
 
         $manager->persist($issue1);
 
+        $issue2 = new Issue();
+        $issue2->setSummary('REST API documentation');
+        $issue2->setDescription('Provide REST API documentation.');
+
+        $issue2->setProject($oroProject);
+        $issue2->setReporter($managerUser);
+        $issue2->setAssignee($managerUser);
+
+        $issue2->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('major'))
+            ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('unresolved'))
+            ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('open'))
+            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('story'));
+
+        $manager->persist($issue2);
+
+        $issue3 = new Issue();
+        $issue3->setSummary('Add possibility to display request/response example in nelmio API bundle doc');
+        $issue3->setDescription('
+<ul class="alternate" type="square">
+<li>Override formatter service</li>
+<li>Add section with response/request examples</li>
+<li>Add version switcher</li>
+<li>Enable ajax loading for doc of each resource</li>
+</ul>');
+
+        $issue3->setProject($oroProject);
+        $issue3->setReporter($managerUser);
+        $issue3->setAssignee($operatorUser2);
+
+        $issue3->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('major'))
+            ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('unresolved'))
+            ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('open'))
+            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('subtask'))
+            ->setParent($issue2);
+
+        $manager->persist($issue3);
+
+        $issue4 = new Issue();
+        $issue4->setSummary('Move template fixture logic to EntityBundle');
+        $issue4->setDescription('
+<ul class="alternate" type="square">
+<li>Move classes to entity bundle</li>
+<li>Add aliases for services to keep BC</li>
+<li>Ensure BC not broken, add stub classes to import export bundle</li>
+</ul>');
+
+        $issue4->setProject($oroProject);
+        $issue4->setReporter($managerUser);
+        $issue4->setAssignee($operatorUser2);
+
+        $issue4->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('minor'))
+            ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('resolved'))
+            ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('closed'))
+            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('subtask'))
+            ->setParent($issue2);
+
+        $manager->persist($issue4);
+
         $manager->flush();
+
+        $this->addReference('issue1', $issue1);
+        $this->addReference('issue2', $issue2);
+        $this->addReference('issue3', $issue3);
+        $this->addReference('issue4', $issue4);
     }
 }

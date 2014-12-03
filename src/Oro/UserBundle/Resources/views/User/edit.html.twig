@@ -49,7 +49,7 @@
         {{ form_rest(form) }}
         <div>
             <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{{ path('user') }}">Cancel</a>
+            <a href="{{ path('user_show', { 'id': entity.id }) }}">Cancel</a>
         </div>
     </form>
 </ul>

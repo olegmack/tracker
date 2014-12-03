@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Oro\UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project
@@ -28,6 +29,7 @@ class Project
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -35,6 +37,7 @@ class Project
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=20)
+     * @Assert\NotBlank()
      */
     private $code;
 

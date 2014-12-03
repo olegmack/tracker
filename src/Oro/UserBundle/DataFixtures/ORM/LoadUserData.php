@@ -76,6 +76,14 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $user3->getRolesCollection()->add($userRole);
         $manager->persist($user3);
 
+        $user4 = new User();
+        $user4->setUsername('operator2');
+        $user4->setEmail('operator2@oro.crm');
+        $user4->setFullname('Neil Phillips');
+        $user4->setPassword($encoder->encodePassword('operator123', $user4->getSalt()));
+        $user4->getRolesCollection()->add($userRole);
+        $manager->persist($user4);
+        
         $manager->flush();
     }
 }

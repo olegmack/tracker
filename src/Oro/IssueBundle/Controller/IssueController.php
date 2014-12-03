@@ -42,6 +42,9 @@ class IssueController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $request->getSession()->getFlashbag()
+                ->add('success', 'Issue is successfully created');
+
             return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
         }
 
@@ -174,6 +177,7 @@ class IssueController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Issue entity.
      *
@@ -197,7 +201,10 @@ class IssueController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_edit', array('id' => $id)));
+            $request->getSession()->getFlashbag()
+                ->add('success', 'Issue information is updated');
+
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
         }
 
         return array(

@@ -5,6 +5,7 @@ namespace Oro\IssueBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Issue
@@ -28,6 +29,7 @@ class Issue
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $summary;
 
@@ -108,7 +110,6 @@ class Issue
      */
     protected $assignee;
 
-
     /**
      * @var ArrayCollection User[]
      *
@@ -131,11 +132,19 @@ class Issue
      */
     protected $children;
 
+    /**
+     * @var ArrayCollection Comment[]
+     *
+     * @ORM\OneToMany(targetEntity="Oro\IssueBundle\Entity\Comment", mappedBy="issue")
+     */
+    protected $comments;
+
 
     public function __construct()
     {
         $this->collaborators = new ArrayCollection();
         $this->children      = new ArrayCollection();
+        $this->comments      = new ArrayCollection();
     }
 
     /**
@@ -451,5 +460,21 @@ class Issue
     public function __toString()
     {
         return $this->getCode() . ': ' . $this->summary;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
     }
 }

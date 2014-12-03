@@ -35,6 +35,7 @@ application platform they’ve been looking for, by combining the tools they nee
 Symfony2 framework, developing custom business applications has never been so easy.');
 
         $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
+        $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
         $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
 
         $project
@@ -49,7 +50,8 @@ Symfony2 framework, developing custom business applications has never been so ea
             ->setSummary('OroCRM is an easy-to-use, open source CRM with built in marketing automation tools for your commerce business. It’s the CRM built for both sales and marketing!');
 
         $project2
-            ->addUser($managerUser);
+            ->addUser($managerUser)
+            ->addUser($operatorUser2);
 
         $manager->persist($project2);
 

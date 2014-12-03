@@ -53,6 +53,9 @@ class ProjectController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $request->getSession()->getFlashbag()
+                ->add('success', 'Project is successfully created');
+
             return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getId())));
         }
 
@@ -191,7 +194,10 @@ class ProjectController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('id' => $id)));
+            $request->getSession()->getFlashbag()
+                ->add('success', 'Project information is updated');
+
+            return $this->redirect($this->generateUrl('project_show', array('id' => $id)));
         }
 
         return array(
