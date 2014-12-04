@@ -1,7 +1,14 @@
-parameters:
-#    oro_issue.example.class: Oro\IssueBundle\Example
-
 services:
-#    oro_issue.example:
-#        class: %oro_issue.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    comment.listener:
+        class: Oro\IssueBundle\EventListener\CommentListener
+        tags:
+            - {name: doctrine.event_listener, event: postPersist}
+
+    issue.listener:
+        class: Oro\IssueBundle\EventListener\IssueListener
+        arguments:
+            - @oro.user.user_callable
+        tags:
+            - {name: doctrine.event_listener, event: preUpdate}
+            - {name: doctrine.event_listener, event: postFlush}
+            - {name: doctrine.event_listener, event: postPersist}

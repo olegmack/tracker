@@ -139,7 +139,6 @@ class Issue
      */
     protected $comments;
 
-
     public function __construct()
     {
         $this->collaborators = new ArrayCollection();
@@ -441,15 +440,17 @@ class Issue
     public function beforePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->addCollaborator($this->getReporter());
     }
 
     /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function setUpdatedAtValue()
+    public function beforeSave()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->addCollaborator($this->getAssignee());
     }
 
     public function getCode()

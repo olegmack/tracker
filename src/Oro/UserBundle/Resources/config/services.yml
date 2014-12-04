@@ -1,7 +1,8 @@
 parameters:
-#    oro_user.example.class: Oro\UserBundle\Example
+    oro.user.user_callable.class: Oro\UserBundle\DependencyInjection\UserCallable
 
 services:
-#    oro_user.example:
-#        class: %oro_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    oro.user.user_callable:
+        class: "%oro.user.user_callable.class%"
+        arguments:
+            - "@service_container"

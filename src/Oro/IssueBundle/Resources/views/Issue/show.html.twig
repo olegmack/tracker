@@ -73,7 +73,7 @@
                                 <tr>
                                     <td><a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{  subtask.code }}</a></td>
                                     <td>{{ subtask.summary|truncate(200, true) }}</td>
-                                    <td>{{ subtask.assignee.name }}</td>
+                                    <td><a href="{{ path('user_show', { 'id': subtask.assignee.id }) }}">{{ subtask.assignee.name }}</a></td>
                                 </tr>
                             {% endfor %}
                         </table>

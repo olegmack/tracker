@@ -4,16 +4,20 @@ namespace Oro\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\UserBundle\Entity\User;
+use Oro\IssueBundle\Entity\Issue;
 
 /**
- * Comment
+ * IssueActivity
  *
- * @ORM\Table()
+ * @ORM\Table(name="issue_activities")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
-class Comment
+class IssueActivity
 {
+    const ACTIVITY_COMMENT      = 'comment';
+    const ACTIVITY_ISSUE        = 'issue';
+    const ACTIVITY_ISSUE_STATUS = 'issue_status';
+
     /**
      * @var integer
      *
@@ -26,9 +30,9 @@ class Comment
     /**
      * @var string
      *
-     * @ORM\Column(name="body", type="text")
+     * @ORM\Column(name="details", type="text")
      */
-    private $body;
+    private $details;
 
     /**
      * @var \DateTime
@@ -38,11 +42,19 @@ class Comment
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @ORM\Column(name="type", type="string", length=20)
      */
-    private $updatedAt;
+    private $type;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $user;
 
     /**
      * @var Issue
@@ -52,19 +64,9 @@ class Comment
      */
     private $issue;
 
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $author;
-
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -78,33 +80,33 @@ class Comment
     }
 
     /**
-     * Set body
+     * Set details
      *
-     * @param string $body
-     * @return Comment
+     * @param string $details
+     * @return IssueActivity
      */
-    public function setBody($body)
+    public function setDetails($details)
     {
-        $this->body = $body;
+        $this->details = $details;
 
         return $this;
     }
 
     /**
-     * Get body
+     * Get details
      *
      * @return string 
      */
-    public function getBody()
+    public function getDetails()
     {
-        return $this->body;
+        return $this->details;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Comment
+     * @return IssueActivity
      */
     public function setCreatedAt($createdAt)
     {
@@ -124,26 +126,26 @@ class Comment
     }
 
     /**
-     * Set updatedAt
+     * Set type
      *
-     * @param \DateTime $updatedAt
-     * @return Comment
+     * @param string $type
+     * @return IssueActivity
      */
-    public function setUpdatedAt($updatedAt)
+    public function setType($type)
     {
-        $this->updatedAt = $updatedAt;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get updatedAt
+     * Get type
      *
-     * @return \DateTime 
+     * @return string 
      */
-    public function getUpdatedAt()
+    public function getType()
     {
-        return $this->updatedAt;
+        return $this->type;
     }
 
     /**
@@ -156,35 +158,29 @@ class Comment
 
     /**
      * @param Issue $issue
+     * @return $this
      */
     public function setIssue($issue)
     {
         $this->issue = $issue;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue()
-    {
-        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        return $this;
     }
 
     /**
      * @return User
      */
-    public function getAuthor()
+    public function getUser()
     {
-        return $this->author;
+        return $this->user;
     }
 
     /**
-     * @param User $author
+     * @param User $user
      * @return $this
      */
-    public function setAuthor($author)
+    public function setUser($user)
     {
-        $this->author = $author;
+        $this->user = $user;
         return $this;
     }
 }

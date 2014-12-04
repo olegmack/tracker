@@ -97,7 +97,7 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
         $issue4->setAssignee($operatorUser2);
 
         $issue4->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('minor'))
-            ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('resolved'))
+            ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('done'))
             ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('closed'))
             ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('subtask'))
             ->setParent($issue2);
