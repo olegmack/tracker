@@ -54,7 +54,7 @@ class ProjectController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Project is successfully created');
+                ->add('success', 'Project has been successfully created');
 
             return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getId())));
         }
@@ -174,7 +174,7 @@ class ProjectController extends Controller
      * Edits an existing Project entity.
      *
      * @Route("/{id}", name="project_update")
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("OroProjectBundle:Project:edit.html.twig")
      */
     public function updateAction(Request $request, $id)

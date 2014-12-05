@@ -1,4 +1,5 @@
 parameters:
+    oro.timezone: Europe/Kiev
     oro.user.user_callable.class: Oro\UserBundle\DependencyInjection\UserCallable
 
 services:

@@ -64,7 +64,7 @@ class UserController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'User is successfully added');
+                ->add('success', 'User has been successfully added');
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }

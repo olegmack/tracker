@@ -43,7 +43,7 @@ class IssueController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Issue is successfully created');
+                ->add('success', 'Issue has been successfully created');
 
             return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
         }
@@ -69,10 +69,17 @@ class IssueController extends Controller
             $entity->setProject($project);
         }
 
-        $form = $this->createForm(new IssueType(), $entity, array(
-            'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            new IssueType(
+                $this->getDoctrine()->getManager(),
+                $this->get('security.context')
+            ),
+            $entity,
+            array(
+                'action' => $this->generateUrl('issue_create'),
+                'method' => 'POST',
+            )
+        );
 
         return $form;
     }
@@ -170,10 +177,17 @@ class IssueController extends Controller
     */
     private function createEditForm(Issue $entity)
     {
-        $form = $this->createForm(new IssueType(), $entity, array(
-            'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            new IssueType(
+                $this->getDoctrine()->getManager(),
+                $this->get('security.context')
+            ),
+            $entity,
+            array(
+                'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+                'method' => 'POST',
+            )
+        );
 
         return $form;
     }
@@ -226,5 +240,4 @@ class IssueController extends Controller
         $project = $this->getDoctrine()->getManager()->getRepository('OroProjectBundle:Project')->find($projectId);
         return $project;
     }
-
 }

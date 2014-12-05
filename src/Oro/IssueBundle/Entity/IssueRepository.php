@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class IssueRepository extends EntityRepository
 {
+    public function findByCollaborator($userId)
+    {
+        $queryBuilder = $this->createQueryBuilder('i')
+            ->select('i')
+            ->addOrderBy('i.createdAt', 'DESC')
+            ->join('i.collaborators', 'u')
+            ->where('u.id = :user_id')
+            ->setParameter('user_id', $userId);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

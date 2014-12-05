@@ -5,10 +5,21 @@ namespace Oro\IssueBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Oro\IssueBundle\Entity\IssueRepository;
 
 class IssueType extends AbstractType
 {
-        /**
+    protected $manager;
+    protected $context;
+
+
+    public function __construct($manager, $context)
+    {
+        $this->manager = $manager;
+        $this->context = $context;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -36,7 +47,8 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:IssueType',
                     'property'      => 'name',
                     'multiple'      => false,
-                    'attr' => array('class'=>'form-control')
+                    'data'          => $this->manager->getReference('OroIssueBundle:IssueType', 'task'),
+                    'attr'          => array('class'=>'form-control')
                 )
             )
             ->add(
@@ -47,6 +59,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:IssuePriority',
                     'property'      => 'name',
                     'multiple'      => false,
+                    'data'          => $this->manager->getReference('OroIssueBundle:IssuePriority', 'major'),
                     'attr' => array('class'=>'form-control')
                 )
             )
@@ -58,6 +71,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:IssueResolution',
                     'property'      => 'name',
                     'multiple'      => false,
+                    'data'          => $this->manager->getReference('OroIssueBundle:IssueResolution', 'unresolved'),
                     'attr' => array('class'=>'form-control')
                 )
             )
@@ -69,6 +83,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:IssueStatus',
                     'property'      => 'name',
                     'multiple'      => false,
+                    'data'          => $this->manager->getReference('OroIssueBundle:IssueStatus', 'open'),
                     'attr' => array('class'=>'form-control')
                 )
             )
@@ -80,6 +95,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroUserBundle:User',
                     'property'      => 'name',
                     'multiple'      => false,
+                    'data'          => $this->context->getToken()->getUser(),
                     'attr' => array('class'=>'form-control')
                 )
             )
@@ -103,6 +119,12 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:Issue',
                     'empty_value'   => '--- Please choose a parent Issue ---',
                     'required'      => false,
+                    'query_builder' => function(IssueRepository $er) {
+                        return $er->createQueryBuilder('i')
+                            ->join('i.issueType', 't')
+                            ->where("t.code = 'story'")
+                            ->orderBy('i.id', 'ASC');
+                    },
                     'multiple'      => false,
                     'attr' => array('class'=>'form-control')
                 )
@@ -117,7 +139,8 @@ class IssueType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Oro\IssueBundle\Entity\Issue'
+            'data_class' => 'Oro\IssueBundle\Entity\Issue',
+            'issueType' => 'task'
         ));
     }
 

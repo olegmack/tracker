@@ -75,9 +75,9 @@
         </div>
         <div class="col-sm-9">
             <div class="panel panel-info">
-                <div class="panel-heading">Activity Stream</div>
+                <div class="panel-heading">Latest Activity</div>
                 <div class="panel-body">
-                    #TODO
+                    {{ render(controller('OroIssueBundle:Activity:list', {'limit': 20, 'projectId' : entity.id})) }}
                 </div>
             </div>
         </div>

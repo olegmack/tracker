@@ -10,7 +10,7 @@ use Oro\IssueBundle\Entity\Issue;
  * IssueActivity
  *
  * @ORM\Table(name="issue_activities")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\IssueBundle\Entity\IssueActivityRepository")
  */
 class IssueActivity
 {

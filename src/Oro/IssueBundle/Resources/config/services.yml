@@ -1,6 +1,16 @@
+parameters:
+    oro.sender_email: tracker@oro.crm
+    oro.sender_name: Tracker System
+
 services:
     comment.listener:
         class: Oro\IssueBundle\EventListener\CommentListener
+        tags:
+            - {name: doctrine.event_listener, event: postPersist}
+
+    activity.listener:
+        class: Oro\IssueBundle\EventListener\ActivityListener
+        arguments: [@service_container]
         tags:
             - {name: doctrine.event_listener, event: postPersist}
 

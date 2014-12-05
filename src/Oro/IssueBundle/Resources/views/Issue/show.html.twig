@@ -107,4 +107,12 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="panel panel-info">
+            <div class="panel-heading">Latest Activity</div>
+            <div class="panel-body">
+                {{ render(controller('OroIssueBundle:Activity:list', {'limit': 20, 'issueId' : entity.id})) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

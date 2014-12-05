@@ -1,0 +1,5 @@
+{% for activity in activities %}
+    {% include 'OroIssueBundle:Activity/Renderer:' ~ activity.type ~ '.html.twig' with { 'activity': activity } %}
+{% else %}
+    There are no activities
+{% endfor %}

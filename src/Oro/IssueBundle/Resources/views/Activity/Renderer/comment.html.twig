@@ -1,0 +1,19 @@
+<div class="well well-sm activity">
+    <div class="header">
+        <span class="user">
+            <a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname}}</a>
+        </span>
+        <span>commented</span>
+        <span class="issue">
+            on <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
+        </span>
+
+        <div class="pull-right date">
+            <span class="field">{{ activity.createdAt|date('F j, Y H:i') }}</span>
+        </div>
+    </div>
+
+    <div class="details">
+        {{ activity.details }}
+    </div>
+</div>
