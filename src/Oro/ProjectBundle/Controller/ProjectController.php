@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProjectController extends Controller
 {
-
     /**
      * Lists all Project entities.
      *
@@ -50,7 +49,7 @@ class ProjectController extends Controller
         $entity = new Project();
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
         $form = $this->createCreateForm($entity);
@@ -62,7 +61,7 @@ class ProjectController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Project has been successfully created');
+                ->add('success', $this->get('translator')->trans('oro.project.messages.project_added'));
 
             return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getId())));
         }
@@ -102,7 +101,7 @@ class ProjectController extends Controller
         $entity = new Project();
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
         $form   = $this->createCreateForm($entity);
@@ -127,11 +126,11 @@ class ProjectController extends Controller
         $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
 
         if (false === $this->get('security.context')->isGranted('VIEW', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.project.messages.project_not_found'));
         }
 
         $this->setLastVisitedProject($entity);
@@ -158,11 +157,13 @@ class ProjectController extends Controller
         $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('oro.project.messages.project_not_found')
+            );
         }
 
         $editForm = $this->createEditForm($entity);
@@ -205,11 +206,13 @@ class ProjectController extends Controller
         $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('oro.project.messages.project_not_found')
+            );
         }
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -247,15 +250,21 @@ class ProjectController extends Controller
             $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Project entity.');
+                throw $this->createNotFoundException(
+                    $this->get('translator')->trans('oro.project.messages.project_not_found')
+                );
             }
 
             if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
             }
 
             $em->remove($entity);
             $em->flush();
+
+            $request->getSession()->getFlashbag()
+                ->add('success', $this->get('translator')->trans('oro.project.messages.project_deleted'));
+
         }
 
         return $this->redirect($this->generateUrl('project'));

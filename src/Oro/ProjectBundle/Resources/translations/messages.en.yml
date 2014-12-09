@@ -1,0 +1,30 @@
+oro:
+    project:
+        edit_title:         Edit "name" project
+        projects_back:      Back to the Projects list
+        delete_title:       Do you want to delete current project?
+        new_title:          Create New Project
+        show_title:         Project - name
+        update_label:       Update
+        cancel_label:       Cancel
+        edit_label:         Edit
+        create_label:       Create Project
+        issues_heading:     Issues
+        overview_heading:   Overview
+        create_issue_label: + Create Issue
+        no_issues:          There are no issues
+        members_heading:    Members
+        activity_heading:   Latest Activity
+        actions:            Actions
+        projects_title:     Projects
+        messages:
+            access_denied:  Unauthorised access!
+            project_added:  Project has been successfully created
+            project_not_found: Unable to find Project entity.
+            project_deleted: Project is deleted
+
+        fields:
+            code_label:     Code
+            summary_label:  Summary
+            name_label:     Name
+

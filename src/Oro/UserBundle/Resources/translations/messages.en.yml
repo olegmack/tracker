@@ -34,6 +34,8 @@ oro:
         role_label:         Role
         username_label:     Username
         fullname_label:     Name
+        avatar_label:       Avatar
+        new_password_label: New Password
         assigned_issues_title: Assigned Open Issues
         no_issues:          There are no opened issues.
         activity_title:     Latest Activity
@@ -42,5 +44,12 @@ oro:
         create_title:       Create New User
         update:             Update
         cancel:             Cancel
+        edit_title:         Edit "name" user
+
+        messages:
+            user_added:     User has been successfully added
+            user_not_found: Unable to find User entity.
+            access_denied:  Unauthorised access!
+            user_updated:   User information is updated
 
 

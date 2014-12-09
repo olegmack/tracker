@@ -1,0 +1,16 @@
+oro:
+    issue:
+        messages:
+            access_denied:      You don't have permissions to this issue
+            issue_created:      Issue has been successfully created
+            issue_updated:      Issue has been updated
+            issue_not_found:    Unable to find Issue entity.
+        fields:
+            code_label:     Code
+            summary_label:  Summary
+            reporter_label: Reporter
+            assignee_label: Assignee
+    comment:
+        messages:
+            not_found: Unable to find Comment entity.
+            access_denied: You don't have access to this comment

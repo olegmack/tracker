@@ -1,15 +1,15 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>Projects</h1>
+    <h1>{{ "oro.project.projects_title"|trans }}</h1>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Summary</th>
-                <th>Actions</th>
+                <th>{{ "oro.project.fields.code_label"|trans }}</th>
+                <th>{{ "oro.project.fields.name_label"|trans }}</th>
+                <th>{{ "oro.project.fields.summary_label"|trans }}</th>
+                <th>{{ "oro.project.actions"|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +20,7 @@
                 <td>{{ entity.summary|truncate(200, true) }}</td>
                 <td>
                     {% if(is_granted('MODIFY', entity)) %}
-                        <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+                        <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -30,7 +30,7 @@
 
     {% if(is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')) %}
     <a class="btn btn-primary" href="{{ path('project_new') }}">
-        + Create New Project
+        {{ "oro.project.create_label"|trans }}
     </a>
     {% endif %}
 

@@ -12,7 +12,12 @@ class AuthControllerTest extends WebTestCase
 
         $client->request('GET', '/login');
 
+        $container = self::$kernel->getContainer();
+
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Tracker - Sign In', $client->getResponse()->getContent());
+        $this->assertContains(
+            $container->get('translator')->trans('oro.auth.sign_in_title'),
+            $client->getResponse()->getContent()
+        );
     }
 }

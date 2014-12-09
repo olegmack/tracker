@@ -1,10 +1,10 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>Create New Project</h1>
+    <h1>{{ "oro.project.new_title"|trans}}</h1>
 
     <p>
-        <a href="{{ path('project') }}">&laquo; Back to the Projects list</a>
+        <a href="{{ path('project') }}">&laquo; {{ "oro.project.projects_back"|trans }}</a>
     </p>
 
     <form action="{{ path('project_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
@@ -34,8 +34,8 @@
             {{ form_widget(form.users) }}
         </div>
 
-        <button type="submit" class="btn btn-primary">Create Project</button>&nbsp;
-        <a href="{{ path('project') }}">Cancel</a>
+        <button type="submit" class="btn btn-primary">{{ "oro.project.create_label"|trans}}</button>&nbsp;
+        <a href="{{ path('project') }}">{{ "oro.project.cancel_label"|trans}}</a>
         {{ form_rest(form) }}
     </form>
 {% endblock %}

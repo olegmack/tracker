@@ -31,14 +31,14 @@ class CommentController extends Controller
         $em = $this->getDoctrine()->getManager();
         $issue = $em->getRepository('OroIssueBundle:Issue')->find($issueId);
         if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
         }
 
         $comment = new Comment();
         $comment->setIssue($issue);
 
         if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
-            throw new AccessDeniedException('You don\'t have access to this issue');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
         $form = $this->createForm(new CommentType(), $comment);
@@ -62,7 +62,7 @@ class CommentController extends Controller
         $em = $this->getDoctrine()->getManager();
         $issue = $em->getRepository('OroIssueBundle:Issue')->find($issueId);
         if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
         }
         $comment = new Comment();
         $comment->setIssue($issue);
@@ -71,7 +71,7 @@ class CommentController extends Controller
         $form->handleRequest($this->getRequest());
 
         if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
-            throw new AccessDeniedException('You don\'t have access to this issue');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
         if ($form->isValid()) {
@@ -98,11 +98,11 @@ class CommentController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this comment');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
         $editForm = $this->createForm(new CommentType(), $entity);
@@ -127,11 +127,11 @@ class CommentController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this comment');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
         $editForm = $this->createForm(new CommentType(), $entity);
@@ -160,11 +160,11 @@ class CommentController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this comment');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
         $em->remove($entity);

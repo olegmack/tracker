@@ -1,10 +1,10 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>Edit "{{ entity.name }}" project</h1>
+    <h1>{{ "oro.project.edit_title"|trans({'name': entity.name})|raw }}</h1>
 
     <p>
-        <a href="{{ path('project') }}">&laquo; Back to the Projects list</a>
+        <a href="{{ path('project') }}">&laquo; {{ "oro.project.projects_back"|trans }}</a>
     </p>
 
     <form action="{{ path('project_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
@@ -35,15 +35,15 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{{ path('project') }}">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ "oro.project.update_label"|trans }}</button>
+            <a href="{{ path('project') }}">{{ "oro.project.cancel_label"|trans }}</a>
         </div>
 
         {{ form_rest(form) }}
     </form>
     <hr />
     <p>
-        <h3>Do you want to delete current project?</h3>
+        <h3>{{ "oro.project.delete_title"|trans}}</h3>
         {{ form(delete_form) }}
     </p>
 {% endblock %}

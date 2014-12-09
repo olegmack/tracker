@@ -55,8 +55,6 @@ class UserController extends Controller
             $plainPassword = $form->get('plainPassword')->getData();
             if (!empty($plainPassword)) {
                 $entity->setPassword($this->encodePassword($entity, $plainPassword));
-            } else {
-                #TODO throw exception or add required class to new user form
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -64,7 +62,7 @@ class UserController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'User has been successfully added');
+                ->add('success', $this->get('translator')->trans('oro.user.messages.user_added'));
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
@@ -124,7 +122,7 @@ class UserController extends Controller
         $entity = $em->getRepository('OroUserBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
         }
 
         $issues = $this->getDoctrine()
@@ -157,11 +155,11 @@ class UserController extends Controller
         $entity = $em->getRepository('OroUserBundle:User')->find($id);
 
         if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.user.messages.access_denied'));
         }
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -203,11 +201,11 @@ class UserController extends Controller
         $entity = $em->getRepository('OroUserBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.user.messages.access_denied'));
         }
 
         $originalPassword = $entity->getPassword();
@@ -230,7 +228,7 @@ class UserController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'User information is updated');
+                ->add('success', $this->get('translator')->trans('oro.user.messages.user_updated'));
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $id)));
         }

@@ -1,22 +1,22 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h1>Project "{{ entity.name }}"
+    <h1>{{ "oro.project.show_title"|trans({'name': entity.name}) }}
         <div class="pull-right">
             {% if(is_granted('MODIFY', entity)) %}
-            <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+            <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
             {% endif %}
-            <a class="btn btn-success" role="button" href="{{ path('issue_new') }}">+ Create Issue</a>
+            <a class="btn btn-success" role="button" href="{{ path('issue_new') }}">{{ "oro.project.create_issue_label"|trans }}</a>
         </div>
     </h1>
 
     <p>
-        <a href="{{ path('project') }}">&laquo; Back to the Projects list</a>
+        <a href="{{ path('project') }}">&laquo; {{ "oro.project.projects_back"|trans }}</a>
     </p>
 
     <div class="panel panel-primary">
         <div class="panel-heading">
-            Overview
+            {{ "oro.project.overview_heading"|trans }}
         </div>
         <div class="panel-body">
             {{ entity.summary }}
@@ -26,17 +26,17 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="panel panel-info">
-                <div class="panel-heading">Issues</div>
+                <div class="panel-heading">{{ "oro.project.issues_heading"|trans }}</div>
                 <div class="panel-body">
                     {% if entity.issues|length > 0 %}
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th width="50">Code</th>
-                                <th>Summary</th>
-                                <th width="200">Reporter</th>
-                                <th width="200">Assignee</th>
-                                <th width="100">Actions</th>
+                                <th width="50">{{ "oro.issue.fields.code_label"|trans }}</th>
+                                <th>{{ "oro.issue.fields.summary_label"|trans }}</th>
+                                <th width="200">{{ "oro.issue.fields.reporter_label"|trans }}</th>
+                                <th width="200">{{ "oro.issue.fields.assignee_label"|trans }}</th>
+                                <th width="100">{{ "oro.project.actions"|trans }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -47,14 +47,14 @@
                                     <td>{{ issue.reporter }}</td>
                                     <td>{{ issue.assignee }}</td>
                                     <td>
-                                        <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': issue.id }) }}">Edit</a>
+                                        <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': issue.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
                                     </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     {% else %}
-                        There are no issues
+                        {{ "oro.project.no_issues"|trans }}
                     {% endif %}
                 </div>
             </div>
@@ -65,7 +65,7 @@
     <div class="row">
         <div class="col-sm-3">
             <div class="panel panel-info">
-                <div class="panel-heading">Members</div>
+                <div class="panel-heading">{{ "oro.project.members_heading"|trans }}</div>
                 <div class="panel-body">
                     <ul class="list-unstyled">
                         {% for user in entity.users %}
@@ -77,7 +77,7 @@
         </div>
         <div class="col-sm-9">
             <div class="panel panel-info">
-                <div class="panel-heading">Latest Activity</div>
+                <div class="panel-heading">{{ "oro.project.activity_heading"|trans }}</div>
                 <div class="panel-body">
                     {{ render(controller('OroIssueBundle:Activity:list', {'limit': 20, 'projectId' : entity.id})) }}
                 </div>

@@ -36,7 +36,7 @@ class IssueController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
-                throw new AccessDeniedException('You don\'t have permissions to this issue');
+                throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
             }
 
             $currentUser =  $this->getUser();
@@ -48,7 +48,7 @@ class IssueController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Issue has been successfully created');
+                ->add('success', $this->get('translator')->trans('oro.issue.messages.issue_created'));
 
             return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
         }
@@ -141,11 +141,11 @@ class IssueController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this issue');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
         }
 
         return array(
@@ -167,11 +167,11 @@ class IssueController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
         }
 
         if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this issue');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -221,21 +221,21 @@ class IssueController extends Controller
         $entity = $em->getRepository('OroIssueBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
         }
 
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
-            throw new AccessDeniedException('You don\'t have access to this issue');
+            throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
         }
 
         if ($editForm->isValid()) {
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Issue information is updated');
+                ->add('success', $this->get('translator')->trans('oro.issue.messages.issue_updated'));
 
             return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
         }

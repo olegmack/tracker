@@ -22,11 +22,20 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array('attr'=>array('class'=>'form-control')))
-            ->add('username', 'text', array('attr'=>array('class'=>'form-control')))
-            ->add('fullname', 'text', array('attr'=>array('class'=>'form-control')))
+            ->add('email', 'email', array(
+                'label' => 'oro.user.email_label',
+                'attr'=>array('class'=>'form-control'))
+            )
+            ->add('username', 'text', array(
+                'label' => 'oro.user.username_label',
+                'attr'=>array('class'=>'form-control'))
+            )
+            ->add('fullname', 'text', array(
+                'label' => 'oro.user.fullname_label',
+                'attr'=>array('class'=>'form-control'))
+            )
             ->add('file', 'file', array(
-                'label' => 'Avatar',
+                'label' => 'oro.user.avatar_label',
                 'required' => false
             ))
             ->add(
@@ -34,7 +43,7 @@ class UserType extends AbstractType
                 'password',
                 array(
                     'attr' => array('class'=>'form-control'),
-                    'label' => 'New Password',
+                    'label' => 'oro.user.new_password_label',
                     'required' => false
                 )
             );
@@ -45,6 +54,7 @@ class UserType extends AbstractType
                     'entity',
                     array(
                         'property_path' => 'rolesCollection',
+                        'label' => 'oro.user.role_label',
                         'class' => 'OroUserBundle:Role',
                         'property' => 'name',
                         'multiple' => true,

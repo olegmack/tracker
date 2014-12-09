@@ -1,0 +1,9 @@
+security:
+    firewalls:
+        secured_area:
+            http_basic: ~
+            provider: oro_users
+            form_login: false
+            logout: false
+            remember_me: false
+            anonymous: true
