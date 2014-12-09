@@ -488,4 +488,9 @@ class User implements UserInterface, \Serializable
         $this->projects = $projects;
         return $this;
     }
+
+    public function getTimezone()
+    {
+        return 'Europe/Kiev';
+    }
 }

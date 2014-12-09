@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Tracker{% endblock %}</title>
+        <title>{% block title %}{{ "oro.main.title"|trans }}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         {% stylesheets '@bootstrap_css' %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>

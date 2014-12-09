@@ -37,9 +37,9 @@
                     <div class="col-sm-5">
                         <dl class="dl-horizontal">
                             <dt>Created At</dt>
-                            <dd>{{ entity.createdAt|date('F j, Y H:i') }}</dd>
+                            <dd>{{ entity.createdAt|date('F j, Y H:i', app.user.timezone) }}</dd>
                             <dt>Updated At</dt>
-                            <dd>{{ entity.updatedAt|date('F j, Y H:i') }}</dd>
+                            <dd>{{ entity.updatedAt|date('F j, Y H:i', app.user.timezone) }}</dd>
                             <dt>Assignee</dt>
                             <dd><a href="{{ path('user_show', { 'id': entity.assignee.id }) }}">{{ entity.assignee.name }}</a></dd>
                             <dt>Reporter</dt>

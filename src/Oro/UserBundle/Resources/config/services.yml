@@ -6,4 +6,10 @@ services:
     oro.user.user_callable:
         class: "%oro.user.user_callable.class%"
         arguments:
-            - "@service_container"
+            - @service_container
+
+    oro.security.user_voter:
+        class:      Oro\UserBundle\Security\UserVoter
+        public:     false
+        tags:
+            - { name: security.voter }

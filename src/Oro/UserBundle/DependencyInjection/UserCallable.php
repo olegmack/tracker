@@ -24,5 +24,7 @@ class UserCallable
         if (null !== $token) {
             return $token->getUser();
         }
+
+        return false;
     }
 }

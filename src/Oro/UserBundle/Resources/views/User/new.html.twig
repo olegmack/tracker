@@ -1,10 +1,10 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>Create New User</h1>
+    <h1>{{ "oro.user.create_title"|trans }}</h1>
 
     <p>
-        <a href="{{ path('user') }}">&laquo; Back to the Users list</a>
+        <a href="{{ path('user') }}">&laquo; {{ "oro.user.users_back"|trans }}</a>
     </p>
 
     <form action="{{ path('user_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">

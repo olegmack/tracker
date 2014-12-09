@@ -1,17 +1,17 @@
 {% extends '::layout.html.twig' %}
 
 {% block content -%}
-    <h1>Users</h1>
+    <h1>{{ "oro.user.users_title"|trans }}</h1>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th width="50">User</th>
+                <th width="50">{{ "oro.user.user_title"|trans }}</th>
                 <th></th>
-                <th>Email</th>
-                <th>Fullname</th>
-                <th>Role</th>
-                <th>Actions</th>
+                <th>{{ "oro.user.email_label"|trans }}</th>
+                <th>{{ "oro.user.fullname_label"|trans }}</th>
+                <th>{{ "oro.user.role_label"|trans }}</th>
+                <th>{{ "oro.user.actions_label"|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+                    <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">{{ "oro.user.user_edit"|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
@@ -43,7 +43,7 @@
     </table>
 
     <a class="btn btn-primary" href="{{ path('user_new') }}">
-        + Add User
+        {{ "oro.user.add_button"|trans }}
     </a>
 
 {% endblock %}

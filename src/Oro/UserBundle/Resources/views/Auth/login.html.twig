@@ -7,7 +7,7 @@
 {% block body %}
     <form id="login_form" action="{{ path('login_check') }}" method="post" role="form" class="form-horizontal">
         <div class="panel panel-info">
-            <div class="panel-heading">Predefined accounts</div>
+            <div class="panel-heading">{{ "oro.auth.predefined_title"|trans }}</div>
             <div class="panel-body">
                 <dl class="dl-horizontal">
                     <dt>Administrator</dt>
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <h1>Tracker - Sign In</h1>
+        <h1>{{ "oro.auth.sign_in_title"|trans }}</h1>
         {% if error %}
             <div class=" form-group has-error">
                 <label class="col-sm-2 control-label"></label>
@@ -33,14 +33,14 @@
         {% endif %}
 
         <div class="form-group">
-            <label for="username" class="col-sm-2 control-label">Username</label>
+            <label for="username" class="col-sm-2 control-label">{{ "oro.auth.username"|trans }}</label>
             <div class="col-sm-10">
-                <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Username"/>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="{{ "oro.auth.username"|trans }}"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">Password</label>
+            <label for="password" class="col-sm-2 control-label">{{ "oro.auth.password"|trans }}</label>
             <div class="col-sm-10">
                 <input type="password" id="password" name="_password" class="form-control"/>
             </div>
@@ -50,7 +50,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">{{ "oro.auth.sign_in"|trans }}</button>
             </div>
         </div>
     </form>

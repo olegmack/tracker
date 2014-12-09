@@ -6,17 +6,20 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\IssueBundle\Entity\IssueRepository;
+use Oro\ProjectBundle\Entity\ProjectRepository;
 
 class IssueType extends AbstractType
 {
     protected $manager;
     protected $context;
+    protected $projects;
 
 
-    public function __construct($manager, $context)
+    public function __construct($manager, $context, $projects)
     {
         $this->manager = $manager;
         $this->context = $context;
+        $this->projects = $projects;
     }
 
     /**
@@ -34,6 +37,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroProjectBundle:Project',
                     'property'      => 'name',
                     'multiple'      => false,
+                    'choices'       => $this->projects,
                     'attr' => array('class'=>'form-control')
                 )
             )

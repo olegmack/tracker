@@ -3,7 +3,9 @@
 {% block content %}
     <h1>Project "{{ entity.name }}"
         <div class="pull-right">
+            {% if(is_granted('MODIFY', entity)) %}
             <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+            {% endif %}
             <a class="btn btn-success" role="button" href="{{ path('issue_new') }}">+ Create Issue</a>
         </div>
     </h1>

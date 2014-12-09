@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\IssueBundle\Entity\Comment;
 use Oro\IssueBundle\Form\CommentType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Issue controller.
@@ -35,6 +36,10 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $comment->setIssue($issue);
+
+        if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
+            throw new AccessDeniedException('You don\'t have access to this issue');
+        }
 
         $form = $this->createForm(new CommentType(), $comment);
         return array(
@@ -65,6 +70,10 @@ class CommentController extends Controller
         $form = $this->createForm(new CommentType(), $comment);
         $form->handleRequest($this->getRequest());
 
+        if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
+            throw new AccessDeniedException('You don\'t have access to this issue');
+        }
+
         if ($form->isValid()) {
             $comment->setAuthor($this->getUser());
 
@@ -92,6 +101,10 @@ class CommentController extends Controller
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this comment');
+        }
+
         $editForm = $this->createForm(new CommentType(), $entity);
 
         return array(
@@ -117,6 +130,10 @@ class CommentController extends Controller
             throw $this->createNotFoundException('Unable to find Comment entity.');
         }
 
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this comment');
+        }
+
         $editForm = $this->createForm(new CommentType(), $entity);
         $editForm->handleRequest($request);
 
@@ -130,4 +147,30 @@ class CommentController extends Controller
             'form'   => $editForm->createView()
         );
     }
+
+    /**
+     * Delete an existing comment entity.
+     *
+     * @Route("/delete/{id}", name="comment_delete")
+     * @Method("GET")
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Project entity.');
+        }
+
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this comment');
+        }
+
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getIssue()->getId())));
+    }
+
 }

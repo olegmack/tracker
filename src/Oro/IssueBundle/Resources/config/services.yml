@@ -22,3 +22,15 @@ services:
             - {name: doctrine.event_listener, event: preUpdate}
             - {name: doctrine.event_listener, event: postFlush}
             - {name: doctrine.event_listener, event: postPersist}
+
+    oro.security.issue_voter:
+        class:      Oro\IssueBundle\Security\IssueVoter
+        public:     false
+        tags:
+            - { name: security.voter }
+
+    oro.security.comment_voter:
+        class:      Oro\IssueBundle\Security\CommentVoter
+        public:     false
+        tags:
+            - { name: security.voter }

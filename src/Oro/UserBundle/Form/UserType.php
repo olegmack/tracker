@@ -8,7 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
-        /**
+    protected $isMyProfile;
+
+    public function __construct($isMyProfile)
+    {
+        $this->isMyProfile = $isMyProfile;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -30,18 +37,21 @@ class UserType extends AbstractType
                     'label' => 'New Password',
                     'required' => false
                 )
-            )
-            ->add(
-                'roles',
-                'entity',
-                array(
-                    'property_path' => 'rolesCollection',
-                    'class'         => 'OroUserBundle:Role',
-                    'property'      => 'name',
-                    'multiple'      => true,
-                    'attr' => array('class'=>'form-control')
-                )
             );
+
+            if (!$this->isMyProfile) {
+                $builder->add(
+                    'roles',
+                    'entity',
+                    array(
+                        'property_path' => 'rolesCollection',
+                        'class' => 'OroUserBundle:Role',
+                        'property' => 'name',
+                        'multiple' => true,
+                        'attr' => array('class' => 'form-control')
+                    )
+                );
+            }
         ;
     }
     

@@ -1,17 +1,17 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h1>Dashboard</h1>
+    <h1>{{ "oro.dashboard.title"|trans }}</h1>
 
     <div class="row">
         <div class="col-sm-7">
             <div class="panel panel-primary">
-                <div class="panel-heading">Projects Activity</div>
+                <div class="panel-heading">{{ "oro.dashboard.projects_activity"|trans }}</div>
                 <div class="panel-body">
                     {% for activity in activities %}
                         {% include 'OroIssueBundle:Activity/Renderer:' ~ activity.type ~ '.html.twig' with { 'activity': activity } %}
                     {% else %}
-                        There are no activities
+                        {{ "oro.dashboard.no_activities"|trans }}
                     {% endfor %}
                 </div>
             </div>
@@ -19,7 +19,7 @@
 
         <div class="col-sm-5">
             <div class="panel panel-primary">
-                <div class="panel-heading">Opened/Reopened Issues</div>
+                <div class="panel-heading">{{ "oro.dashboard.issues_title"|trans }}</div>
                 <div class="panel-body">
                     {% if issues|length > 0 %}
                         <table class="table table-striped">
@@ -33,7 +33,7 @@
                             {% endfor %}
                         </table>
                     {% else %}
-                        There are no opened issues.
+                        {{ "oro.dashboard.no_issues"|trans }}
                     {% endif %}
                 </div>
             </div>

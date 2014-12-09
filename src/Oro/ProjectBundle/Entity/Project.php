@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Oro\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Project
@@ -217,5 +218,16 @@ class Project
     public function getIssues()
     {
         return $this->issues;
+    }
+
+    /**
+     * Check is user a member of the project by username
+     * @param $username
+     * @return bool
+     */
+    public function isMember($username)
+    {
+        $members = $this->getUsers()->exists(function($k, $e) use ($username) { return $e->getUsername() == $username; });
+        return (!empty($members));
     }
 }

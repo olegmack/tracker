@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label>Created</label>
-            <span>{{ entity.createdAt|date('F j, Y H:i') }}</span>
+            <span>{{ entity.createdAt|date('F j, Y H:i', app.user.timezone) }}</span>
         </div>
 
 

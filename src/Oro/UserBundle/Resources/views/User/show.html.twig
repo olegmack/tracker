@@ -1,20 +1,25 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h1>User
+    <h1>
+        {% if(my_profile) %}{{ "oro.user.my_profile_title"|trans }}{% else %}{{ "oro.user.user_title"|trans }}{% endif %}
+        {% if(is_granted('EDIT', entity)) %}
         <div class="pull-right">
-            <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+            <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">{{ "oro.user.user_edit"|trans }}</a>
         </div>
+        {% endif %}
     </h1>
 
+    {% if(is_granted('VIEW_LIST', entity)) %}
     <p>
-        <a href="{{ path('user') }}">&laquo; Back to the Users list</a>
+        <a href="{{ path('user') }}">&laquo; {{ "oro.user.users_back"|trans }}</a>
     </p>
+    {% endif %}
 
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-primary">
-                <div class="panel-heading">Details</div>
+                <div class="panel-heading">{{ "oro.user.details_title"|trans }} Details</div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-1">
@@ -28,13 +33,13 @@
                         </div>
                         <div class="col-sm-8">
                             <dl class="dl-horizontal">
-                                <dt>Email</dt>
-                                <dd>{{ entity.email }}</dd>
-                                <dt>Username</dt>
+                                <dt>{{ "oro.user.email_label"|trans }}</dt>
+                                <dd><a href="mailto:{{ entity.email }}">{{ entity.email }}</a></dd>
+                                <dt>{{ "oro.user.username_label"|trans }}</dt>
                                 <dd>{{ entity.username }}</dd>
-                                <dt>Fullname</dt>
+                                <dt>{{ "oro.user.fullname_label"|trans }}</dt>
                                 <dd>{{ entity.fullname }}</dd>
-                                <dt>Roles</dt>
+                                <dt>{{ "oro.user.role_label"|trans }}</dt>
                                 <dd>
                                 {% for role in entity.roles %}
                                     {{ role.name}}<br/>
@@ -48,7 +53,7 @@
         </div>
         <div class="col-sm-6">
             <div class="panel panel-info">
-                <div class="panel-heading">Assigned Open Issues</div>
+                <div class="panel-heading">{{ "oro.user.assigned_issues_title"|trans }}</div>
                 <div class="panel-body">
                     {% if issues|length > 0 %}
                         <table class="table table-striped">
@@ -62,7 +67,7 @@
                             {% endfor %}
                         </table>
                     {% else %}
-                        There are no opened issues.
+                        {{ "oro.user.no_issues"|trans }}
                     {% endif %}
                 </div>
             </div>
@@ -70,7 +75,7 @@
     </div>
     <div class="row">
         <div class="panel panel-info">
-            <div class="panel-heading">Latest Activity</div>
+            <div class="panel-heading">{{ "oro.user.activity_title"|trans }}</div>
             <div class="panel-body">
                 {{ render(controller('OroIssueBundle:Activity:list', {'limit': 20, 'userId' : entity.id})) }}
             </div>

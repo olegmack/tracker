@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Oro\UserBundle\Entity\User;
 use Oro\UserBundle\Form\UserType;
 
@@ -58,7 +59,6 @@ class UserController extends Controller
                 #TODO throw exception or add required class to new user form
             }
 
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -71,7 +71,7 @@ class UserController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
      */
     private function createCreateForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new UserType($this->isMyProfile($entity)), $entity, array(
             'action' => $this->generateUrl('user_create'),
             'method' => 'POST',
         ));
@@ -138,7 +138,8 @@ class UserController extends Controller
 
         return array(
             'entity' => $entity,
-            'issues' => $issues
+            'issues' => $issues,
+            'my_profile' => $this->isMyProfile($entity)
         );
     }
 
@@ -155,6 +156,10 @@ class UserController extends Controller
 
         $entity = $em->getRepository('OroUserBundle:User')->find($id);
 
+        if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
@@ -163,7 +168,8 @@ class UserController extends Controller
 
         return array(
             'entity'      => $entity,
-            'form'   => $editForm->createView()
+            'form'   => $editForm->createView(),
+            'my_profile' => $this->isMyProfile($entity)
         );
     }
 
@@ -176,7 +182,7 @@ class UserController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new UserType($this->isMyProfile($entity)), $entity, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
@@ -198,6 +204,10 @@ class UserController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $originalPassword = $entity->getPassword();
@@ -242,5 +252,17 @@ class UserController extends Controller
     {
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
         return $encoder->encodePassword($plainPassword, $user->getSalt());
+    }
+
+    /**
+     * Compare user entity with current user
+     *
+     * @param User $user
+     * @return bool
+     */
+    protected function isMyProfile($user)
+    {
+        $authUser = $this->getUser();
+        return ($user->getUsername() == $authUser->getUsername());
     }
 }

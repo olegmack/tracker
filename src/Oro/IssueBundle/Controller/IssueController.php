@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\IssueBundle\Entity\Issue;
 use Oro\IssueBundle\Form\IssueType;
+use Oro\ProjectBundle\Entity\Project;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Issue controller.
@@ -17,7 +19,6 @@ use Oro\IssueBundle\Form\IssueType;
  */
 class IssueController extends Controller
 {
-
     /**
      * Creates a new Issue entity.
      *
@@ -33,6 +34,10 @@ class IssueController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
+                throw new AccessDeniedException('You don\'t have permissions to this issue');
+            }
 
             $currentUser =  $this->getUser();
             $entity->setReporter($currentUser);
@@ -72,7 +77,8 @@ class IssueController extends Controller
         $form = $this->createForm(
             new IssueType(
                 $this->getDoctrine()->getManager(),
-                $this->get('security.context')
+                $this->get('security.context'),
+                $this->getAvailableProjects()
             ),
             $entity,
             array(
@@ -138,6 +144,10 @@ class IssueController extends Controller
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
+        if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this issue');
+        }
+
         return array(
             'entity'      => $entity,
         );
@@ -160,6 +170,10 @@ class IssueController extends Controller
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
+        if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this issue');
+        }
+
         $editForm = $this->createEditForm($entity);
 
         return array(
@@ -180,7 +194,8 @@ class IssueController extends Controller
         $form = $this->createForm(
             new IssueType(
                 $this->getDoctrine()->getManager(),
-                $this->get('security.context')
+                $this->get('security.context'),
+                $this->getAvailableProjects()
             ),
             $entity,
             array(
@@ -212,6 +227,10 @@ class IssueController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
+        if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
+            throw new AccessDeniedException('You don\'t have access to this issue');
+        }
+
         if ($editForm->isValid()) {
             $em->flush();
 
@@ -239,5 +258,19 @@ class IssueController extends Controller
 
         $project = $this->getDoctrine()->getManager()->getRepository('OroProjectBundle:Project')->find($projectId);
         return $project;
+    }
+
+    /**
+     * Get list of available projects based on user role
+     * @return mixed
+     */
+    protected function getAvailableProjects()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $projects = (false === $this->get('security.context')->isGranted('VIEW_LIST', new Project()))
+            ? $em->getRepository('OroProjectBundle:Project')->findByMember($this->getUser()->getId())
+            : $em->getRepository('OroProjectBundle:Project')->findAll();
+
+        return $projects;
     }
 }

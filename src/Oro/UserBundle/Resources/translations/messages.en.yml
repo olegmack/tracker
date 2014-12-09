@@ -1,0 +1,46 @@
+oro:
+    auth:
+        predefined_title:   Predefined accounts
+        sign_in_title:      Tracker
+        username:           Username
+        password:           Password
+        sign_in:            Sign In
+
+    main:
+        title:              Tracker
+        hi:                 Hi
+        sign_out:           Sign Out
+
+    menu:
+        dashboard:          Dashboard
+        users:              Users
+        projects:           Projects
+
+    dashboard:
+        title:              Dashboard
+        projects_activity:  Projects Activity
+        issues_title:       Opened/Reopened Issues
+        no_issues:          There are no opened issues.
+        no_activities:      There are no activities.
+
+    user:
+        my_profile_title:   My Profile
+        user_title:         User
+        users_title:        Users
+        user_edit:          Edit
+        users_back:         Back to the Users list
+        details_title:      Details
+        email_label:        E-mail
+        role_label:         Role
+        username_label:     Username
+        fullname_label:     Name
+        assigned_issues_title: Assigned Open Issues
+        no_issues:          There are no opened issues.
+        activity_title:     Latest Activity
+        add_button:         + Add User
+        actions_label:      Actions
+        create_title:       Create New User
+        update:             Update
+        cancel:             Cancel
+
+

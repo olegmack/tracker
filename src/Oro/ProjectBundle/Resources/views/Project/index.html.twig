@@ -19,14 +19,19 @@
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.summary|truncate(200, true) }}</td>
                 <td>
-                    <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+                    {% if(is_granted('MODIFY', entity)) %}
+                        <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">Edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    {% if(is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')) %}
     <a class="btn btn-primary" href="{{ path('project_new') }}">
         + Create New Project
     </a>
+    {% endif %}
+
     {% endblock %}

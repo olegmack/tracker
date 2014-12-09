@@ -9,7 +9,7 @@
         </span>
 
         <div class="pull-right date">
-            <span class="field">{{ activity.createdAt|date('F j, Y H:i') }}</span>
+            <span class="field">{{ activity.createdAt|date('F j, Y H:i', app.user.timezone) }}</span>
         </div>
     </div>
 

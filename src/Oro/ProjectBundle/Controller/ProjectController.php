@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\ProjectBundle\Entity\Project;
 use Oro\ProjectBundle\Form\ProjectType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Project controller.
@@ -29,7 +30,9 @@ class ProjectController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('OroProjectBundle:Project')->findAll();
+        $entities = (false === $this->get('security.context')->isGranted('VIEW_LIST', new Project()))
+            ? $em->getRepository('OroProjectBundle:Project')->findByMember($this->getUser()->getId())
+            : $em->getRepository('OroProjectBundle:Project')->findAll();
 
         return array(
             'entities' => $entities,
@@ -45,6 +48,11 @@ class ProjectController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Project();
+
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -92,6 +100,11 @@ class ProjectController extends Controller
     public function newAction()
     {
         $entity = new Project();
+
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -112,6 +125,10 @@ class ProjectController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
+
+        if (false === $this->get('security.context')->isGranted('VIEW', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Project entity.');
@@ -139,6 +156,10 @@ class ProjectController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
+
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Project entity.');
@@ -187,6 +208,10 @@ class ProjectController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
+        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -223,6 +248,10 @@ class ProjectController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Project entity.');
+            }
+
+            if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
+                throw new AccessDeniedException('Unauthorised access!');
             }
 
             $em->remove($entity);
