@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Oro\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\Criteria;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Project
  *
  * @ORM\Table(name="projects")
  * @ORM\Entity(repositoryClass="Oro\ProjectBundle\Entity\ProjectRepository")
+ * @UniqueEntity(fields="code", message="This code is already used")
  */
 class Project
 {

@@ -15,14 +15,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * Issue controller.
  *
- * @Route("/issue")
  */
 class IssueController extends Controller
 {
     /**
      * Creates a new Issue entity.
      *
-     * @Route("/", name="issue_create")
+     * @Route("/create", name="issue_create")
      * @Method("POST")
      * @Template("OroIssueBundle:Issue:new.html.twig")
      */
@@ -130,7 +129,7 @@ class IssueController extends Controller
     /**
      * Finds and displays a Issue entity.
      *
-     * @Route("/{id}", name="issue_show")
+     * @Route("/view/{id}", name="issue_show")
      * @Method("GET")
      * @Template()
      */
@@ -156,7 +155,7 @@ class IssueController extends Controller
     /**
      * Displays a form to edit an existing Issue entity.
      *
-     * @Route("/{id}/edit", name="issue_edit")
+     * @Route("/edit/{id}", name="issue_edit")
      * @Method("GET")
      * @Template()
      */
@@ -210,7 +209,7 @@ class IssueController extends Controller
     /**
      * Edits an existing Issue entity.
      *
-     * @Route("/{id}", name="issue_update")
+     * @Route("/update/{id}", name="issue_update")
      * @Method("POST")
      * @Template("OroIssueBundle:Issue:edit.html.twig")
      */

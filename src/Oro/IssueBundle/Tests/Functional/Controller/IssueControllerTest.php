@@ -14,7 +14,7 @@ class IssueControllerTest extends WebTestCase
     public function testCompleteScenario()
     {
         // Create a new entry in the database
-        $crawler = $this->client->request('GET', '/issue/new');
+        $crawler = $this->client->request('GET', $this->getUrl('issue_new'));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
 
         $this->assertContains(

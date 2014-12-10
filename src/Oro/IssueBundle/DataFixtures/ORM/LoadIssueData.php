@@ -42,7 +42,8 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
         $issue1->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('major'))
             ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('unresolved'))
             ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('open'))
-            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('task'));
+            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('task'))
+            ->setModifiedBy($managerUser);
 
         $manager->persist($issue1);
 
@@ -57,7 +58,8 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
         $issue2->setIssuePriority($manager->getRepository('OroIssueBundle:IssuePriority')->findOneByCode('major'))
             ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('unresolved'))
             ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('open'))
-            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('story'));
+            ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('story'))
+            ->setModifiedBy($managerUser);
 
         $manager->persist($issue2);
 
@@ -79,7 +81,8 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
             ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('unresolved'))
             ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('open'))
             ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('subtask'))
-            ->setParent($issue2);
+            ->setParent($issue2)
+            ->setModifiedBy($managerUser);
 
         $manager->persist($issue3);
 
@@ -100,7 +103,8 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
             ->setIssueResolution($manager->getRepository('OroIssueBundle:IssueResolution')->findOneByCode('done'))
             ->setIssueStatus($manager->getRepository('OroIssueBundle:IssueStatus')->findOneByCode('closed'))
             ->setIssueType($manager->getRepository('OroIssueBundle:IssueType')->findOneByCode('subtask'))
-            ->setParent($issue2);
+            ->setParent($issue2)
+            ->setModifiedBy($managerUser);
 
         $manager->persist($issue4);
 

@@ -13,8 +13,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Project controller.
- *
- * @Route("/project")
  */
 class ProjectController extends Controller
 {
@@ -40,7 +38,7 @@ class ProjectController extends Controller
     /**
      * Creates a new Project entity.
      *
-     * @Route("/", name="project_create")
+     * @Route("/create", name="project_create")
      * @Method("POST")
      * @Template("OroProjectBundle:Project:new.html.twig")
      */
@@ -115,7 +113,7 @@ class ProjectController extends Controller
     /**
      * Finds and displays a Project entity.
      *
-     * @Route("/{id}", name="project_show")
+     * @Route("/view/{id}", name="project_show")
      * @Method("GET")
      * @Template()
      */
@@ -146,7 +144,7 @@ class ProjectController extends Controller
     /**
      * Displays a form to edit an existing Project entity.
      *
-     * @Route("/{id}/edit", name="project_edit")
+     * @Route("/edit/{id}", name="project_edit")
      * @Method("GET")
      * @Template()
      */
@@ -195,7 +193,7 @@ class ProjectController extends Controller
     /**
      * Edits an existing Project entity.
      *
-     * @Route("/{id}", name="project_update")
+     * @Route("/update/{id}", name="project_update")
      * @Method("POST")
      * @Template("OroProjectBundle:Project:edit.html.twig")
      */
@@ -237,7 +235,7 @@ class ProjectController extends Controller
     /**
      * Deletes a Project entity.
      *
-     * @Route("/{id}", name="project_delete")
+     * @Route("/delete/{id}", name="project_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

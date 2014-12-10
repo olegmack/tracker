@@ -21,7 +21,7 @@ services:
         tags:
             - {name: doctrine.event_listener, event: preUpdate}
             - {name: doctrine.event_listener, event: postFlush}
-            - {name: doctrine.event_listener, event: postPersist}
+
 
     oro.security.issue_voter:
         class:      Oro\IssueBundle\Security\IssueVoter

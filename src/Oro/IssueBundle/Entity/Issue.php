@@ -140,6 +140,8 @@ class Issue
      */
     protected $comments;
 
+    protected $modifiedBy;
+
     public function __construct()
     {
         $this->collaborators = new ArrayCollection();
@@ -351,7 +353,7 @@ class Issue
      * @param User $assignee
      * @return Issue
      */
-    public function setAssignee(User $assignee)
+    public function setAssignee($assignee)
     {
         $this->assignee = $assignee;
         return $this;
@@ -369,7 +371,7 @@ class Issue
      * @param User $reporter
      * @return Issue
      */
-    public function setReporter(User $reporter)
+    public function setReporter($reporter)
     {
         $this->reporter = $reporter;
         return $this;
@@ -429,10 +431,13 @@ class Issue
 
     /**
      * @param Issue $parent
+     *
+     * @return Issue $this
      */
     public function setParent($parent)
     {
         $this->parent = $parent;
+        return $this;
     }
 
     /**
@@ -478,5 +483,23 @@ class Issue
     public function setComments($comments)
     {
         $this->comments = $comments;
+    }
+
+    /**
+     * @return User
+     */
+    public function getModifiedBy()
+    {
+        return $this->modifiedBy;
+    }
+
+    /**
+     * @param User $modifiedBy
+     * @return Issue
+     */
+    public function setModifiedBy($modifiedBy)
+    {
+        $this->modifiedBy = $modifiedBy;
+        return $this;
     }
 }

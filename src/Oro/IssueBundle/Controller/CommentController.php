@@ -51,7 +51,7 @@ class CommentController extends Controller
     /**
      * Creates a new Comment entity.
      *
-     * @Route("/{issueId}", name="comment_create")
+     * @Route("/create/{issueId}", name="comment_create")
      * @Method("POST")
      *
      * @param $issueId

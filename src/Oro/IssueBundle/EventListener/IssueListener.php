@@ -2,6 +2,7 @@
 namespace Oro\IssueBundle\EventListener;
 
 use Oro\IssueBundle\Entity\Issue;
+use Oro\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Oro\IssueBundle\Entity\IssueActivity;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -63,6 +64,7 @@ class IssueListener
     /**
      * Create activity
      *
+     * @param User $user
      * @param Issue $issue
      * @param string $type
      * @param string $details
@@ -116,10 +118,15 @@ class IssueListener
 
         /** @var Issue $entity */
         //track activity
-        $activity = $this->createActivity($this->getUser(), $entity, IssueActivity::ACTIVITY_ISSUE);
+        $modifiedBy = $entity->getModifiedBy();
+        if (empty($modifiedBy)) {
+            $modifiedBy = $this->getUser();
+        }
+
+        $activity = $this->createActivity($modifiedBy, $entity, IssueActivity::ACTIVITY_ISSUE);
 
         $em = $args->getEntityManager();
         $em->persist($activity);
-        $em->flush();
+        //$em->flush();
     }
 }

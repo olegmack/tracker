@@ -1,14 +1,12 @@
 oro_issue:
     resource: "@OroIssueBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /issue
 
 oro_project:
-    resource: "@OroProjectBundle/Controller"
-    prefix:   /
-    type:     annotation
+    resource: "@OroProjectBundle/Resources/config/routing.yml"
+    prefix:   /project
 
 oro_user:
-    resource: "@OroUserBundle/Controller"
+    resource: "@OroUserBundle/Resources/config/routing.yml"
     prefix:   /
-    type:     annotation
 

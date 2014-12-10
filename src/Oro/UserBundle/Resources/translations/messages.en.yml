@@ -9,7 +9,7 @@ oro:
     main:
         title:              Tracker
         hi:                 Hi
-        sign_out:           Sign Out
+        sign_out:           Sign out
 
     menu:
         dashboard:          Dashboard

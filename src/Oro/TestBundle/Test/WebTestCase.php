@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 abstract class WebTestCase extends BaseWebTestCase
 {
     /**  Default user name and password */
-    const AUTH_USER         = 'admin';
-    const AUTH_PW           = 'admin123';
+    const AUTH_USER = 'admin';
+    const AUTH_PW = 'admin123';
 
     /**
      * @var Client
@@ -23,8 +23,8 @@ abstract class WebTestCase extends BaseWebTestCase
      * Creates a Client.
      *
      * @param array $options An array of options to pass to the createKernel class
-     * @param array $server  An array of server parameters
-     * @param bool  $force If this option - true, will reset client on each initClient call
+     * @param array $server An array of server parameters
+     * @param bool $force If this option - true, will reset client on each initClient call
      *
      * @return Client A Client instance
      */
@@ -81,10 +81,11 @@ abstract class WebTestCase extends BaseWebTestCase
     public static function generateBasicAuthHeader(
         $userName = self::AUTH_USER,
         $userPassword = self::AUTH_PW
-    ) {
+    )
+    {
         return array(
-            'PHP_AUTH_USER'         => $userName,
-            'PHP_AUTH_PW'           => $userPassword
+            'PHP_AUTH_USER' => $userName,
+            'PHP_AUTH_PW' => $userPassword
         );
     }
 
@@ -105,4 +106,27 @@ abstract class WebTestCase extends BaseWebTestCase
             self::$clientInstance = null;
         }
     }
+
+    /**
+     * Generates a URL or path for a specific route based on the given parameters.
+     *
+     * @param string $name
+     * @param array  $parameters
+     * @param bool   $absolute
+     */
+    protected function getUrl($name, $parameters = array(), $absolute = false)
+    {
+        return self::getContainer()->get('router')->generate($name, $parameters, $absolute);
+    }
+
+    /**
+     * Get an instance of the dependency injection container.
+     *
+     * @return ContainerInterface
+     */
+    protected static function getContainer()
+    {
+        return static::getClientInstance()->getContainer();
+    }
+
 }

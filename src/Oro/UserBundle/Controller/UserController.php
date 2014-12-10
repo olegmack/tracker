@@ -38,7 +38,7 @@ class UserController extends Controller
     /**
      * Creates a new User entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/create", name="user_create")
      * @Method("POST")
      * @Template("OroUserBundle:User:new.html.twig")
      */
@@ -111,7 +111,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/view/{id}", name="user_show")
      * @Method("GET")
      * @Template()
      */
@@ -144,7 +144,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/update/{id}", name="user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -190,7 +190,7 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/update/{id}", name="user_update")
      * @Method("POST")
      * @Template("OroUserBundle:User:edit.html.twig")
      */

@@ -16,7 +16,7 @@ class ProjectControllerTest extends WebTestCase
         $container = self::$kernel->getContainer();
 
         // Create a new entry in the database
-        $crawler = $this->client->request('GET', '/project/');
+        $crawler = $this->client->request('GET', $this->getUrl('project'));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
 
         $this->assertContains(
@@ -102,7 +102,7 @@ class ProjectControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Edit')->link());
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertNotContains(
             $projectName,
