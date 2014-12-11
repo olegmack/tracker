@@ -172,5 +172,4 @@ class CommentController extends Controller
 
         return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getIssue()->getId())));
     }
-
 }

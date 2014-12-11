@@ -5,7 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
-    /**  Default user name and password */
+    /**
+     * Default user name and password
+     */
     const AUTH_USER = 'admin';
     const AUTH_PW = 'admin123';
 
@@ -128,5 +130,4 @@ abstract class WebTestCase extends BaseWebTestCase
     {
         return static::getClientInstance()->getContainer();
     }
-
 }

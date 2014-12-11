@@ -1,16 +1,62 @@
 oro:
     issue:
+        edit_label: Edit
+        edit_title: Edit "name" issue
+        subtask_label: + Create Sub-task
+        details_header: Details
+        subtask_header: Sub-tasks
+        no_subtasks: There are no sub-task issues yet.
+        no_collaborators: There are no collaborators
+        activity_header: Latest Activity
+        new_issue_header: Create New Issue
+        create_issue_button: Create Issue
+        update_button: Update
+        cancel_button: Cancel
+
         messages:
             access_denied:      You don't have permissions to this issue
             issue_created:      Issue has been successfully created
             issue_updated:      Issue has been updated
             issue_not_found:    Unable to find Issue entity.
+
         fields:
             code_label:     Code
             summary_label:  Summary
             reporter_label: Reporter
             assignee_label: Assignee
+            project_label:  Project
+            description_label: Description
+            issue_type_label: Type
+            issue_resolution_label: Resolution
+            issue_status_label: Status
+            issue_priority_label: Priority
+            collaborators_label: Collaborators
+            parent_label: Parent
+            created_label: Created At
+            updated_label: Updated At
+
     comment:
+        add_heading: Add Comment
+        add_button: Add
+        comments_heading: Comments
+        no_comments: There are no comments for this issue
+        edit_hint: Edit
+        delete_hint: Delete
+        edit_title: Edit Comment
+        update_button: Update
+        cancel_button: Cancel
+
+        fields:
+            created_label: Created
+            body_label: Comment
+            author_label: Author
+
         messages:
             not_found: Unable to find Comment entity.
             access_denied: You don't have access to this comment
+
+    activity:
+        no_activities: There are no activities
+        created_action: created issue
+        commented_action: commented on
+        on_action: on

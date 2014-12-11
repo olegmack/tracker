@@ -1,7 +1,13 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.project.edit_title"|trans({'name': entity.name}) }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block content -%}
-    <h1>{{ "oro.project.edit_title"|trans({'name': entity.name})|raw }}</h1>
+    <h1>{{ "oro.project.edit_title"|trans({'name': entity.name}) }}</h1>
 
     <p>
         <a href="{{ path('project') }}">&laquo; {{ "oro.project.projects_back"|trans }}</a>

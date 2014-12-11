@@ -36,5 +36,4 @@ class ActivityController extends Controller
             'activities' => $activities
         );
     }
-
 }

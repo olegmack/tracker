@@ -1,5 +1,11 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.user.edit_title"|trans({'name': entity.name}) }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block content -%}
     <h1>{{ "oro.user.edit_title"|trans({'name': entity.name}) }}</h1>
 

@@ -15,7 +15,11 @@ class IssueControllerTest extends WebTestCase
     {
         // Create a new entry in the database
         $crawler = $this->client->request('GET', $this->getUrl('issue_new'));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for new Issue page"
+        );
 
         $this->assertContains(
             'Create New Issue',
@@ -30,7 +34,9 @@ class IssueControllerTest extends WebTestCase
         ));
 
         $form['oro_issuebundle_issue[project]']->select(
-            $crawler->filter('#oro_issuebundle_issue_project option:contains("Business Application Platform")')->attr('value')
+            $crawler
+                ->filter('#oro_issuebundle_issue_project option:contains("Business Application Platform")')
+                ->attr('value')
         );
 
         $this->client->submit($form);
@@ -103,7 +109,7 @@ class IssueControllerTest extends WebTestCase
     }
 
     /**
-     * Remove user with defined e-mail
+     * Remove test issue
      * @param $summary
      */
     protected function removeTestIssue($summary)

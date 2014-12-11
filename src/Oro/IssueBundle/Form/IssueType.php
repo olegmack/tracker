@@ -11,14 +11,14 @@ use Oro\ProjectBundle\Entity\ProjectRepository;
 class IssueType extends AbstractType
 {
     protected $manager;
-    protected $context;
+    protected $user;
     protected $projects;
 
 
-    public function __construct($manager, $context, $projects)
+    public function __construct($manager, $currentUser, $projects)
     {
         $this->manager = $manager;
-        $this->context = $context;
+        $this->user = $currentUser;
         $this->projects = $projects;
     }
 
@@ -33,6 +33,7 @@ class IssueType extends AbstractType
                 'project',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.project_label',
                     'property_path' => 'project',
                     'class'         => 'OroProjectBundle:Project',
                     'property'      => 'name',
@@ -41,12 +42,19 @@ class IssueType extends AbstractType
                     'attr' => array('class'=>'form-control')
                 )
             )
-            ->add('summary', 'text', array('attr'=>array('class'=>'form-control')))
-            ->add('description', 'textarea', array('attr'=>array('class'=>'form-control')))
+            ->add('summary', 'text', array(
+                'label' => 'oro.issue.fields.summary_label',
+                'attr'=>array('class'=>'form-control'))
+            )
+            ->add('description', 'textarea', array(
+                'label' => 'oro.issue.fields.description_label',
+                'attr'=>array('class'=>'form-control'))
+            )
             ->add(
                 'issueType',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.issue_type_label',
                     'property_path' => 'issueType',
                     'class'         => 'OroIssueBundle:IssueType',
                     'property'      => 'name',
@@ -59,6 +67,7 @@ class IssueType extends AbstractType
                 'issuePriority',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.issue_priority_label',
                     'property_path' => 'issuePriority',
                     'class'         => 'OroIssueBundle:IssuePriority',
                     'property'      => 'name',
@@ -71,6 +80,7 @@ class IssueType extends AbstractType
                 'issueResolution',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.issue_resolution_label',
                     'property_path' => 'issueResolution',
                     'class'         => 'OroIssueBundle:IssueResolution',
                     'property'      => 'name',
@@ -83,6 +93,7 @@ class IssueType extends AbstractType
                 'issueStatus',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.issue_status_label',
                     'property_path' => 'issueStatus',
                     'class'         => 'OroIssueBundle:IssueStatus',
                     'property'      => 'name',
@@ -95,11 +106,12 @@ class IssueType extends AbstractType
                 'assignee',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.assignee_label',
                     'property_path' => 'assignee',
                     'class'         => 'OroUserBundle:User',
                     'property'      => 'name',
                     'multiple'      => false,
-                    'data'          => $this->context->getToken()->getUser(),
+                    'data'          => $this->user,
                     'attr' => array('class'=>'form-control')
                 )
             )
@@ -107,6 +119,7 @@ class IssueType extends AbstractType
                 'collaborators',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.collaborators_label',
                     'property_path' => 'collaborators',
                     'class'         => 'OroUserBundle:User',
                     'property'      => 'name',
@@ -119,6 +132,7 @@ class IssueType extends AbstractType
                 'parent',
                 'entity',
                 array(
+                    'label' => 'oro.issue.fields.parent_label',
                     'property_path' => 'parent',
                     'class'         => 'OroIssueBundle:Issue',
                     'empty_value'   => '--- Please choose a parent Issue ---',

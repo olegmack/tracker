@@ -34,13 +34,15 @@ class LoadProjectData implements FixtureInterface, ContainerAwareInterface
 application platform they’ve been looking for, by combining the tools they need. Built in PHP5 and the
 Symfony2 framework, developing custom business applications has never been so easy.');
 
+        $adminUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
         $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
         $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
         $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
 
         $project
             ->addUser($managerUser)
-            ->addUser($operatorUser);
+            ->addUser($operatorUser)
+            ->addUser($adminUser);
 
         $manager->persist($project);
 
@@ -51,7 +53,8 @@ Symfony2 framework, developing custom business applications has never been so ea
 
         $project2
             ->addUser($managerUser)
-            ->addUser($operatorUser2);
+            ->addUser($operatorUser2)
+            ->addUser($adminUser);
 
         $manager->persist($project2);
 

@@ -1,5 +1,11 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.project.show_title"|trans({'name': entity.name}) }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block content %}
     <h1>{{ "oro.project.show_title"|trans({'name': entity.name}) }}
         <div class="pull-right">

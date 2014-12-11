@@ -1,5 +1,10 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.project.projects_title"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
 {% block content -%}
     <h1>{{ "oro.project.projects_title"|trans }}</h1>
 

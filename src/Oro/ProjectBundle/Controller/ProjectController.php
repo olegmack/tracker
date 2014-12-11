@@ -281,12 +281,14 @@ class ProjectController extends Controller
             ->setAction($this->generateUrl('project_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     /**
      * Store last visited project id in session
+     *
+     * @param Project $project
+     * @return $this
      */
     protected function setLastVisitedProject($project)
     {

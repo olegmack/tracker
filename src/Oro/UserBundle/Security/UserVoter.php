@@ -43,9 +43,11 @@ class UserVoter implements VoterInterface
         }
 
         //check for supported attribute
-        $attribute = $attributes[0];
-        if (!$this->supportsAttribute($attribute)) {
+        if (!isset($attributes[0]) || !$this->supportsAttribute($attributes[0])) {
             return VoterInterface::ACCESS_ABSTAIN;
+        } else {
+            //use only first attribute
+            $attribute = $attributes[0];
         }
 
         //get auth user

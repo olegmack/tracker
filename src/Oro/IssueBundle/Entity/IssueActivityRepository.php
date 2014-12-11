@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * IssueActivityRepository
- *
  */
 class IssueActivityRepository extends EntityRepository
 {

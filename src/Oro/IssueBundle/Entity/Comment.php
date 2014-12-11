@@ -4,6 +4,7 @@ namespace Oro\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comment
@@ -27,6 +28,7 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="body", type="text")
+     * @Assert\NotBlank()
      */
     private $body;
 

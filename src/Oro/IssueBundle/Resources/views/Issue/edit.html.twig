@@ -1,5 +1,11 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ entity.code }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{{ path('project_show', { 'id': entity.project.id }) }}">{{ entity.project.name }}</a></li>
@@ -9,7 +15,7 @@
         <li><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a></li>
     </ol>
 
-    <h1>Edit "{{ entity.summary }}" issue</h1>
+    <h1>{{ "oro.issue.edit_title"|trans({'name': entity.summary})|raw }}</h1>
 
     <form action="{{ path('issue_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
         {{ form_errors(form) }}
@@ -79,8 +85,8 @@
         </div>
         
         <div>
-            <button type="submit" class="btn btn-primary">Update</button>&nbsp;
-            <a href="{{ path('issue_show', { 'id': entity.id }) }}">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ "oro.issue.update_button"|trans }}</button>&nbsp;
+            <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ "oro.issue.cancel_button"|trans }}</a>
         </div>
 
         {{ form_rest(form) }}

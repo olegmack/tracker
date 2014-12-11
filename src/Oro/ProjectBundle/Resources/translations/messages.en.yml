@@ -27,4 +27,5 @@ oro:
             code_label:     Code
             summary_label:  Summary
             name_label:     Name
+            users_label:    Members
 

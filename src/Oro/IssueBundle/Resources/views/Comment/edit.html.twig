@@ -1,5 +1,10 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.comment.edit_title"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{{ path('project_show', { 'id': entity.issue.project.id }) }}">{{ entity.issue.project.name }}</a></li>
@@ -9,18 +14,18 @@
         <li><a href="{{ path('issue_show', { 'id': entity.issue.id }) }}">{{ entity.issue.code }}</a></li>
     </ol>
 
-    <h1>Edit Comment</h1>
+    <h1>{{ "oro.comment.edit_title"|trans }}</h1>
 
     <form action="{{ path('comment_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
         {{ form_errors(form) }}
 
         <div class="form-group">
-            <label>Author</label>
+            <label>{{ "oro.comment.fields.author_label"|trans }}</label>
             <span><a href="{{ path('user_show', { 'id': entity.author.id }) }}">{{ entity.author }}</a></span>
         </div>
 
         <div class="form-group">
-            <label>Created</label>
+            <label>{{ "oro.comment.fields.created_label"|trans }}</label>
             <span>{{ entity.createdAt|date('F j, Y H:i', app.user.timezone) }}</span>
         </div>
 
@@ -32,8 +37,8 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn-primary">Update</button>&nbsp;
-            <a href="{{ path('issue_show', { 'id': entity.issue.id }) }}">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ "oro.comment.update_button"|trans }}</button>&nbsp;
+            <a href="{{ path('issue_show', { 'id': entity.issue.id }) }}">{{ "oro.comment.cancel_button"|trans }}</a>
         </div>
 
         {{ form_rest(form) }}

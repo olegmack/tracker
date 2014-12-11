@@ -8,6 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
+    /**
+     * @var bool
+     */
     protected $isMyProfile;
 
     public function __construct($isMyProfile)
@@ -48,21 +51,20 @@ class UserType extends AbstractType
                 )
             );
 
-            if (!$this->isMyProfile) {
-                $builder->add(
-                    'roles',
-                    'entity',
-                    array(
-                        'property_path' => 'rolesCollection',
-                        'label' => 'oro.user.role_label',
-                        'class' => 'OroUserBundle:Role',
-                        'property' => 'name',
-                        'multiple' => true,
-                        'attr' => array('class' => 'form-control')
-                    )
-                );
-            }
-        ;
+        if (!$this->isMyProfile) {
+            $builder->add(
+                'roles',
+                'entity',
+                array(
+                    'property_path' => 'rolesCollection',
+                    'label' => 'oro.user.role_label',
+                    'class' => 'OroUserBundle:Role',
+                    'property' => 'name',
+                    'multiple' => true,
+                    'attr' => array('class' => 'form-control')
+                )
+            );
+        };
     }
     
     /**

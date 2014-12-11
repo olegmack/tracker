@@ -48,7 +48,11 @@ class IssueListener
             );
 
             /** var Issue $entity */
-            $this->persistObjects[] = $this->createActivity($this->getUser(), $entity, IssueActivity::ACTIVITY_ISSUE_STATUS, $details);
+            $this->persistObjects[] = $this->createActivity(
+                $this->getUser(),
+                $entity,
+                IssueActivity::ACTIVITY_ISSUE_STATUS, $details
+            );
         }
     }
 
@@ -127,6 +131,6 @@ class IssueListener
 
         $em = $args->getEntityManager();
         $em->persist($activity);
-        //$em->flush();
+        $em->flush();
     }
 }

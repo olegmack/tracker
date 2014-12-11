@@ -105,11 +105,21 @@ class User implements UserInterface, \Serializable
      */
     protected $projects;
 
+    /**
+     * The salt to use for hashing
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $salt;
+
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
     }
 
     /**
@@ -242,10 +252,24 @@ class User implements UserInterface, \Serializable
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getSalt()
     {
-        #TODO Add salt to entity
-        return null;
+        return $this->salt;
+    }
+
+    /**
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
     }
 
     /**
@@ -342,6 +366,7 @@ class User implements UserInterface, \Serializable
         return json_encode(
             [
                 $this->password,
+                $this->salt,
                 $this->username,
                 $this->email,
                 $this->id
@@ -358,6 +383,7 @@ class User implements UserInterface, \Serializable
     {
         list(
             $this->password,
+            $this->salt,
             $this->username,
             $this->email,
             $this->id
@@ -389,13 +415,6 @@ class User implements UserInterface, \Serializable
         return null === $this->avatar
             ? null
             : $this->getUploadRootDir().'/'.$this->avatar;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->avatar
-            ? null
-            : $this->getUploadDir().'/'.$this->avatar;
     }
 
     protected function getUploadRootDir()
@@ -487,6 +506,22 @@ class User implements UserInterface, \Serializable
     {
         $this->projects = $projects;
         return $this;
+    }
+
+    /**
+     * Get image path for rendering on page
+     *
+     * @param int $size
+     * @return string
+     */
+    public function getAvatarImagePath($size = 50)
+    {
+        $avatar = $this->getAvatar();
+        $imgSource = (!empty($avatar))
+            ? '/' . $this->getUploadDir() . '/' . $avatar
+            : '/' . $this->getUploadDir() . '/default/default' . $size . '.png';
+
+        return $imgSource;
     }
 
     public function getTimezone()

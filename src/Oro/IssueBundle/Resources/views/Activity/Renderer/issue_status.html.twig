@@ -5,7 +5,7 @@
         </span>
         <span>{{ activity.details }}</span>
         <span class="issue">
-            on <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
+            {{ "oro.activity.on_action"|trans }} <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
         </span>
 
         <div class="pull-right date">

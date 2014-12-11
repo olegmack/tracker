@@ -1,5 +1,10 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.user.users_title"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
 {% block content -%}
     <h1>{{ "oro.user.users_title"|trans }}</h1>
 
@@ -18,13 +23,7 @@
         {% for entity in entities %}
             <tr>
                 <td>
-                    <img class='image-round-50' src="
-                    {% if entity.avatar is not empty %}
-                        {{ '/' ~ entity.getWebPath() }}
-                    {% else %}
-                        {{ '/' ~ entity.getUploadDir() ~ '/default/default50.png' }}
-                    {% endif %}
-                    "/>
+                    <img class='image-round-50' src="{{ entity.getAvatarImagePath(50) }}"/>
                 </td>
                 <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
                 <td>{{ entity.email }}</td>

@@ -1,5 +1,10 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ entity.code }} -
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{{ path('project_show', { 'id': entity.project.id }) }}">{{ entity.project.name }}</a></li>
@@ -10,39 +15,39 @@
     </ol>
     <h1>{{ entity.summary }}
         <div class="pull-right">
-            <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': entity.id }) }}">Edit</a>
+            <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': entity.id }) }}">{{ "oro.issue.edit_label"|trans }}</a>
             {% if (entity.issueType.code == 'story') %}
-            <a class="btn btn-success" role="button" href="{{ path('issue_new', { 'parent': entity.id }) }}">+ Create Sub-task</a>
+            <a class="btn btn-success" role="button" href="{{ path('issue_new', { 'parent': entity.id }) }}">{{ "oro.issue.subtask_label"|trans }}</a>
             {% endif %}
         </div>
     </h1>
 
     <div class="row">
         <div class="panel panel-primary">
-            <div class="panel-heading">Details</div>
+            <div class="panel-heading">{{ "oro.issue.details_header"|trans }}</div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-6">
                         <dl class="dl-horizontal">
-                            <dt>Type</dt>
+                            <dt>{{ "oro.issue.fields.issue_type_label"|trans }}</dt>
                             <dd>{{ entity.issueType.name }}</dd>
-                            <dt>Priority</dt>
+                            <dt>{{ "oro.issue.fields.issue_priority_label"|trans }}</dt>
                             <dd>{{ entity.issuePriority.name }}</dd>
-                            <dt>Status</dt>
+                            <dt>{{ "oro.issue.fields.issue_status_label"|trans }}</dt>
                             <dd>{{ entity.issueStatus.name }}</dd>
-                            <dt>Resolution</dt>
+                            <dt>{{ "oro.issue.fields.issue_resolution_label"|trans }}</dt>
                             <dd>{{ entity.issueResolution.name }}</dd>
                         </dl>
                     </div>
                     <div class="col-sm-5">
                         <dl class="dl-horizontal">
-                            <dt>Created At</dt>
+                            <dt>{{ "oro.issue.fields.created_label"|trans }}</dt>
                             <dd>{{ entity.createdAt|date('F j, Y H:i', app.user.timezone) }}</dd>
-                            <dt>Updated At</dt>
+                            <dt>{{ "oro.issue.fields.updated_label"|trans }}</dt>
                             <dd>{{ entity.updatedAt|date('F j, Y H:i', app.user.timezone) }}</dd>
-                            <dt>Assignee</dt>
+                            <dt>{{ "oro.issue.fields.assignee_label"|trans }}</dt>
                             <dd><a href="{{ path('user_show', { 'id': entity.assignee.id }) }}">{{ entity.assignee.name }}</a></dd>
-                            <dt>Reporter</dt>
+                            <dt>{{ "oro.issue.fields.reporter_label"|trans }}</dt>
                             <dd><a href="{{ path('user_show', { 'id': entity.reporter.id }) }}">{{ entity.reporter.name }}</a></dd>
                         </dl>
                     </div>
@@ -62,7 +67,7 @@
         <div class="col-sm-8">
             {% if (entity.issueType.code == 'story') %}
             <div class="panel panel-info">
-                <div class="panel-heading">Sub-tasks</div>
+                <div class="panel-heading">{{ "oro.issue.subtask_header"|trans }}</div>
                 <div class="panel-body">
                     {% if entity.children|length > 0 %}
                         <table class="table table-striped">
@@ -78,7 +83,7 @@
                             {% endfor %}
                         </table>
                     {% else %}
-                        There are no sub-task issues yet.
+                        {{ "oro.issue.no_subtasks"|trans }}
                     {% endif %}
                 </div>
             </div>
@@ -91,7 +96,7 @@
         </div>
         <div class="col-sm-4">
             <div class="panel panel-info">
-                <div class="panel-heading">Collaborators</div>
+                <div class="panel-heading">{{ "oro.issue.fields.collaborators_label"|trans }}</div>
                 <div class="panel-body">
                     {% if entity.collaborators|length > 0 %}
                         <ul class="list-unstyled">
@@ -100,7 +105,7 @@
                         {% endfor %}
                         </ul>
                     {% else %}
-                        There are no collaborators
+                        {{ "oro.issue.no_collaborators"|trans }}
                     {% endif %}
                 </div>
             </div>
@@ -109,7 +114,7 @@
 
     <div class="row">
         <div class="panel panel-info">
-            <div class="panel-heading">Latest Activity</div>
+            <div class="panel-heading">{{ "oro.issue.activity_header"|trans }}</div>
             <div class="panel-body">
                 {{ render(controller('OroIssueBundle:Activity:list', {'limit': 20, 'issueId' : entity.id})) }}
             </div>

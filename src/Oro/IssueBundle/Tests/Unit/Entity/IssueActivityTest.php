@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\IssueBundle\Tests\Unit;
+namespace Oro\IssueBundle\Tests\Unit\Entity;
 
 use Oro\IssueBundle\Entity\IssueActivity;
 

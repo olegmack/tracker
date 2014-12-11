@@ -76,7 +76,7 @@ class IssueController extends Controller
         $form = $this->createForm(
             new IssueType(
                 $this->getDoctrine()->getManager(),
-                $this->get('security.context'),
+                $this->getUser(),
                 $this->getAvailableProjects()
             ),
             $entity,
@@ -193,7 +193,7 @@ class IssueController extends Controller
         $form = $this->createForm(
             new IssueType(
                 $this->getDoctrine()->getManager(),
-                $this->get('security.context'),
+                $this->getUser(),
                 $this->getAvailableProjects()
             ),
             $entity,

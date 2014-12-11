@@ -1,7 +1,13 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.issue.new_issue_header"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block content %}
-    <h1>Create New Issue</h1>
+    <h1>{{ "oro.issue.new_issue_header"|trans }}</h1>
 
     <form action="{{ path('issue_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
         {{ form_errors(form) }}
@@ -72,7 +78,7 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn-primary">Create Issue</button>
+            <button type="submit" class="btn btn-primary">{{ "oro.issue.create_issue_button"|trans }}</button>
         </div>
 
         {{ form_rest(form) }}

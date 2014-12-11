@@ -39,9 +39,11 @@ class CommentVoter implements VoterInterface
         }
 
         //check for supported attribute
-        $attribute = $attributes[0];
-        if (!$this->supportsAttribute($attribute)) {
+        if (!isset($attributes[0]) || !$this->supportsAttribute($attributes[0])) {
             return VoterInterface::ACCESS_ABSTAIN;
+        } else {
+            //use only first attribute
+            $attribute = $attributes[0];
         }
 
         //get auth user
@@ -54,7 +56,8 @@ class CommentVoter implements VoterInterface
             case self::CREATE:
                 if ($user->getRole('ROLE_ADMIN')
                     || $user->getRole('ROLE_MANAGER')
-                    || ($user->getRole('ROLE_USER') && $object->getIssue()->getProject()->isMember($user->getUsername()))
+                    || ($user->getRole('ROLE_USER')
+                        && $object->getIssue()->getProject()->isMember($user->getUsername()))
                 ) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
@@ -62,7 +65,6 @@ class CommentVoter implements VoterInterface
 
             case self::MODIFY:
                 if ($user->getRole('ROLE_ADMIN')
-                    || $user->getRole('ROLE_MANAGER')
                     || ($user->getRole('ROLE_USER') && $object->getAuthor()->getUsername() == $user->getUsername())
                 ) {
                     return VoterInterface::ACCESS_GRANTED;

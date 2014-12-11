@@ -1,5 +1,4 @@
 parameters:
-#    oro_project.example.class: Oro\ProjectBundle\Example
 
 services:
     oro.security.project_voter:

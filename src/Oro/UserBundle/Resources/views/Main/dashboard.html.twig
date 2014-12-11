@@ -1,5 +1,10 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}
+    {{ "oro.dashboard.title"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
     <h1>{{ "oro.dashboard.title"|trans }}</h1>
 

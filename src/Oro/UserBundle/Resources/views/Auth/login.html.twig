@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="{{ asset('bundles/orouser/css/login.css') }}"/>
 {% endblock %}
 
+{% block title %}
+    {{ "oro.auth.sign_in"|trans }} -
+    {{ parent() }}
+{% endblock %}
+
+
 {% block body %}
     <form id="login_form" action="{{ path('login_check') }}" method="post" role="form" class="form-horizontal">
         <div class="panel panel-info">
@@ -11,13 +17,13 @@
             <div class="panel-body">
                 <dl class="dl-horizontal">
                     <dt>Administrator</dt>
-                    <dd>admin<br/>admin123</dd>
+                    <dd>admin <em>/</em> admin123</dd>
                     <dt>Manager</dt>
-                    <dd>manager<br/>manager123</dd>
+                    <dd>manager <em>/</em> manager123</dd>
                     <dt>Operator</dt>
-                    <dd>operator<br/>operator123</dd>
+                    <dd>operator <em>/</em> operator123</dd>
                     <dt>Operator2</dt>
-                    <dd>operator2<br/>operator123</dd>
+                    <dd>operator2 <em>/</em> operator123</dd>
                 </dl>
             </div>
         </div>
@@ -27,7 +33,7 @@
             <div class=" form-group has-error">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
-                    <label class="control-label" for="inputError1">{{ error.message }}</label>
+                    <label class="control-label" for="inputError1">{{ error.message|trans }}</label>
                 </div>
             </div>
         {% endif %}

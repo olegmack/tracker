@@ -16,7 +16,7 @@ class CommentType extends AbstractType
     {
         $builder->add('body', 'textarea', array(
             'attr' => array('class'=>'form-control'),
-            'label' => 'Comment'
+            'label' => 'oro.comment.fields.body_label',
         ));
     }
 
