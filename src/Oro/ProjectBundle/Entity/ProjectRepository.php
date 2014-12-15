@@ -22,5 +22,4 @@ class ProjectRepository extends EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
-
 }

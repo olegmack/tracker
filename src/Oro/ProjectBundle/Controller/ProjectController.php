@@ -128,7 +128,9 @@ class ProjectController extends Controller
         }
 
         if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.project.messages.project_not_found'));
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('oro.project.messages.project_not_found')
+            );
         }
 
         $this->setLastVisitedProject($entity);

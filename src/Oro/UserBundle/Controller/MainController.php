@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class MainController extends Controller
 {
     /**
@@ -21,7 +20,6 @@ class MainController extends Controller
 
         $issues =  $this->getDoctrine()->getManager()
             ->getRepository('OroIssueBundle:Issue')->findByCollaborator($this->getUser()->getId());
-
 
         return array(
             'activities' => $activities,

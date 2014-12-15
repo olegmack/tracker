@@ -71,16 +71,22 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
      * @param string $objectUsername
      * @dataProvider voteDataProvider
      */
-    public function testVote($expected, $objectClass, array $attributes = [],
-                             $role = 'ROLE_USER', $isMember = false, $currentUsername = '', $objectUsername = '')
-    {
+    public function testVote(
+        $expected,
+        $objectClass,
+        array $attributes = [],
+        $role = 'ROLE_USER',
+        $isMember = false,
+        $currentUsername = '',
+        $objectUsername = ''
+    ) {
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $currentUser = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
         $currentUser->expects($this->any())
             ->method('getRole')
-            ->will($this->returnCallback(function($expectedRole) use ($role) {
+            ->will($this->returnCallback(function ($expectedRole) use ($role) {
                 return $expectedRole == $role;
             }));
 

@@ -25,22 +25,38 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array(
-                'label' => 'oro.user.email_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'email',
+                'email',
+                array(
+                    'label' => 'oro.user.email_label',
+                    'attr'=>array('class'=>'form-control')
+                )
             )
-            ->add('username', 'text', array(
-                'label' => 'oro.user.username_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'username',
+                'text',
+                array(
+                    'label' => 'oro.user.username_label',
+                    'attr'=>array('class'=>'form-control')
+                )
             )
-            ->add('fullname', 'text', array(
-                'label' => 'oro.user.fullname_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'fullname',
+                'text',
+                array(
+                    'label' => 'oro.user.fullname_label',
+                    'attr'=>array('class'=>'form-control')
+                )
             )
-            ->add('file', 'file', array(
+            ->add(
+                'file',
+                'file',
+                array(
                 'label' => 'oro.user.avatar_label',
                 'required' => false
-            ))
+                )
+            )
             ->add(
                 'plainPassword',
                 'password',

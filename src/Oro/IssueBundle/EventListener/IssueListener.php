@@ -51,7 +51,8 @@ class IssueListener
             $this->persistObjects[] = $this->createActivity(
                 $this->getUser(),
                 $entity,
-                IssueActivity::ACTIVITY_ISSUE_STATUS, $details
+                IssueActivity::ACTIVITY_ISSUE_STATUS,
+                $details
             );
         }
     }
@@ -99,7 +100,7 @@ class IssueListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if(!empty($this->persistObjects)) {
+        if (!empty($this->persistObjects)) {
             $em = $args->getEntityManager();
             foreach ($this->persistObjects as $object) {
                 $em->persist($object);

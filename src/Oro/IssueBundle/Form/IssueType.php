@@ -42,13 +42,21 @@ class IssueType extends AbstractType
                     'attr' => array('class'=>'form-control')
                 )
             )
-            ->add('summary', 'text', array(
-                'label' => 'oro.issue.fields.summary_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'summary',
+                'text',
+                array(
+                    'label' => 'oro.issue.fields.summary_label',
+                    'attr' => array('class'=>'form-control')
+                )
             )
-            ->add('description', 'textarea', array(
-                'label' => 'oro.issue.fields.description_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'description',
+                'textarea',
+                array(
+                    'label' => 'oro.issue.fields.description_label',
+                    'attr'=>array('class'=>'form-control')
+                )
             )
             ->add(
                 'issueType',
@@ -116,19 +124,6 @@ class IssueType extends AbstractType
                 )
             )
             ->add(
-                'collaborators',
-                'entity',
-                array(
-                    'label' => 'oro.issue.fields.collaborators_label',
-                    'property_path' => 'collaborators',
-                    'class'         => 'OroUserBundle:User',
-                    'property'      => 'name',
-                    'required'      => false,
-                    'multiple'      => true,
-                    'attr' => array('class'=>'form-control')
-                )
-            )
-            ->add(
                 'parent',
                 'entity',
                 array(
@@ -137,7 +132,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:Issue',
                     'empty_value'   => '--- Please choose a parent Issue ---',
                     'required'      => false,
-                    'query_builder' => function(IssueRepository $er) {
+                    'query_builder' => function (IssueRepository $er) {
                         return $er->createQueryBuilder('i')
                             ->join('i.issueType', 't')
                             ->where("t.code = 'story'")
@@ -148,7 +143,6 @@ class IssueType extends AbstractType
                 )
             )
             ->remove('reporter');
-        ;
     }
     
     /**

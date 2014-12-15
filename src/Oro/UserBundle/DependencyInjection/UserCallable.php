@@ -1,6 +1,7 @@
 <?php
 
 namespace Oro\UserBundle\DependencyInjection;
+
 use Symfony\Component\DependencyInjection\Container;
 
 class UserCallable

@@ -1,6 +1,7 @@
 <?php
 
 namespace Oro\TestBundle\Test;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 abstract class WebTestCase extends BaseWebTestCase
@@ -83,8 +84,7 @@ abstract class WebTestCase extends BaseWebTestCase
     public static function generateBasicAuthHeader(
         $userName = self::AUTH_USER,
         $userPassword = self::AUTH_PW
-    )
-    {
+    ) {
         return array(
             'PHP_AUTH_USER' => $userName,
             'PHP_AUTH_PW' => $userPassword

@@ -15,19 +15,31 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
-                'label' => 'oro.project.fields.name_label',
-                'attr' => array('class'=>'form-control'))
+            ->add(
+                'name',
+                'text',
+                array(
+                    'label' => 'oro.project.fields.name_label',
+                    'attr' => array('class'=>'form-control')
+                )
             )
-            ->add('code', 'text', array(
-                'label' => 'oro.project.fields.code_label',
-                'attr'=>array('class'=>'form-control'))
+            ->add(
+                'code',
+                'text',
+                array(
+                    'label' => 'oro.project.fields.code_label',
+                    'attr'=>array('class'=>'form-control')
+                )
             )
-            ->add('summary', 'textarea', array(
-                'label' => 'oro.project.fields.summary_label',
-                'attr'=>array('class'=>'form-control'),
-                'required' => false
-            ))
+            ->add(
+                'summary',
+                'textarea',
+                array(
+                    'label' => 'oro.project.fields.summary_label',
+                    'attr'=>array('class'=>'form-control'),
+                    'required' => false
+                )
+            )
             ->add(
                 'users',
                 'entity',

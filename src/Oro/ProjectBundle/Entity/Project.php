@@ -228,7 +228,7 @@ class Project
      */
     public function isMember($username)
     {
-        $members = $this->getUsers()->exists(function($k, $e) use ($username) {
+        $members = $this->getUsers()->exists(function ($k, $e) use ($username) {
             return $e->getUsername() == $username;
         });
 

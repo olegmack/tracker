@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-
 class AuthController extends Controller
 {
     /**
@@ -58,14 +57,15 @@ class AuthController extends Controller
      * @Route("/login_check", name="login_check")
      */
     public function loginCheckAction()
-    {}
+    {
+
+    }
 
     /**
      * @Route("/logout", name="logout")
      */
     public function logoutAction()
-    {}
+    {
 
+    }
 }
-
-

@@ -72,15 +72,9 @@ class ProjectControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains(
-            $projectName,
-            $this->client->getResponse()->getContent()
-        );
+        $this->assertContains($projectName, $this->client->getResponse()->getContent());
 
-        $this->assertContains(
-            'Test Project Description - Changed',
-            $this->client->getResponse()->getContent()
-        );
+        $this->assertContains('Test Project Description - Changed', $this->client->getResponse()->getContent());
 
         //check in projects list
         $crawler = $this->client->click($crawler->selectLink(
@@ -92,10 +86,7 @@ class ProjectControllerTest extends WebTestCase
             $this->client->getResponse()->getContent()
         );
 
-        $this->assertContains(
-            $projectName,
-            $this->client->getResponse()->getContent()
-        );
+        $this->assertContains($projectName, $this->client->getResponse()->getContent());
 
         //delete
         $crawler = $this->client->click($crawler->selectLink('TEST-CHG')->link());
@@ -104,14 +95,7 @@ class ProjectControllerTest extends WebTestCase
         $this->client->submit($form);
         $this->client->followRedirect();
 
-        $this->assertNotContains(
-            $projectName,
-            $this->client->getResponse()->getContent()
-        );
-
-        $this->assertNotContains(
-            'TEST-CHG',
-            $this->client->getResponse()->getContent()
-        );
+        $this->assertNotContains($projectName, $this->client->getResponse()->getContent());
+        $this->assertNotContains('TEST-CHG', $this->client->getResponse()->getContent());
     }
 }

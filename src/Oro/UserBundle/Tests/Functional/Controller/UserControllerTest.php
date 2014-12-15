@@ -16,7 +16,11 @@ class UserControllerTest extends WebTestCase
     {
         // Create a new entry in the database
         $crawler = $this->client->request('GET', $this->getUrl('user'));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /user/"
+        );
 
         $this->assertContains(
             "Users",

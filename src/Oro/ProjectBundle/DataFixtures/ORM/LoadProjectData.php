@@ -1,5 +1,6 @@
 <?php
 namespace Oro\UserBundle\DataFixtures\ORM;
+
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -30,7 +31,8 @@ class LoadProjectData implements FixtureInterface, ContainerAwareInterface
         $project = new Project();
         $project->setName('Business Application Platform')
             ->setCode('BAP')
-            ->setSummary('The Oro Platform is an Open source Business Application Platform (BAP). It offers developers the exact business
+            ->setSummary('The Oro Platform is an Open source Business Application Platform (BAP).
+It offers developers the exact business
 application platform they’ve been looking for, by combining the tools they need. Built in PHP5 and the
 Symfony2 framework, developing custom business applications has never been so easy.');
 
@@ -49,7 +51,8 @@ Symfony2 framework, developing custom business applications has never been so ea
         $project2 = new Project();
         $project2->setName('OroCRM')
             ->setCode('CRM')
-            ->setSummary('OroCRM is an easy-to-use, open source CRM with built in marketing automation tools for your commerce business. It’s the CRM built for both sales and marketing!');
+            ->setSummary('OroCRM is an easy-to-use, open source CRM with built in marketing automation tools for your
+            commerce business. It’s the CRM built for both sales and marketing!');
 
         $project2
             ->addUser($managerUser)

@@ -1,5 +1,6 @@
 <?php
 namespace Oro\UserBundle\DataFixtures\ORM;
+
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -62,7 +63,7 @@ class LoadCommentData extends AbstractFixture implements FixtureInterface, Depen
         $comment5 = new Comment();
         $comment5
             ->setAuthor($operatorUser2)
-            ->setBody('All issues were resolved, changes are merged to the master branch and deployed, please test them')
+            ->setBody('All issues were resolved, changes are merged to the master branch and deployed.')
             ->setIssue($this->getReference('issue4'));
 
         $manager->persist($comment5);

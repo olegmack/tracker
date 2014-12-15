@@ -37,5 +37,4 @@ class CommentType extends AbstractType
     {
         return 'oro_issuebundle_comment';
     }
-
 }

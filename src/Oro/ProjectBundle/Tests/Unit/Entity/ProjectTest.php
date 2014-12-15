@@ -21,7 +21,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function getSetDataProvider()
     {
         $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $issue = $this->getMock('Oro\Bundle\IssueBundle\Entity\Issue');
 
         return array(
             'code'    => array('code', 'TST', 'TST'),

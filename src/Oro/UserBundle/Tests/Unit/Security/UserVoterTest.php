@@ -63,7 +63,6 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-
     /**
      * @param int $expected
      * @param string $objectClass
@@ -73,9 +72,14 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
      * @param string $objectUsername
      * @dataProvider voteDataProvider
      */
-    public function testVote($expected, $objectClass, array $attributes = [],
-         $role = 'ROLE_USER', $currentUsername = '', $objectUsername = '')
-    {
+    public function testVote(
+        $expected,
+        $objectClass,
+        array $attributes = [],
+        $role = 'ROLE_USER',
+        $currentUsername = '',
+        $objectUsername = ''
+    ) {
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $currentUser = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
@@ -84,7 +88,7 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
             ->method('getRole')
             ->will($this->returnCallback(function($expectedRole) use ($role) {
                 return $expectedRole == $role;
-        }));
+            }));
 
         $currentUser->expects($this->any())
             ->method('getUsername')
