@@ -44,7 +44,6 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
     public function testBuildForm()
     {
         $expectedFields = array(
-            'project' => 'entity',
             'summary' => 'text',
             'description' => 'textarea',
             'issueType' => 'entity',
@@ -52,7 +51,6 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
             'issueResolution' => 'entity',
             'issueStatus' => 'entity',
             'assignee' => 'entity',
-            'collaborators' => 'entity',
             'parent' => 'entity'
         );
 
@@ -69,6 +67,26 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
             $counter++;
         }
 
-        $this->type->buildForm($builder, array());
+        $issue = $this->getMockBuilder('Oro\IssueBundle\Entity\Issue')
+            ->disableOriginalConstructor()->getMock();
+
+        $issue->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('1'));
+
+        $project = $this->getMockBuilder('Oro\ProjectBundle\Entity\project')
+            ->disableOriginalConstructor()->getMock();
+
+        $project->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('1'));
+
+        $issue->expects($this->any())
+            ->method('getProject')
+            ->will($this->returnValue($project));
+
+        $options['data'] = $issue;
+
+        $this->type->buildForm($builder, $options);
     }
 }

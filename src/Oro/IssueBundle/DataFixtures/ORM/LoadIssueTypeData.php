@@ -23,10 +23,13 @@ class LoadIssueTypeData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $priority = 10;
         foreach ($this->data as $code => $name) {
-            $issuePriority = new IssueType($code);
-            $issuePriority->setName($name);
-            $manager->persist($issuePriority);
+            $issueType = new IssueType($code);
+            $issueType->setName($name);
+            $issueType->setPriority($priority);
+            $priority += 10;
+            $manager->persist($issueType);
         }
 
         $manager->flush();

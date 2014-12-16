@@ -39,8 +39,7 @@ class UserController extends Controller
      * Creates a new User entity.
      *
      * @Route("/create", name="user_create")
-     * @Method("POST")
-     * @Template("OroUserBundle:User:new.html.twig")
+     * @Template()
      */
     public function createAction(Request $request)
     {
@@ -82,30 +81,12 @@ class UserController extends Controller
      */
     private function createCreateForm(User $entity)
     {
-        $form = $this->createForm(new UserType($this->isMyProfile($entity)), $entity, array(
+        $form = $this->createForm('oro_userbundle_user', $entity, array(
             'action' => $this->generateUrl('user_create'),
             'method' => 'POST',
         ));
 
         return $form;
-    }
-
-    /**
-     * Displays a form to create a new User entity.
-     *
-     * @Route("/new", name="user_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new User();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
     }
 
     /**
@@ -142,45 +123,15 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing User entity.
-     *
-     * @Route("/update/{id}", name="user_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroUserBundle:User')->find($id);
-
-        if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
-            throw new AccessDeniedException($this->get('translator')->trans('oro.user.messages.access_denied'));
-        }
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
-        }
-
-        $editForm = $this->createEditForm($entity);
-
-        return array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-            'my_profile' => $this->isMyProfile($entity)
-        );
-    }
-
-    /**
     * Creates a form to edit a User entity.
     *
     * @param User $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createUpdateForm(User $entity)
     {
-        $form = $this->createForm(new UserType($this->isMyProfile($entity)), $entity, array(
+        $form = $this->createForm('oro_userbundle_user', $entity, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
@@ -191,8 +142,7 @@ class UserController extends Controller
      * Edits an existing User entity.
      *
      * @Route("/update/{id}", name="user_update")
-     * @Method("POST")
-     * @Template("OroUserBundle:User:edit.html.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -210,7 +160,7 @@ class UserController extends Controller
 
         $originalPassword = $entity->getPassword();
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createUpdateForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -235,7 +185,8 @@ class UserController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $editForm->createView()
+            'form'   => $editForm->createView(),
+            'my_profile' => $this->isMyProfile($entity)
         );
     }
 

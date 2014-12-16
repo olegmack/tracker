@@ -49,6 +49,7 @@
         </div>
 
         {{ form_rest(form) }}
+
         <div>
             <button type="submit" class="btn btn-primary">{{ "oro.user.update"|trans }}</button>
             <a href="{{ path('user_show', { 'id': entity.id }) }}">{{ "oro.user.cancel"|trans }}</a>

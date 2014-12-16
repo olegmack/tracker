@@ -9,16 +9,8 @@
 {% block content %}
     <h1>{{ "oro.issue.new_issue_header"|trans }}</h1>
 
-    <form action="{{ path('issue_create') }}" method="post" {{ form_enctype(form) }} role="form" class="form">
+    <form action="{{ path('issue_create', {'project': entity.project.id}) }}" method="post" {{ form_enctype(form) }} role="form" class="form">
         {{ form_errors(form) }}
-
-        <div class="form-group">
-            {{ form_label(form.project) }}
-            {{ form_errors(form.project) }}
-            {{ form_widget(form.project) }}
-        </div>
-
-        <hr/>
 
         <div class="form-group">
             {{ form_label(form.summary) }}
@@ -70,11 +62,6 @@
             {{ form_label(form.assignee) }}
             {{ form_errors(form.assignee) }}
             {{ form_widget(form.assignee) }}
-        </div>
-        <div class="form-group">
-            {{ form_label(form.collaborators) }}
-            {{ form_errors(form.collaborators) }}
-            {{ form_widget(form.collaborators) }}
         </div>
 
         <div>

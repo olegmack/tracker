@@ -38,4 +38,9 @@ php app/console doctrine:schema:create
 php app/console doctrine:fixtures:load
 ```
 
+- Load Tests
+```bash
+phpunit -c app/ src/Oro/
+```
+
 [1]:  http://getcomposer.org/

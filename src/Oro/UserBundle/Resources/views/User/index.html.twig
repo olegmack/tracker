@@ -34,14 +34,14 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">{{ "oro.user.user_edit"|trans }}</a>
+                    <a class="btn btn-primary" role="button" href="{{ path('user_update', { 'id': entity.id }) }}">{{ "oro.user.user_edit"|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('user_new') }}">
+    <a class="btn btn-primary" href="{{ path('user_create') }}">
         {{ "oro.user.add_button"|trans }}
     </a>
 

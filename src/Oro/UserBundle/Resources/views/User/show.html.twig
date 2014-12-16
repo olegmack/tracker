@@ -10,7 +10,7 @@
         {% if(my_profile) %}{{ "oro.user.my_profile_title"|trans }}{% else %}{{ "oro.user.user_title"|trans }}{% endif %}
         {% if(is_granted('EDIT', entity)) %}
         <div class="pull-right">
-            <a class="btn btn-primary" role="button" href="{{ path('user_edit', { 'id': entity.id }) }}">
+            <a class="btn btn-primary" role="button" href="{{ path('user_update', { 'id': entity.id }) }}">
                 {{ "oro.user.user_edit"|trans }}
             </a>
         </div>

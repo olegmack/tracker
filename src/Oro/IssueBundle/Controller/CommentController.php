@@ -19,40 +19,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class CommentController extends Controller
 {
     /**
-     * Add comment
-     *
-     * @Template("OroIssueBundle:Comment:new.html.twig")
-     *
-     * @param $issueId
-     * @return array
-     */
-    public function newAction($issueId)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $issue = $em->getRepository('OroIssueBundle:Issue')->find($issueId);
-        if (!$issue) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
-        }
-
-        $comment = new Comment();
-        $comment->setIssue($issue);
-
-        if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
-            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
-        }
-
-        $form = $this->createForm(new CommentType(), $comment);
-        return array(
-            'form' => $form->createView(),
-            'issue_id' => $issueId
-        );
-    }
-
-    /**
      * Creates a new Comment entity.
      *
      * @Route("/create/{issueId}", name="comment_create")
-     * @Method("POST")
+     * @Template("OroIssueBundle:Comment:create.html.twig")
      *
      * @param $issueId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -67,7 +37,7 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->setIssue($issue);
 
-        $form = $this->createForm(new CommentType(), $comment);
+        $form = $this->createForm('oro_issuebundle_comment', $comment);
         $form->handleRequest($this->getRequest());
 
         if (false === $this->get('security.context')->isGranted('CREATE', $comment)) {
@@ -79,37 +49,13 @@ class CommentController extends Controller
 
             $em->persist($comment);
             $em->flush();
+
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
         }
-
-        return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
-    }
-
-    /**
-     * Displays a form to edit an existing comment entity.
-     *
-     * @Route("/edit/{id}", name="comment_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
-        }
-
-        $editForm = $this->createForm(new CommentType(), $entity);
 
         return array(
-            'entity' => $entity,
-            'form'   => $editForm->createView(),
+            'form' => $form->createView(),
+            'issue_id' => $issueId
         );
     }
 
@@ -117,8 +63,7 @@ class CommentController extends Controller
      * Edits an existing comment entity.
      *
      * @Route("/update/{id}", name="comment_update")
-     * @Method("POST")
-     * @Template("OroIssueBundle:Comment:edit.html.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -134,7 +79,7 @@ class CommentController extends Controller
             throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
-        $editForm = $this->createForm(new CommentType(), $entity);
+        $editForm = $this->createForm('oro_issuebundle_comment', $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {

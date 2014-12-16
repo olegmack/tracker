@@ -10,9 +10,9 @@
     <h1>{{ "oro.project.show_title"|trans({'name': entity.name}) }}
         <div class="pull-right">
             {% if(is_granted('MODIFY', entity)) %}
-            <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
+            <a class="btn btn-primary" role="button" href="{{ path('project_update', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
             {% endif %}
-            <a class="btn btn-success" role="button" href="{{ path('issue_new') }}">{{ "oro.project.create_issue_label"|trans }}</a>
+            <a class="btn btn-success" role="button" href="{{ path('issue_create', {'project' : entity.id}) }}">{{ "oro.project.create_issue_label"|trans }}</a>
         </div>
     </h1>
 
@@ -53,7 +53,7 @@
                                     <td>{{ issue.reporter }}</td>
                                     <td>{{ issue.assignee }}</td>
                                     <td>
-                                        <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': issue.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
+                                        <a class="btn btn-primary" role="button" href="{{ path('issue_update', { 'id': issue.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
                                     </td>
                                 </tr>
                             {% endfor %}

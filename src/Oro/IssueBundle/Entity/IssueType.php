@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueType
 {
+    const TYPE_STORY   = 'story';
+    const TYPE_SUBTASK = 'subtask';
+
     /**
      * @var string
      *
@@ -26,6 +29,13 @@ class IssueType
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private $priority;
 
     /**
      * @param string $code
@@ -74,5 +84,20 @@ class IssueType
     public function __toString()
     {
         return (string) $this->name;
+    }
+    /**
+     * @return integer
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param integer $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
     }
 }

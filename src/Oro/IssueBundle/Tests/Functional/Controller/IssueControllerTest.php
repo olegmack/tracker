@@ -11,10 +11,18 @@ class IssueControllerTest extends WebTestCase
         $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
+    protected function getProject()
+    {
+
+    }
+
     public function testCompleteScenario()
     {
-        // Create a new entry in the database
-        $crawler = $this->client->request('GET', $this->getUrl('issue_new'));
+        //open project list
+        $crawler = $this->client->request('GET', $this->getUrl('project'));
+        $crawler = $this->client->click($crawler->selectLink('BAP')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Create Issue')->link());
+
         $this->assertEquals(
             200,
             $this->client->getResponse()->getStatusCode(),
@@ -32,12 +40,6 @@ class IssueControllerTest extends WebTestCase
             'oro_issuebundle_issue[summary]'     => 'Test Issue',
             'oro_issuebundle_issue[description]' => 'Description for Test Issue',
         ));
-
-        $form['oro_issuebundle_issue[project]']->select(
-            $crawler
-                ->filter('#oro_issuebundle_issue_project option:contains("Business Application Platform")')
-                ->attr('value')
-        );
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

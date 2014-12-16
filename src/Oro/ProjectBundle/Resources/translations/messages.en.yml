@@ -20,6 +20,7 @@ oro:
         messages:
             access_denied:  Unauthorised access!
             project_added:  Project has been successfully created
+            project_updated:  Project has been successfully updated
             project_not_found: Unable to find Project entity.
             project_deleted: Project is deleted
 

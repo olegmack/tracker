@@ -18,6 +18,10 @@ oro:
             issue_created:      Issue has been successfully created
             issue_updated:      Issue has been updated
             issue_not_found:    Unable to find Issue entity.
+            project_not_found:  Unable to find Project entity.
+            incorrect_parent:   Only "Story" issues can have a Sub-tasks
+            mismatched_issues_projects: Task and Sub-task issues should be assigend to the same Project
+            parent_empty: Parent Issue should be defined for Sub-task issues
 
         fields:
             code_label:     Code

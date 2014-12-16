@@ -39,8 +39,7 @@ class ProjectController extends Controller
      * Creates a new Project entity.
      *
      * @Route("/create", name="project_create")
-     * @Method("POST")
-     * @Template("OroProjectBundle:Project:new.html.twig")
+     * @Template()
      */
     public function createAction(Request $request)
     {
@@ -79,35 +78,12 @@ class ProjectController extends Controller
      */
     private function createCreateForm(Project $entity)
     {
-        $form = $this->createForm(new ProjectType(), $entity, array(
+        $form = $this->createForm('oro_projectbundle_project', $entity, array(
             'action' => $this->generateUrl('project_create'),
             'method' => 'POST',
         ));
 
         return $form;
-    }
-
-    /**
-     * Displays a form to create a new Project entity.
-     *
-     * @Route("/new", name="project_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Project();
-
-        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
-        }
-
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
     }
 
     /**
@@ -144,39 +120,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Project entity.
-     *
-     * @Route("/edit/{id}", name="project_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
-
-        if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
-            throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
-        }
-
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                $this->get('translator')->trans('oro.project.messages.project_not_found')
-            );
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
     * Creates a form to edit a Project entity.
     *
     * @param Project $entity The entity
@@ -185,7 +128,7 @@ class ProjectController extends Controller
     */
     private function createEditForm(Project $entity)
     {
-        $form = $this->createForm(new ProjectType(), $entity, array(
+        $form = $this->createForm('oro_projectbundle_project', $entity, array(
             'action' => $this->generateUrl('project_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
@@ -196,8 +139,7 @@ class ProjectController extends Controller
      * Edits an existing Project entity.
      *
      * @Route("/update/{id}", name="project_update")
-     * @Method("POST")
-     * @Template("OroProjectBundle:Project:edit.html.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -223,7 +165,7 @@ class ProjectController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashbag()
-                ->add('success', 'Project information is updated');
+                ->add('success', $this->get('translator')->trans('oro.project.messages.project_updated'));
 
             return $this->redirect($this->generateUrl('project_show', array('id' => $id)));
         }

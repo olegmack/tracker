@@ -24,10 +24,13 @@ class LoadIssueStatusData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $priority = 10;
         foreach ($this->data as $code => $name) {
-            $issuePriority = new IssueStatus($code);
-            $issuePriority->setName($name);
-            $manager->persist($issuePriority);
+            $issueStatus = new IssueStatus($code);
+            $issueStatus->setName($name);
+            $issueStatus->setPriority($priority);
+            $priority += 10;
+            $manager->persist($issueStatus);
         }
 
         $manager->flush();

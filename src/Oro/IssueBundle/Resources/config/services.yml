@@ -2,20 +2,28 @@ parameters:
     oro.sender_email: tracker@oro.crm
     oro.sender_name: Tracker System
 
+    oro_issue.event_listener.comment_listener.class: Oro\IssueBundle\EventListener\CommentListener
+    oro_issue.event_listener.activity_listener.class: Oro\IssueBundle\EventListener\ActivityListener
+    oro_issue.event_listener.issue_listener.class: Oro\IssueBundle\EventListener\IssueListener
+    oro_issue.security.issue_voter: Oro\IssueBundle\Security\IssueVoter
+    oro_issue.security.comment_voter: Oro\IssueBundle\Security\CommentVoter
+    oro_issue.form.issue.type.class: Oro\IssueBundle\Form\IssueType
+    oro_issue.form.comment.type.class: Oro\IssueBundle\Form\CommentType
+
 services:
     comment.listener:
-        class: Oro\IssueBundle\EventListener\CommentListener
+        class: "%oro_issue.event_listener.comment_listener.class%"
         tags:
             - {name: doctrine.event_listener, event: postPersist}
 
     activity.listener:
-        class: Oro\IssueBundle\EventListener\ActivityListener
+        class: "%oro_issue.event_listener.activity_listener.class%"
         arguments: [@service_container]
         tags:
             - {name: doctrine.event_listener, event: postPersist}
 
     issue.listener:
-        class: Oro\IssueBundle\EventListener\IssueListener
+        class: "%oro_issue.event_listener.issue_listener.class%"
         arguments:
             - @oro.user.user_callable
         tags:
@@ -24,13 +32,23 @@ services:
             - {name: doctrine.event_listener, event: postPersist}
 
     oro.security.issue_voter:
-        class:      Oro\IssueBundle\Security\IssueVoter
+        class:      "%oro_issue.security.issue_voter%"
         public:     false
         tags:
             - { name: security.voter }
 
     oro.security.comment_voter:
-        class:      Oro\IssueBundle\Security\CommentVoter
+        class:      "%oro_issue.security.comment_voter%"
         public:     false
         tags:
             - { name: security.voter }
+
+    oro_issue.form.issue.type:
+        class: "%oro_issue.form.issue.type.class%"
+        tags:
+            - {name: form.type, alias: oro_issuebundle_issue}
+
+    oro_issue.form.comment.type:
+        class: "%oro_issue.form.comment.type.class%"
+        tags:
+            - {name: form.type, alias: oro_issuebundle_comment}

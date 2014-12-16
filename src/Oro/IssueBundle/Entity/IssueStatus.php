@@ -27,6 +27,12 @@ class IssueStatus
      */
     private $name;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private $priority;
 
     /**
      * @param string $code
@@ -75,5 +81,21 @@ class IssueStatus
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
     }
 }

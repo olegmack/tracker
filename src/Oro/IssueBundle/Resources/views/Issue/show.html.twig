@@ -15,9 +15,9 @@
     </ol>
     <h1>{{ entity.summary }}
         <div class="pull-right">
-            <a class="btn btn-primary" role="button" href="{{ path('issue_edit', { 'id': entity.id }) }}">{{ "oro.issue.edit_label"|trans }}</a>
+            <a class="btn btn-primary" role="button" href="{{ path('issue_update', { 'id': entity.id }) }}">{{ "oro.issue.edit_label"|trans }}</a>
             {% if (entity.issueType.code == 'story') %}
-            <a class="btn btn-success" role="button" href="{{ path('issue_new', { 'parent': entity.id }) }}">{{ "oro.issue.subtask_label"|trans }}</a>
+            <a class="btn btn-success" role="button" href="{{ path('issue_create', { 'project': entity.project.id, 'parent': entity.id }) }}">{{ "oro.issue.subtask_label"|trans }}</a>
             {% endif %}
         </div>
     </h1>
@@ -91,7 +91,7 @@
 
             {% include 'OroIssueBundle:Comment:list.html.twig' with { 'comments': entity.comments } %}
 
-            {{ render(controller('OroIssueBundle:Comment:new',{'issueId' : entity.id})) }}
+            {{ render(controller('OroIssueBundle:Comment:create',{'issueId' : entity.id})) }}
 
         </div>
         <div class="col-sm-4">

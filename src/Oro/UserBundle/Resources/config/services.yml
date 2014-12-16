@@ -1,15 +1,23 @@
 parameters:
     oro.timezone: Europe/Kiev
-    oro.user.user_callable.class: Oro\UserBundle\DependencyInjection\UserCallable
+    oro_user.user_callable.class: Oro\UserBundle\DependencyInjection\UserCallable
+    oro_user.security.user_voter.class: Oro\UserBundle\Security\UserVoter
+    oro_user.form.user.type.class: Oro\UserBundle\Form\UserType
 
 services:
     oro.user.user_callable:
-        class: "%oro.user.user_callable.class%"
+        class: "%oro_user.user_callable.class%"
         arguments:
             - @service_container
 
     oro.security.user_voter:
-        class:      Oro\UserBundle\Security\UserVoter
-        public:     false
+        class:  "%oro_user.security.user_voter.class%"
+        public: false
         tags:
             - { name: security.voter }
+
+    oro_user.form.user.type:
+        class: "%oro_user.form.user.type.class%"
+        arguments: ["@security.context"]
+        tags:
+            - {name: form.type, alias: oro_userbundle_user}

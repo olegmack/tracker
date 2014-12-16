@@ -5,17 +5,17 @@ namespace Oro\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\UserBundle\Entity\User;
 
 class UserType extends AbstractType
 {
-    /**
-     * @var bool
-     */
-    protected $isMyProfile;
+    /** @var SecurityContextInterface */
+    protected $security;
 
-    public function __construct($isMyProfile)
+    public function __construct(SecurityContextInterface $security)
     {
-        $this->isMyProfile = $isMyProfile;
+        $this->security = $security;
     }
 
     /**
@@ -67,7 +67,8 @@ class UserType extends AbstractType
                 )
             );
 
-        if (!$this->isMyProfile) {
+        $user = $options['data'];
+        if (!$this->isMyProfile($user)) {
             $builder->add(
                 'roles',
                 'entity',
@@ -99,5 +100,21 @@ class UserType extends AbstractType
     public function getName()
     {
         return 'oro_userbundle_user';
+    }
+
+    /**
+     * Compare user entity with current user
+     *
+     * @param User $user
+     * @return bool
+     */
+    protected function isMyProfile($user)
+    {
+        if ($user instanceof User) {
+            $authUser = $this->security->getToken()->getUser();
+            return ($user->getUsername() == $authUser->getUsername());
+        }
+
+        return false;
     }
 }

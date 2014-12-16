@@ -4,9 +4,9 @@ namespace Oro\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\UserBundle\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 use Oro\ProjectBundle\Entity\Project;
+use Oro\UserBundle\Entity\User;
 
 /**
  * Issue
@@ -30,7 +30,6 @@ class Issue
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $summary;
 
@@ -501,5 +500,23 @@ class Issue
     {
         $this->modifiedBy = $modifiedBy;
         return $this;
+    }
+
+    /**
+     * Parent issue validation
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function isParentValid(ExecutionContextInterface $context)
+    {
+        $issueType = $this->getIssueType();
+        if ($issueType->getCode() == IssueType::TYPE_SUBTASK) {
+            $parentIssue = $this->getParent();
+            if (empty($parentIssue)) {
+                $context->addViolationAt('parent', 'oro.issue.messages.parent_empty');
+            } elseif ($this->getProject()->getId() != $parentIssue->getProject()->getId()) {
+                $context->addViolationAt('parent', 'oro.issue.messages.mismatched_issues_projects');
+            }
+        }
     }
 }

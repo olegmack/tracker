@@ -25,7 +25,7 @@
                 <td>{{ entity.summary|truncate(200, true) }}</td>
                 <td>
                     {% if(is_granted('MODIFY', entity)) %}
-                        <a class="btn btn-primary" role="button" href="{{ path('project_edit', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
+                        <a class="btn btn-primary" role="button" href="{{ path('project_update', { 'id': entity.id }) }}">{{ "oro.project.edit_label"|trans }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -34,7 +34,7 @@
     </table>
 
     {% if(is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER')) %}
-    <a class="btn btn-primary" href="{{ path('project_new') }}">
+    <a class="btn btn-primary" href="{{ path('project_create') }}">
         {{ "oro.project.create_label"|trans }}
     </a>
     {% endif %}

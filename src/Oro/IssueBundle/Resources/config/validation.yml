@@ -1,0 +1,13 @@
+Oro\IssueBundle\Entity\Issue:
+    constraints:
+        - Callback:
+            methods: [isParentValid]
+
+    properties:
+        summary:
+            - NotBlank: ~
+        createdAt:
+            - DateTime: ~
+        updatedAt:
+            - DateTime: ~
+

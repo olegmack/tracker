@@ -21,14 +21,6 @@
         {{ form_errors(form) }}
 
         <div class="form-group">
-            {{ form_label(form.project) }}
-            {{ form_errors(form.project) }}
-            {{ form_widget(form.project) }}
-        </div>
-
-        <hr/>
-
-        <div class="form-group">
             {{ form_label(form.summary) }}
             {{ form_errors(form.summary) }}
             {{ form_widget(form.summary) }}
@@ -78,12 +70,7 @@
             {{ form_errors(form.assignee) }}
             {{ form_widget(form.assignee) }}
         </div>
-        <div class="form-group">
-            {{ form_label(form.collaborators) }}
-            {{ form_errors(form.collaborators) }}
-            {{ form_widget(form.collaborators) }}
-        </div>
-        
+
         <div>
             <button type="submit" class="btn btn-primary">{{ "oro.issue.update_button"|trans }}</button>&nbsp;
             <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ "oro.issue.cancel_button"|trans }}</a>

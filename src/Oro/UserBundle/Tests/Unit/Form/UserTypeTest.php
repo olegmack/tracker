@@ -18,7 +18,30 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->type = new UserType(false);
+        $securityInterface = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $user = $this->getMockBuilder('Oro\UserBundle\Entity\User')
+            ->disableOriginalConstructor()->getMock();
+
+        $user->expects($this->any())
+            ->method('getUsername')
+            ->will($this->returnValue('test'));
+
+        $token->expects($this->any())
+            ->method('getUser')
+            ->will($this->returnValue($user));
+
+        $securityInterface->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token));
+
+        $this->type = new UserType($securityInterface);
     }
 
     public function testSetDefaultOptions()
@@ -42,8 +65,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
             'username' => 'text',
             'fullname' => 'text',
             'file' => 'file',
-            'plainPassword' => 'password',
-            'roles' => 'entity'
+            'plainPassword' => 'password'
         );
 
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
@@ -59,6 +81,15 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
             $counter++;
         }
 
-        $this->type->buildForm($builder, array());
+        $user = $this->getMockBuilder('Oro\UserBundle\Entity\User')
+            ->disableOriginalConstructor()->getMock();
+
+        $user->expects($this->any())
+            ->method('getUsername')
+            ->will($this->returnValue('test'));
+
+        $options['data'] = $user;
+
+        $this->type->buildForm($builder, $options);
     }
 }
