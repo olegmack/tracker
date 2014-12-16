@@ -72,7 +72,7 @@ class IssueActivity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -95,7 +95,7 @@ class IssueActivity
     /**
      * Get details
      *
-     * @return string 
+     * @return string
      */
     public function getDetails()
     {
@@ -118,7 +118,7 @@ class IssueActivity
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -141,7 +141,7 @@ class IssueActivity
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {

@@ -48,7 +48,7 @@ class IssueType
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -71,7 +71,7 @@ class IssueType
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

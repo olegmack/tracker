@@ -45,7 +45,7 @@ class IssueResolution
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -68,7 +68,7 @@ class IssueResolution
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

@@ -1,5 +1,6 @@
 <?php
 namespace Oro\IssueBundle\DataFixtures\ORM;
+
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,7 +34,9 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
 
         $issue1 = new Issue();
         $issue1->setSummary('Replace calendar picker tool');
-        $issue1->setDescription('The usability of our calendar picker control is bad and we should replace it with the more convenient one.');
+        $issue1->setDescription(
+            'The usability of our calendar picker control is bad and we should replace it with the more convenient one.'
+        );
 
         $issue1->setProject($bapProject);
         $issue1->setReporter($managerUser);

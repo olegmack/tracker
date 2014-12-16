@@ -125,7 +125,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -148,7 +148,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -171,7 +171,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -194,7 +194,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get fullname
      *
-     * @return string 
+     * @return string
      */
     public function getFullname()
     {
@@ -217,7 +217,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get avatar
      *
-     * @return string 
+     * @return string
      */
     public function getAvatar()
     {
@@ -240,7 +240,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {

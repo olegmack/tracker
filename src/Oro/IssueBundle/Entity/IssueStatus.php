@@ -45,7 +45,7 @@ class IssueStatus
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -68,7 +68,7 @@ class IssueStatus
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

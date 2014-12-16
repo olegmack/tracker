@@ -119,7 +119,7 @@ class IssueType extends AbstractType
                     'class'         => 'OroIssueBundle:Issue',
                     'empty_value'   => '--- Please choose a parent Issue ---',
                     'required'      => false,
-                    'query_builder' => function (IssueRepository $er) use ($projectId, $issueId){
+                    'query_builder' => function (IssueRepository $er) use ($projectId, $issueId) {
                         return $er->getIssuesByProjectId($projectId, $issueId);
                     },
                     'multiple'      => false,
