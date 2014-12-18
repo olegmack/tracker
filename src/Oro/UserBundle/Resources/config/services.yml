@@ -1,6 +1,5 @@
 parameters:
-    oro.timezone: Europe/Kiev
-    oro_user.user_callable.class: Oro\UserBundle\DependencyInjection\UserCallable
+    oro_user.user_callable.class: Oro\UserBundle\Provider\UserProvider
     oro_user.security.user_voter.class: Oro\UserBundle\Security\UserVoter
     oro_user.form.user.type.class: Oro\UserBundle\Form\UserType
 

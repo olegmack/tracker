@@ -71,7 +71,8 @@ class ProjectVoterTest extends \PHPUnit_Framework_TestCase
      * @dataProvider voteDataProvider
      */
     public function testVote(
-        $expected, $objectClass,
+        $expected,
+        $objectClass,
         array $attributes = [],
         $role = 'ROLE_USER',
         $isMember = false

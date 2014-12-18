@@ -5,6 +5,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Oro\UserBundle\Entity\User;
+
 class UserVoter implements VoterInterface
 {
     const VIEW = 'VIEW';
@@ -52,7 +54,7 @@ class UserVoter implements VoterInterface
 
         //get auth user
         $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return VoterInterface::ACCESS_DENIED;
         }
 

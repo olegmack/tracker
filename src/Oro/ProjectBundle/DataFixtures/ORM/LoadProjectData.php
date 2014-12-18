@@ -1,26 +1,23 @@
 <?php
-namespace Oro\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+namespace Oro\ProjectBundle\DataFixtures\ORM;
+
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\UserBundle\Entity\User;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+
 use Oro\ProjectBundle\Entity\Project;
 
-class LoadProjectData implements FixtureInterface, ContainerAwareInterface
+class LoadProjectData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var ContainerInterface
+     * @return array
      */
-    private $container;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function getDependencies()
     {
-        $this->container = $container;
+        return array(
+            'Oro\UserBundle\DataFixtures\ORM\LoadUserData'
+        );
     }
 
     /**
@@ -36,10 +33,10 @@ It offers developers the exact business
 application platform they’ve been looking for, by combining the tools they need. Built in PHP5 and the
 Symfony2 framework, developing custom business applications has never been so easy.');
 
-        $adminUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
-        $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
-        $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
-        $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
+        $adminUser = $this->getReference('user_admin');
+        $operatorUser = $this->getReference('user_operator');
+        $operatorUser2 = $this->getReference('user_operator2');
+        $managerUser = $this->getReference('user_manager');
 
         $project
             ->addUser($managerUser)
@@ -62,5 +59,8 @@ Symfony2 framework, developing custom business applications has never been so ea
         $manager->persist($project2);
 
         $manager->flush();
+
+        $this->addReference('project1', $project);
+        $this->addReference('project2', $project2);
     }
 }

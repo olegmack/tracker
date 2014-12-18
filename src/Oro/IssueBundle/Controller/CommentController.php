@@ -4,12 +4,14 @@ namespace Oro\IssueBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Oro\IssueBundle\Entity\Comment;
-use Oro\IssueBundle\Form\CommentType;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Oro\IssueBundle\Entity\Issue;
 
 /**
  * Issue controller.
@@ -22,18 +24,14 @@ class CommentController extends Controller
      * Creates a new Comment entity.
      *
      * @Route("/create/{issueId}", name="comment_create")
-     * @Template("OroIssueBundle:Comment:create.html.twig")
+     * @ParamConverter("issue", class="OroIssueBundle:Issue", options={"id" = "issueId"})
+     * @Template()
      *
-     * @param $issueId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Issue $issue
+     * @return RedirectResponse
      */
-    public function createAction($issueId)
+    public function createAction(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-        $issue = $em->getRepository('OroIssueBundle:Issue')->find($issueId);
-        if (!$issue) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
-        }
         $comment = new Comment();
         $comment->setIssue($issue);
 
@@ -47,6 +45,7 @@ class CommentController extends Controller
         if ($form->isValid()) {
             $comment->setAuthor($this->getUser());
 
+            $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
 
@@ -55,7 +54,7 @@ class CommentController extends Controller
 
         return array(
             'form' => $form->createView(),
-            'issue_id' => $issueId
+            'issue_id' => $issue->getId()
         );
     }
 
@@ -63,18 +62,15 @@ class CommentController extends Controller
      * Edits an existing comment entity.
      *
      * @Route("/update/{id}", name="comment_update")
+     * @ParamConverter("entity", class="OroIssueBundle:Comment")
      * @Template()
+     *
+     * @param Comment $entity
+     * @param Request $request
+     * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Comment $entity, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
@@ -83,7 +79,7 @@ class CommentController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getIssue()->getId())));
         }
 
@@ -97,21 +93,18 @@ class CommentController extends Controller
      * Delete an existing comment entity.
      *
      * @Route("/delete/{id}", name="comment_delete")
-     * @Method("GET")
+     * @ParamConverter("entity", class="OroIssueBundle:Comment")
+     *
+     * @param Comment $entity
+     * @return RedirectResponse
      */
-    public function deleteAction($id)
+    public function deleteAction(Comment $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('OroIssueBundle:Comment')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.comment.messages.not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.comment.messages.access_denied'));
         }
 
+        $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
 

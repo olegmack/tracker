@@ -5,13 +5,14 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Oro\IssueBundle\Entity\Issue;
 use Oro\IssueBundle\Entity\Comment;
 use Oro\UserBundle\Entity\User;
-use Oro\ProjectBundle\Entity\Project;
 
-class LoadCommentData extends AbstractFixture implements FixtureInterface, DependentFixtureInterface
+class LoadCommentData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * @return array
+     */
     public function getDependencies()
     {
         return array(
@@ -24,9 +25,9 @@ class LoadCommentData extends AbstractFixture implements FixtureInterface, Depen
      */
     public function load(ObjectManager $manager)
     {
-        $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
-        $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
-        $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
+        $operatorUser = $this->getReference('user_operator');
+        $operatorUser2 = $this->getReference('user_operator2');
+        $managerUser = $this->getReference('user_manager');
 
         $comment1 = new Comment();
         $comment1

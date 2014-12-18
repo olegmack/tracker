@@ -1,14 +1,15 @@
 <?php
 namespace Oro\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+
 use Oro\UserBundle\Entity\User;
 use Oro\UserBundle\Entity\Role;
 
-class LoadUserData implements FixtureInterface, ContainerAwareInterface
+class LoadUserData extends AbstractFixture implements ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
@@ -86,5 +87,10 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($user4);
         
         $manager->flush();
+
+        $this->addReference('user_admin', $user);
+        $this->addReference('user_manager', $user2);
+        $this->addReference('user_operator', $user3);
+        $this->addReference('user_operator2', $user4);
     }
 }

@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueStatus
 {
+    const CODE_OPEN       = 'Open';
+    const CODE_INPROGRESS = 'In Progress';
+    const CODE_RESOLVED   = 'Resolved';
+    const CODE_REOPENED   = 'Reopened';
+    const CODE_CLOSED     = 'Closed';
+
     /**
      * @var string
      *

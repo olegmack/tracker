@@ -5,8 +5,9 @@ namespace Oro\IssueBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\IssueBundle\Entity\IssueRepository;
 use Doctrine\ORM\EntityRepository;
+
+use Oro\IssueBundle\Entity\IssueRepository;
 use Oro\UserBundle\Entity\User;
 
 class IssueType extends AbstractType

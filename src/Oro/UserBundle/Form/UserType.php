@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+
 use Oro\UserBundle\Entity\User;
 
 class UserType extends AbstractType
@@ -13,6 +14,9 @@ class UserType extends AbstractType
     /** @var SecurityContextInterface */
     protected $security;
 
+    /**
+     * @param SecurityContextInterface $security
+     */
     public function __construct(SecurityContextInterface $security)
     {
         $this->security = $security;
@@ -53,8 +57,8 @@ class UserType extends AbstractType
                 'file',
                 'file',
                 array(
-                'label' => 'oro.user.avatar_label',
-                'required' => false
+                    'label' => 'oro.user.avatar_label',
+                    'required' => false
                 )
             )
             ->add(
@@ -83,7 +87,7 @@ class UserType extends AbstractType
             );
         };
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

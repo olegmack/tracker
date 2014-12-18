@@ -1,10 +1,11 @@
 <?php
 
-namespace Oro\UserBundle\DependencyInjection;
+namespace Oro\UserBundle\Provider;
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserCallable
+class UserProvider
 {
     /**
      * @var Container
@@ -19,6 +20,9 @@ class UserCallable
         $this->container = $container;
     }
 
+    /**
+     * @return bool|UserInterface
+     */
     public function getCurrentUser()
     {
         $token = $this->container->get('security.context')->getToken();

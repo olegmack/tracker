@@ -1,7 +1,4 @@
 parameters:
-    oro.sender_email: tracker@oro.crm
-    oro.sender_name: Tracker System
-
     oro_issue.event_listener.comment_listener.class: Oro\IssueBundle\EventListener\CommentListener
     oro_issue.event_listener.activity_listener.class: Oro\IssueBundle\EventListener\ActivityListener
     oro_issue.event_listener.issue_listener.class: Oro\IssueBundle\EventListener\IssueListener
@@ -30,6 +27,7 @@ services:
             - {name: doctrine.event_listener, event: preUpdate}
             - {name: doctrine.event_listener, event: postFlush}
             - {name: doctrine.event_listener, event: postPersist}
+            - {name: doctrine.event_listener, event: onFlush}
 
     oro.security.issue_voter:
         class:      "%oro_issue.security.issue_voter%"

@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueResolution
 {
+    const CODE_UNRESOLVED = 'unresolved';
+    const CODE_FIXED      = 'fixed';
+    const CODE_DUPLICATE  = 'duplicate';
+    const CODE_WONTFIX    = 'wontfix';
+    const CODE_DONE       = 'done';
+
     /**
      * @var string
      *

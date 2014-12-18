@@ -13,55 +13,39 @@
         {{ form_errors(form) }}
 
         <div class="form-group">
-            {{ form_label(form.summary) }}
-            {{ form_errors(form.summary) }}
-            {{ form_widget(form.summary) }}
+            {{ form_row(form.summary) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.description) }}
-            {{ form_errors(form.description) }}
-            {{ form_widget(form.description) }}
+            {{ form_row(form.description) }}
         </div>
 
         <hr/>
 
         <div class="form-group">
-            {{ form_label(form.issueType) }}
-            {{ form_errors(form.issueType) }}
-            {{ form_widget(form.issueType) }}
+            {{ form_row(form.issueType) }}
         </div>
 
         <div class="form-group hidden" id="parent-block">
-            {{ form_label(form.parent) }}
-            {{ form_errors(form.parent) }}
-            {{ form_widget(form.parent) }}
+            {{ form_row(form.parent) }}
         </div>
 
         <hr/>
 
         <div class="form-group">
-            {{ form_label(form.issuePriority) }}
-            {{ form_errors(form.issuePriority) }}
-            {{ form_widget(form.issuePriority) }}
+            {{ form_row(form.issuePriority) }}
         </div>
         <div class="form-group">
-            {{ form_label(form.issueStatus) }}
-            {{ form_errors(form.issueStatus) }}
-            {{ form_widget(form.issueStatus) }}
+            {{ form_row(form.issueStatus) }}
         </div>
         <div class="form-group">
-            {{ form_label(form.issueResolution) }}
-            {{ form_errors(form.issueResolution) }}
-            {{ form_widget(form.issueResolution) }}
+            {{ form_row(form.issueResolution) }}
         </div>
 
         <hr/>
 
         <div class="form-group">
-            {{ form_label(form.assignee) }}
-            {{ form_errors(form.assignee) }}
-            {{ form_widget(form.assignee) }}
+            {{ form_row(form.assignee) }}
         </div>
 
         <div>

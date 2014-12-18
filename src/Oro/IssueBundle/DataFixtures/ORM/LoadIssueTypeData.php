@@ -12,10 +12,10 @@ class LoadIssueTypeData extends AbstractFixture implements FixtureInterface
      * @var array
      */
     protected $data = array(
-        'bug'     => 'Bug',
-        'story'   => 'Story',
-        'task'    => 'Task',
-        'subtask' => 'Sub-task'
+        IssueType::TYPE_BUG     => 'Bug',
+        IssueType::TYPE_STORY   => 'Story',
+        IssueType::TYPE_TASK    => 'Task',
+        IssueType::TYPE_SUBTASK => 'Sub-task'
     );
 
     /**

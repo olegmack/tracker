@@ -1,9 +1,11 @@
 <?php
+
 namespace Oro\IssueBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Oro\IssueBundle\Entity\IssueActivity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\IssueBundle\Entity\IssueActivity;
 
 class ActivityListener
 {

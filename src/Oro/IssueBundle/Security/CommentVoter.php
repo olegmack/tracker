@@ -1,15 +1,21 @@
 <?php
+
 namespace Oro\IssueBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+
+use Oro\UserBundle\Entity\User;
 
 class CommentVoter implements VoterInterface
 {
     const CREATE = 'CREATE';
     const MODIFY = 'MODIFY';
 
+    /**
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -18,6 +24,10 @@ class CommentVoter implements VoterInterface
         ));
     }
 
+    /**
+     * @param string $class
+     * @return bool
+     */
     public function supportsClass($class)
     {
         $supportedClass = 'Oro\IssueBundle\Entity\Comment';
@@ -48,7 +58,7 @@ class CommentVoter implements VoterInterface
 
         //get auth user
         $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return VoterInterface::ACCESS_DENIED;
         }
 

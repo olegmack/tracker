@@ -7,6 +7,7 @@ oro:
         show_title:         Project - name
         update_label:       Update
         cancel_label:       Cancel
+        delete_label:       Delete
         edit_label:         Edit
         create_label:       Create Project
         issues_heading:     Issues

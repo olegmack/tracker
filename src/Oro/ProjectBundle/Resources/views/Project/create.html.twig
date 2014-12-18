@@ -16,27 +16,19 @@
         {{ form_errors(form) }}
 
         <div class="form-group">
-            {{ form_label(form.name) }}
-            {{ form_errors(form.name) }}
-            {{ form_widget(form.name) }}
+            {{ form_row(form.name) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.code) }}
-            {{ form_errors(form.code) }}
-            {{ form_widget(form.code) }}
+            {{ form_row(form.code) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.summary) }}
-            {{ form_errors(form.summary) }}
-            {{ form_widget(form.summary) }}
+            {{ form_row(form.summary) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.users) }}
-            {{ form_errors(form.users) }}
-            {{ form_widget(form.users) }}
+            {{ form_row(form.users) }}
         </div>
 
         <button type="submit" class="btn btn-primary">{{ "oro.project.create_label"|trans}}</button>&nbsp;

@@ -16,7 +16,7 @@ class IssueActivityRepository extends EntityRepository
      * @param int $userId
      * @param int $projectId
      * @param int $issueId
-     * @return array
+     * @return IssueActivity[]
      */
     public function findByParameters($limit = null, $userId = null, $projectId = null, $issueId = null)
     {
@@ -51,8 +51,8 @@ class IssueActivityRepository extends EntityRepository
     /**
      * Find activities which related to projects where user is a member
      *
-     * @param $userId
-     * @return array
+     * @param int $userId
+     * @return IssueActivity[]
      */
     public function findByProjectMember($userId)
     {

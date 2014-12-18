@@ -12,11 +12,11 @@ class LoadIssuePriorityData extends AbstractFixture implements FixtureInterface
      * @var array
      */
     protected $data = array(
-        'trivial'  => 'Trivial',
-        'minor'    => 'Minor',
-        'major'    => 'Major',
-        'critical' => 'Critical',
-        'blocker'  => 'Blocker',
+        IssuePriority::CODE_TRIVIAL  => 'Trivial',
+        IssuePriority::CODE_MINOR    => 'Minor',
+        IssuePriority::CODE_MAJOR    => 'Major',
+        IssuePriority::CODE_CRITICAL => 'Critical',
+        IssuePriority::CODE_BLOCKER  => 'Blocker',
     );
 
     /**

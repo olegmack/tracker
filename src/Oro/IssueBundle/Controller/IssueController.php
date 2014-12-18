@@ -4,13 +4,14 @@ namespace Oro\IssueBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Oro\IssueBundle\Entity\Issue;
 use Oro\IssueBundle\Entity\IssueType;
 use Oro\ProjectBundle\Entity\Project;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Issue controller.
@@ -23,6 +24,11 @@ class IssueController extends Controller
      *
      * @Route("/create/{project}/{parent}", name="issue_create", defaults={"parent" = 0})
      * @Template()
+     *
+     * @param $project
+     * @param $parent
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction($project, $parent, Request $request)
     {
@@ -64,18 +70,21 @@ class IssueController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            #validate task-sub-task relation
-
             $em = $this->getDoctrine()->getManager();
 
             if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
                 throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
             }
 
-            $currentUser =  $this->getUser();
+            $currentUser = $this->getUser();
             $entity->setReporter($currentUser);
             $entity->addCollaborator($currentUser);
             $entity->addCollaborator($entity->getAssignee());
+
+            $issueType = $entity->getIssueType()->getCode();
+            if ($issueType != IssueType::TYPE_SUBTASK) {
+                $entity->setParent(null);
+            }
 
             $em->persist($entity);
             $em->flush();
@@ -116,25 +125,20 @@ class IssueController extends Controller
      * Finds and displays a Issue entity.
      *
      * @Route("/view/{id}", name="issue_show")
-     * @Method("GET")
+     * @ParamConverter("entity", class="OroIssueBundle:Issue")
      * @Template()
+     *
+     * @param Issue $entity
+     * @return array
      */
-    public function showAction($id)
+    public function showAction(Issue $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroIssueBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
         );
     }
 
@@ -142,7 +146,6 @@ class IssueController extends Controller
     * Creates a form to edit a Issue entity.
     *
     * @param Issue $entity The entity
-    *
     * @return \Symfony\Component\Form\Form The form
     */
     private function createEditForm(Issue $entity)
@@ -163,17 +166,16 @@ class IssueController extends Controller
      * Edits an existing Issue entity.
      *
      * @Route("/update/{id}", name="issue_update")
+     * @ParamConverter("entity", class="OroIssueBundle:Issue")
      * @Template()
+     *
+     * @param Issue $entity
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Issue $entity, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroIssueBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.issue.messages.issue_not_found'));
-        }
 
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -183,12 +185,17 @@ class IssueController extends Controller
         }
 
         if ($editForm->isValid()) {
+            $issueType = $entity->getIssueType()->getCode();
+            if ($issueType != IssueType::TYPE_SUBTASK) {
+                $entity->setParent(null);
+            }
+
             $em->flush();
 
             $request->getSession()->getFlashbag()
                 ->add('success', $this->get('translator')->trans('oro.issue.messages.issue_updated'));
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -205,6 +212,6 @@ class IssueController extends Controller
      */
     protected function getProject($projectId)
     {
-        return $this->getDoctrine()->getManager()->getRepository('OroProjectBundle:Project')->findOneById($projectId);
+        return $this->getDoctrine()->getRepository('OroProjectBundle:Project')->findOneById($projectId);
     }
 }

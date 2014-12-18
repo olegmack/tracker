@@ -86,7 +86,7 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
 
         $currentUser->expects($this->any())
             ->method('getRole')
-            ->will($this->returnCallback(function($expectedRole) use ($role) {
+            ->will($this->returnCallback(function ($expectedRole) use ($role) {
                 return $expectedRole == $role;
             }));
 

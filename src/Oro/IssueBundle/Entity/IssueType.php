@@ -14,6 +14,8 @@ class IssueType
 {
     const TYPE_STORY   = 'story';
     const TYPE_SUBTASK = 'subtask';
+    const TYPE_BUG     = 'bug';
+    const TYPE_TASK    = 'task';
 
     /**
      * @var string

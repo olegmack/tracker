@@ -7,9 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\ProjectBundle\Entity\Project;
-use Oro\ProjectBundle\Form\ProjectType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Oro\ProjectBundle\Entity\Project;
 
 /**
  * Project controller.
@@ -22,6 +23,8 @@ class ProjectController extends Controller
      * @Route("/", name="project")
      * @Method("GET")
      * @Template()
+     *
+     * @return array()
      */
     public function indexAction()
     {
@@ -35,11 +38,15 @@ class ProjectController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Project entity.
      *
      * @Route("/create", name="project_create")
      * @Template()
+     *
+     * @param Request $request
+     * @return array()
      */
     public function createAction(Request $request)
     {
@@ -72,7 +79,7 @@ class ProjectController extends Controller
     /**
      * Creates a form to create a Project entity.
      *
-     * @param Project $entity The entity
+     * @param Project $entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -90,28 +97,19 @@ class ProjectController extends Controller
      * Finds and displays a Project entity.
      *
      * @Route("/view/{id}", name="project_show")
-     * @Method("GET")
+     * @ParamConverter("entity", class="OroProjectBundle:Project")
      * @Template()
+     *
+     * @param Project $entity
+     * @return array
      */
-    public function showAction($id)
+    public function showAction(Project $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
-
         if (false === $this->get('security.context')->isGranted('VIEW', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                $this->get('translator')->trans('oro.project.messages.project_not_found')
-            );
-        }
-
-        $this->setLastVisitedProject($entity);
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($entity);
 
         return array(
             'entity'      => $entity,
@@ -135,78 +133,72 @@ class ProjectController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Project entity.
      *
      * @Route("/update/{id}", name="project_update")
+     * @ParamConverter("entity", class="OroProjectBundle:Project")
      * @Template()
+     *
+     * @param Project $entity
+     * @param Request $request
+     * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Project $entity, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                $this->get('translator')->trans('oro.project.messages.project_not_found')
-            );
-        }
-
         if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($entity);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $request->getSession()->getFlashbag()
                 ->add('success', $this->get('translator')->trans('oro.project.messages.project_updated'));
 
-            return $this->redirect($this->generateUrl('project_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getId())));
         }
 
         return array(
             'entity'      => $entity,
-            'form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Project entity.
      *
      * @Route("/delete/{id}", name="project_delete")
+     * @ParamConverter("entity", class="OroProjectBundle:Project")
      * @Method("DELETE")
+     *
+     * @param Project $entity
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Project $entity, Request $request)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('OroProjectBundle:Project')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException(
-                    $this->get('translator')->trans('oro.project.messages.project_not_found')
-                );
-            }
-
             if (false === $this->get('security.context')->isGranted('MODIFY', $entity)) {
                 throw new AccessDeniedException($this->get('translator')->trans('oro.project.messages.access_denied'));
             }
 
+            $em = $this->getDoctrine()->getManager();
             $em->remove($entity);
             $em->flush();
 
             $request->getSession()->getFlashbag()
                 ->add('success', $this->get('translator')->trans('oro.project.messages.project_deleted'));
-
         }
 
         return $this->redirect($this->generateUrl('project'));
@@ -215,28 +207,23 @@ class ProjectController extends Controller
     /**
      * Creates a form to delete a Project entity by id.
      *
-     * @param mixed $id The entity id
+     * @param Project $entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm(Project $entity)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('project_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('project_delete', array('id' => $entity->getId())))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
+            ->add(
+                'submit',
+                'submit',
+                array(
+                    'label' => $this->get('translator')->trans('oro.project.delete_label'),
+                    'attr' => array('class' => 'btn btn-danger')
+                )
+            )
             ->getForm();
-    }
-
-    /**
-     * Store last visited project id in session
-     *
-     * @param Project $project
-     * @return $this
-     */
-    protected function setLastVisitedProject($project)
-    {
-        $this->get('session')->set('last_visited_project_id', $project->getId());
-        return $this;
     }
 }

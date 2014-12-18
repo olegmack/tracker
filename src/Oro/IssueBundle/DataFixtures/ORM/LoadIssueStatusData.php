@@ -12,11 +12,11 @@ class LoadIssueStatusData extends AbstractFixture implements FixtureInterface
      * @var array
      */
     protected $data = array(
-        'open'        => 'Open',
-        'in_progress' => 'In Progress',
-        'resolved'    => 'Resolved',
-        'reopened'    => 'Reopened',
-        'closed'      => 'Closed'
+        IssueStatus::CODE_OPEN        => 'Open',
+        IssueStatus::CODE_INPROGRESS  => 'In Progress',
+        IssueStatus::CODE_RESOLVED    => 'Resolved',
+        IssueStatus::CODE_REOPENED    => 'Reopened',
+        IssueStatus::CODE_CLOSED      => 'Closed'
     );
 
     /**

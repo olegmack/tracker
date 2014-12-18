@@ -1,0 +1,8 @@
+Oro\ProjectBundle\Entity\Project:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        name:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~

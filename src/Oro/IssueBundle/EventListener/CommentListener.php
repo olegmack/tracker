@@ -1,11 +1,12 @@
 <?php
-namespace Oro\IssueBundle\EventListener;
 
-use Oro\IssueBundle\Entity\Comment;
-use Oro\IssueBundle\Entity\Issue;
+namespace Oro\IssueBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
+use Oro\IssueBundle\Entity\Comment;
+use Oro\IssueBundle\Entity\Issue;
 use Oro\IssueBundle\Entity\IssueActivity;
 
 class CommentListener
@@ -42,8 +43,8 @@ class CommentListener
     /**
      * Add collaborator to issue based on comment information
      *
-     * @param $entityManager
-     * @param $comment
+     * @param EntityManager $entityManager
+     * @param Comment $comment
      */
     protected function addCollaborator($entityManager, $comment)
     {

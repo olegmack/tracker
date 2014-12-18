@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\IssueBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -9,6 +10,10 @@ class IssueVoter implements VoterInterface
 {
     const ACCESS = 'ACCESS';
 
+    /**
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -16,6 +21,10 @@ class IssueVoter implements VoterInterface
         ));
     }
 
+    /**
+     * @param string $class
+     * @return bool
+     */
     public function supportsClass($class)
     {
         $supportedClass = 'Oro\IssueBundle\Entity\Issue';

@@ -11,11 +11,6 @@ class IssueControllerTest extends WebTestCase
         $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
-    protected function getProject()
-    {
-
-    }
-
     public function testCompleteScenario()
     {
         //open project list

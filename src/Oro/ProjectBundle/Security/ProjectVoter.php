@@ -29,15 +29,23 @@ class ProjectVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param \Oro\ProjectBundle\Entity\Project $object
+     * @param \Oro\ProjectBundle\Entity\Project|string $object
      * @param array $attributes
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         //check for supported class
-        if (!$this->supportsClass(get_class($object))) {
+        $class = (is_object($object))
+            ? get_class($object)
+            : $object;
+
+        if (!$this->supportsClass($class)) {
             return VoterInterface::ACCESS_ABSTAIN;
+        }
+
+        if (is_string($object)) {
+            $object = new $object;
         }
 
         //check for supported attribute

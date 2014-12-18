@@ -1,23 +1,25 @@
 <?php
 namespace Oro\IssueBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Oro\IssueBundle\Entity\Issue;
-use Oro\UserBundle\Entity\User;
-use Oro\ProjectBundle\Entity\Project;
 
-class LoadIssueData extends AbstractFixture implements FixtureInterface, DependentFixtureInterface
+class LoadIssueData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * @return array
+     */
     public function getDependencies()
     {
         return array(
             'Oro\IssueBundle\DataFixtures\ORM\LoadIssuePriorityData',
             'Oro\IssueBundle\DataFixtures\ORM\LoadIssueResolutionData',
             'Oro\IssueBundle\DataFixtures\ORM\LoadIssueStatusData',
-            'Oro\IssueBundle\DataFixtures\ORM\LoadIssueTypeData'
+            'Oro\IssueBundle\DataFixtures\ORM\LoadIssueTypeData',
+            'Oro\UserBundle\DataFixtures\ORM\LoadUserData',
+            'Oro\ProjectBundle\DataFixtures\ORM\LoadProjectData'
         );
     }
 
@@ -26,11 +28,12 @@ class LoadIssueData extends AbstractFixture implements FixtureInterface, Depende
      */
     public function load(ObjectManager $manager)
     {
-        $bapProject = $manager->getRepository('OroProjectBundle:Project')->findOneByCode('BAP');
-        $oroProject = $manager->getRepository('OroProjectBundle:Project')->findOneByCode('CRM');
-        $operatorUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator');
-        $operatorUser2 = $manager->getRepository('OroUserBundle:User')->findOneByUsername('operator2');
-        $managerUser = $manager->getRepository('OroUserBundle:User')->findOneByUsername('manager');
+        $bapProject = $this->getReference('project1');
+        $oroProject = $this->getReference('project2');
+
+        $operatorUser = $this->getReference('user_operator');
+        $operatorUser2 = $this->getReference('user_operator2');
+        $managerUser = $this->getReference('user_manager');
 
         $issue1 = new Issue();
         $issue1->setSummary('Replace calendar picker tool');

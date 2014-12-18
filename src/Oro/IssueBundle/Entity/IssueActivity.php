@@ -3,8 +3,8 @@
 namespace Oro\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\UserBundle\Entity\User;
-use Oro\IssueBundle\Entity\Issue;
 
 /**
  * IssueActivity

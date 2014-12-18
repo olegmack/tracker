@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssuePriority
 {
+    const CODE_TRIVIAL  = 'trivial';
+    const CODE_MINOR    = 'minor';
+    const CODE_MAJOR    = 'major';
+    const CODE_CRITICAL = 'critical';
+    const CODE_BLOCKER  = 'blocker';
+
     /**
      * @var string
      *

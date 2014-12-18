@@ -5,6 +5,7 @@ namespace Oro\IssueBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ExecutionContextInterface;
+
 use Oro\ProjectBundle\Entity\Project;
 use Oro\UserBundle\Entity\User;
 
@@ -128,6 +129,8 @@ class Issue
     protected $parent;
 
     /**
+     * @var ArrayCollection Issue[]
+     *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
      */
     protected $children;
@@ -139,6 +142,9 @@ class Issue
      */
     protected $comments;
 
+    /**
+     * @var User
+     */
     protected $modifiedBy;
 
     public function __construct()
@@ -413,7 +419,7 @@ class Issue
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection Issue[]
      */
     public function getChildren()
     {
@@ -455,21 +461,26 @@ class Issue
     public function beforeSave()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->addCollaborator($this->getAssignee());
     }
 
+    /**
+     * @return string
+     */
     public function getCode()
     {
         return $this->project->getCode() . '-' . $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getCode() . ': ' . $this->summary;
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection Comment[]
      */
     public function getComments()
     {
@@ -477,9 +488,9 @@ class Issue
     }
 
     /**
-     * @param mixed $comments
+     * @param ArrayCollection $comments
      */
-    public function setComments($comments)
+    public function setComments(ArrayCollection $comments)
     {
         $this->comments = $comments;
     }
@@ -507,7 +518,7 @@ class Issue
      *
      * @param ExecutionContextInterface $context
      */
-    public function isParentValid(ExecutionContextInterface $context)
+    public function validateParent(ExecutionContextInterface $context)
     {
         $issueType = $this->getIssueType();
         if ($issueType->getCode() == IssueType::TYPE_SUBTASK) {

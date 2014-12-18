@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProjectType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -53,7 +53,7 @@ class ProjectType extends AbstractType
                 )
             );
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

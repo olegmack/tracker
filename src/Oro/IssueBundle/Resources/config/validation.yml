@@ -1,8 +1,7 @@
 Oro\IssueBundle\Entity\Issue:
     constraints:
         - Callback:
-            methods: [isParentValid]
-
+            methods: [validateParent]
     properties:
         summary:
             - NotBlank: ~
@@ -11,3 +10,11 @@ Oro\IssueBundle\Entity\Issue:
         updatedAt:
             - DateTime: ~
 
+Oro\IssueBundle\Entity\Comment:
+    properties:
+        body:
+            - NotBlank: ~
+        createdAt:
+            - DateTime: ~
+        updatedAt:
+            - DateTime: ~

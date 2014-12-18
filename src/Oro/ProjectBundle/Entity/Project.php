@@ -4,17 +4,13 @@ namespace Oro\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Oro\UserBundle\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Project
  *
  * @ORM\Table(name="projects")
  * @ORM\Entity(repositoryClass="Oro\ProjectBundle\Entity\ProjectRepository")
- * @UniqueEntity(fields="code", message="This code is already used")
  */
 class Project
 {
@@ -31,7 +27,6 @@ class Project
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $name;
 
@@ -39,7 +34,6 @@ class Project
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=20)
-     * @Assert\NotBlank()
      */
     private $code;
 

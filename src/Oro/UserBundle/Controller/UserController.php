@@ -7,9 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Oro\UserBundle\Entity\User;
-use Oro\UserBundle\Form\UserType;
 
 /**
  * User controller.
@@ -24,6 +25,8 @@ class UserController extends Controller
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
+     *
+     * @return array
      */
     public function indexAction()
     {
@@ -35,11 +38,15 @@ class UserController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new User entity.
      *
      * @Route("/create", name="user_create")
      * @Template()
+     *
+     * @param Request $request
+     * @return array
      */
     public function createAction(Request $request)
     {
@@ -93,25 +100,21 @@ class UserController extends Controller
      * Finds and displays a User entity.
      *
      * @Route("/view/{id}", name="user_show")
+     * @ParamConverter("entity", class="OroUserBundle:User")
      * @Method("GET")
      * @Template()
+     *
+     * @param User $entity
+     * @return array
      */
-    public function showAction($id)
+    public function showAction(User $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroUserBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
-        }
-
         $issues = $this->getDoctrine()
             ->getRepository('OroIssueBundle:Issue')
             ->findBy(
                 array(
                 'issueStatus' => 'open',
-                'assignee' => $id)
+                'assignee' => $entity->getId())
             );
 
 
@@ -142,18 +145,15 @@ class UserController extends Controller
      * Edits an existing User entity.
      *
      * @Route("/update/{id}", name="user_update")
+     * @ParamConverter("entity", class="OroUserBundle:User")
      * @Template()
+     *
+     * @param User $entity
+     * @param Request $request
+     * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(User $entity, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('OroUserBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('oro.user.messages.user_not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('EDIT', $entity)) {
             throw new AccessDeniedException($this->get('translator')->trans('oro.user.messages.access_denied'));
         }
@@ -175,12 +175,13 @@ class UserController extends Controller
                 $entity->setPassword($originalPassword);
             }
 
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $request->getSession()->getFlashbag()
                 ->add('success', $this->get('translator')->trans('oro.user.messages.user_updated'));
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
 
         return array(

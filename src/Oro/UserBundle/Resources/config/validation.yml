@@ -1,0 +1,28 @@
+Oro\UserBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        email:
+            - NotBlank: ~
+            - Email:    ~
+        username:
+            - NotBlank: ~
+        fullname:
+            - NotBlank: ~
+        file:
+            - File:
+                 maxSize: 5M
+                 mimeTypes: [image/jpeg, image/gif, image/png, image/tiff]
+                 maxSizeMessage: The maxmimum allowed file size is 5MB.
+                 mimeTypesMessage: Only the filetypes image are allowed.
+
+Oro\UserBundle\Entity\Role:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
+    properties:
+        role:
+            - Length:
+                max:    40
+        name:
+            - NotBlank: ~

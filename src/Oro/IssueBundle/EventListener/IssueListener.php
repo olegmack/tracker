@@ -1,19 +1,21 @@
 <?php
+
 namespace Oro\IssueBundle\EventListener;
 
-use Oro\IssueBundle\Entity\Issue;
-use Oro\UserBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Oro\IssueBundle\Entity\IssueActivity;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Oro\UserBundle\DependencyInjection\UserCallable;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+
+use Oro\IssueBundle\Entity\Issue;
+use Oro\UserBundle\Entity\User;
+use Oro\IssueBundle\Entity\IssueActivity;
+use Oro\UserBundle\Provider\UserProvider;
 
 class IssueListener
 {
     /**
-     * @var UserCallable
+     * @var UserProvider
      */
     private $userCallable;
 
@@ -23,9 +25,9 @@ class IssueListener
     private $persistObjects;
 
     /**
-     * @param UserCallable $userCallable
+     * @param UserProvider $userCallable
      */
-    public function __construct(UserCallable $userCallable)
+    public function __construct(UserProvider $userCallable)
     {
         $this->userCallable = $userCallable;
     }
@@ -89,6 +91,8 @@ class IssueListener
 
     /**
      * Get current user
+     *
+     * @return User
      */
     public function getUser()
     {
@@ -121,6 +125,9 @@ class IssueListener
             return;
         }
 
+        //add assignee as collaborator
+        $entity->addCollaborator($entity->getAssignee());
+
         /** @var Issue $entity */
         //track activity
         $modifiedBy = $entity->getModifiedBy();
@@ -133,5 +140,29 @@ class IssueListener
         $em = $args->getEntityManager();
         $em->persist($activity);
         $em->flush();
+    }
+
+    /**
+     * @param OnFlushEventArgs $args
+     */
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $em = $args->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        $entities = array_merge(
+            $uow->getScheduledEntityInsertions(),
+            $uow->getScheduledEntityUpdates()
+        );
+
+        foreach ($entities as $entity) {
+            if (!$this->isIssueEntity($entity)) {
+                continue;
+            }
+
+            $entity->addCollaborator($entity->getAssignee());
+            $meta = $em->getClassMetadata(get_class($entity));
+            $uow->computeChangeSet($meta, $entity);
+        }
     }
 }
