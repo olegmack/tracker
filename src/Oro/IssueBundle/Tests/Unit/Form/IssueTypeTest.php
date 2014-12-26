@@ -3,9 +3,6 @@
 namespace Oro\IssueBundle\Tests\Unit;
 
 use Oro\IssueBundle\Form\IssueType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilder;
 
 class IssueTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,18 +65,18 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
         $issue = $this->getMockBuilder('Oro\IssueBundle\Entity\Issue')
             ->disableOriginalConstructor()->getMock();
 
-        $issue->expects($this->any())
+        $issue->expects($this->once())
             ->method('getId')
             ->will($this->returnValue('1'));
 
-        $project = $this->getMockBuilder('Oro\ProjectBundle\Entity\project')
+        $project = $this->getMockBuilder('Oro\ProjectBundle\Entity\Project')
             ->disableOriginalConstructor()->getMock();
 
-        $project->expects($this->any())
+        $project->expects($this->once())
             ->method('getId')
             ->will($this->returnValue('1'));
 
-        $issue->expects($this->any())
+        $issue->expects($this->once())
             ->method('getProject')
             ->will($this->returnValue($project));
 

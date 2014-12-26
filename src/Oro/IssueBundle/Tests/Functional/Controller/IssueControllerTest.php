@@ -6,17 +6,29 @@ use Oro\TestBundle\Test\WebTestCase;
 
 class IssueControllerTest extends WebTestCase
 {
+    const PROJECT_NAME = 'BAP';
+    const ISSUE_NAME = 'Test Issue';
+    const ISSUE_DESCRIPTION = 'Description for Test Issue';
+    const ISSUE_NAME_CHANGED = 'Test Issue - Changed';
+    const ISSUE_DESCRIPTION_CHANGED = 'Description for Test Issue - Changed';
+    const COMMENT = 'Test Comment';
+
     protected function setUp()
     {
         $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
-    public function testCompleteScenario()
+    /**
+     * @return int|null
+     */
+    public function testCreate()
     {
         //open project list
         $crawler = $this->client->request('GET', $this->getUrl('project'));
-        $crawler = $this->client->click($crawler->selectLink('BAP')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Create Issue')->link());
+        $crawler = $this->client->click($crawler->selectLink(self::PROJECT_NAME)->link());
+        $crawler = $this->client->click(
+            $crawler->selectLink($this->getTrans('oro.project.create_issue_label'))->link()
+        );
 
         $this->assertEquals(
             200,
@@ -25,95 +37,141 @@ class IssueControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            'Create New Issue',
+            $this->getTrans('oro.issue.new_issue_header'),
             $this->client->getResponse()->getContent()
         );
 
         //filling the form
-        $form = $crawler->selectButton('Create Issue')->form();
+        $form = $crawler->selectButton($this->getTrans('oro.issue.create_issue_button'))->form();
         $form->setValues(array(
-            'oro_issuebundle_issue[summary]'     => 'Test Issue',
-            'oro_issuebundle_issue[description]' => 'Description for Test Issue',
+            'oro_issuebundle_issue[summary]'     => self::ISSUE_NAME,
+            'oro_issuebundle_issue[description]' => self::ISSUE_DESCRIPTION,
         ));
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertContains(
-            'Issue has been successfully created',
+            $this->getTrans('oro.issue.messages.issue_created'),
             $this->client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            'Test Issue',
+            self::ISSUE_NAME,
             $this->client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            'Description for Test Issue',
+            self::ISSUE_DESCRIPTION,
             $this->client->getResponse()->getContent()
         );
 
-        //edit
-        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
+        $url = $this->client->getHistory()->current()->getUri();
+        $id = $this->getIdFromUrl($url);
 
-        $form = $crawler->selectButton('Update')->form();
+        $this->assertNotNull($id);
+
+        return $id;
+    }
+
+    /**
+     * Extract issue id from url
+     *
+     * @param $url
+     * @return int|null
+     */
+    protected function getIdFromUrl($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        $router = $this->getRouter()->match($path);
+        return (isset($router['id'])) ? $router['id'] : null;
+    }
+
+    /**
+     * @param int $id
+     * @depends testCreate
+     * @return int|null
+     */
+    public function testUpdate($id)
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('issue_update', array('id' => $id)));
+
+        $form = $crawler->selectButton($this->getTrans('oro.issue.update_button'))->form();
+
         $form->setValues(array(
-            'oro_issuebundle_issue[summary]'     => 'Test Issue - Changed',
-            'oro_issuebundle_issue[description]' => 'Description for Test Issue - Changed',
+            'oro_issuebundle_issue[summary]'     => self::ISSUE_NAME_CHANGED,
+            'oro_issuebundle_issue[description]' => self::ISSUE_DESCRIPTION_CHANGED,
+            'oro_issuebundle_issue[issueStatus]' => 'Resolved',
         ));
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertContains(
-            'Test Issue - Changed',
+            self::ISSUE_NAME_CHANGED,
             $this->client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            'Description for Test Issue - Changed',
+            self::ISSUE_DESCRIPTION_CHANGED,
             $this->client->getResponse()->getContent()
         );
 
-        //add comment
-        $form = $crawler->selectButton('Add')->form(array(
-            'oro_issuebundle_comment[body]' => 'Test Comment'
-        ));
+        return $id;
+    }
+
+    /**
+     * @param int $id
+     * @depends testUpdate
+     */
+    public function testAddComment($id)
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('issue_show', array('id' => $id)));
+        $form = $crawler->selectButton($this->getTrans('oro.comment.add_button'))->form(
+            array(
+                'oro_issuebundle_comment[body]' => self::COMMENT
+            )
+        );
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
         $this->assertContains(
-            'Test Comment',
+            self::COMMENT,
             $this->client->getResponse()->getContent()
         );
+    }
 
-        //check in project list
-        $crawler = $this->client->click($crawler->selectLink(
-            'Business Application Platform'
-        )->link());
+    /**
+     * @param int $id
+     * @depends testUpdate
+     */
+    public function testViewInProject($id)
+    {
+        //open project list
+        $crawler = $this->client->request('GET', $this->getUrl('project'));
+        $this->client->click($crawler->selectLink(self::PROJECT_NAME)->link());
 
         $this->assertContains(
-            'Test Issue - Changed',
+            self::ISSUE_NAME_CHANGED,
             $this->client->getResponse()->getContent()
         );
 
         //delete
-        $this->removeTestIssue('Test Issue - Changed');
+        $this->removeTestIssue($id);
     }
 
     /**
      * Remove test issue
-     * @param $summary
+     * @param $id
      */
-    protected function removeTestIssue($summary)
+    protected function removeTestIssue($id)
     {
         $container = self::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager();
-        $testIssue = $em->getRepository('OroIssueBundle:Issue')->findOneBySummary($summary);
+        $testIssue = $em->getRepository('OroIssueBundle:Issue')->find($id);
         $em->remove($testIssue);
         $em->flush();
     }

@@ -3,9 +3,6 @@
 namespace Oro\IssueBundle\Tests\Unit;
 
 use Oro\IssueBundle\Form\CommentType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilder;
 
 class CommentTypeTest extends \PHPUnit_Framework_TestCase
 {

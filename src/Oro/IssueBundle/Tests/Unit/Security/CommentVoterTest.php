@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class CommentVoterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CommnetVoter
+     * @var CommentVoter
      */
     protected $voter;
 
@@ -84,50 +84,42 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
         $currentUser = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
-        $currentUser->expects($this->any())
-            ->method('getRole')
+        $currentUser->method('getRole')
             ->will($this->returnCallback(function ($expectedRole) use ($role) {
                 return $expectedRole == $role;
             }));
 
-        $currentUser->expects($this->any())
-            ->method('getUsername')
+        $currentUser->method('getUsername')
             ->will($this->returnValue($currentUsername));
 
-        $token->expects($this->any())
-            ->method('getUser')
+        $token->method('getUser')
             ->will($this->returnValue($currentUser));
 
         $project = $this->getMockBuilder('Oro\ProjectBundle\Entity\Project')
             ->disableOriginalConstructor()->getMock();
 
-        $project->expects($this->any())
-            ->method('isMember')
+        $project->method('isMember')
             ->will($this->returnValue($isMember));
 
         $issue = $this->getMockBuilder('Oro\IssueBundle\Entity\Issue')
             ->disableOriginalConstructor()->getMock();
 
-        $issue->expects($this->any())
-            ->method('getProject')
+        $issue->method('getProject')
             ->will($this->returnValue($project));
 
         $author = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
-        $author->expects($this->any())
-            ->method('getUsername')
+        $author->method('getUsername')
             ->will($this->returnValue($objectUsername));
 
         $object = $this->getMockBuilder($objectClass)
             ->disableOriginalConstructor()->getMock();
 
-        $object->expects($this->any())
-            ->method('getIssue')
+        $object->method('getIssue')
             ->will($this->returnValue($issue));
 
-        $object->expects($this->any())
-            ->method('getAuthor')
+        $object->method('getAuthor')
             ->will($this->returnValue($author));
 
         $this->assertEquals($expected, $this->voter->vote($token, $object, $attributes));

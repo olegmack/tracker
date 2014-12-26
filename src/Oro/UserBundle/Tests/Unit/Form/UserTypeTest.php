@@ -3,9 +3,6 @@
 namespace Oro\UserBundle\Tests\Unit;
 
 use Oro\UserBundle\Form\UserType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilder;
 
 class UserTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,16 +24,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
-        $user->expects($this->any())
-            ->method('getUsername')
+        $user->method('getUsername')
             ->will($this->returnValue('test'));
 
-        $token->expects($this->any())
-            ->method('getUser')
+        $token->method('getUser')
             ->will($this->returnValue($user));
 
-        $securityInterface->expects($this->any())
-            ->method('getToken')
+        $securityInterface->method('getToken')
             ->will($this->returnValue($token));
 
         $this->type = new UserType($securityInterface);
@@ -82,7 +76,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
-        $user->expects($this->any())
+        $user->expects($this->once())
             ->method('getUsername')
             ->will($this->returnValue('test'));
 

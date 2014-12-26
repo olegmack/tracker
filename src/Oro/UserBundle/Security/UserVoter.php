@@ -3,7 +3,6 @@ namespace Oro\UserBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\UserBundle\Entity\User;
 

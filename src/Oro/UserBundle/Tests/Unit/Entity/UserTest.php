@@ -7,6 +7,9 @@ use Oro\UserBundle\Entity\User;
 class UserTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param $property
+     * @param $value
+     * @param $expected
      * @dataProvider getSetDataProvider
      */
     public function testGetSet($property, $value, $expected)
@@ -17,6 +20,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
     }
 
+    /**
+     * Data provider
+     *
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $role = $this->getMock('Oro\Bundle\UserBundle\Entity\Role');

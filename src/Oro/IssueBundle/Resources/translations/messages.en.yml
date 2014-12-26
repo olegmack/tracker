@@ -1,3 +1,26 @@
+Trivial: Trivial
+Minor: Minor
+Major: Major
+Critical: Critical
+Blocker: Blocker
+
+Unresolved: Unresolved
+Fixed: Fixed
+Duplicate: Duplicate
+Won't fix: Won't fix
+Done: Done
+
+Open: Open
+In Progress: In Progress
+Resolved: Resolved
+Reopened: Reopened
+Closed: Closed
+
+Bug: Bug
+Story: Story
+Task: Task
+Sub-task: Sub-task
+
 oro:
     issue:
         edit_label: Edit

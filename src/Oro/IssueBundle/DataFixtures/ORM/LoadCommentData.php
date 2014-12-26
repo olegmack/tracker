@@ -1,12 +1,12 @@
 <?php
+
 namespace Oro\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+
 use Oro\IssueBundle\Entity\Comment;
-use Oro\UserBundle\Entity\User;
 
 class LoadCommentData extends AbstractFixture implements DependentFixtureInterface
 {

@@ -28,4 +28,11 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->object->getCode() == $this->code);
     }
+
+    public function testGetSetPriority()
+    {
+        $priority = 100;
+        $this->object->setPriority($priority);
+        $this->assertTrue($this->object->getPriority() == $priority);
+    }
 }

@@ -3,9 +3,6 @@
 namespace Oro\ProjectBundle\Tests\Unit;
 
 use Oro\ProjectBundle\Form\ProjectType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilder;
 
 class ProjectTypeTest extends \PHPUnit_Framework_TestCase
 {

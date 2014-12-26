@@ -81,25 +81,21 @@ class ProjectVoterTest extends \PHPUnit_Framework_TestCase
         $currentUser = $this->getMockBuilder('Oro\UserBundle\Entity\User')
             ->disableOriginalConstructor()->getMock();
 
-        $currentUser->expects($this->any())
-            ->method('getRole')
+        $currentUser->method('getRole')
             ->will($this->returnCallback(function ($expectedRole) use ($role) {
                 return $expectedRole == $role;
             }));
 
-        $currentUser->expects($this->any())
-            ->method('getUsername')
+        $currentUser->method('getUsername')
             ->will($this->returnValue('test'));
 
-        $token->expects($this->any())
-            ->method('getUser')
+        $token->method('getUser')
             ->will($this->returnValue($currentUser));
 
         $object = $this->getMockBuilder($objectClass)
             ->disableOriginalConstructor()->getMock();
 
-        $object->expects($this->any())
-            ->method('isMember')
+        $object->method('isMember')
             ->will($this->returnValue($isMember));
 
         $this->assertEquals($expected, $this->voter->vote($token, $object, $attributes));

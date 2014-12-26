@@ -61,7 +61,7 @@ class IssueController extends Controller
                 $entity->setParent($parentIssue);
             } else {
                 throw new AccessDeniedException(
-                    $this->get('translator')->trans('oro.issue.messages.incorrect_parent_issue')
+                    $this->get('translator')->trans('oro.issue.messages.incorrect_parent')
                 );
             }
         }

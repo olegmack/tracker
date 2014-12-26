@@ -12,10 +12,9 @@ class UserControllerTest extends WebTestCase
         $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
-    public function testCompleteScenario()
+    public function testIndex()
     {
-        // Create a new entry in the database
-        $crawler = $this->client->request('GET', $this->getUrl('user'));
+        $this->client->request('GET', $this->getUrl('user'));
         $this->assertEquals(
             200,
             $this->client->getResponse()->getStatusCode(),
@@ -23,18 +22,20 @@ class UserControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            "Users",
+            $this->getTrans('oro.user.users_title'),
             $this->client->getResponse()->getContent()
         );
+    }
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->click($crawler->selectLink('+ Add User')->link());
+    public function testCreate()
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('user_create'));
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Submit')->form();
         $form->setValues(array(
             'oro_userbundle_user[email]'          => 'test@oro.com',
-            'oro_userbundle_user[username]'       => 'test',
+            'oro_userbundle_user[username]'       => 'test_username',
             'oro_userbundle_user[fullname]'       => 'John Doe',
             'oro_userbundle_user[plainPassword]'  => 'test123',
         ));
@@ -45,22 +46,37 @@ class UserControllerTest extends WebTestCase
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
+        $result = $this->client->getResponse()->getContent();
 
         $this->assertContains(
-            'User has been successfully added',
-            $this->client->getResponse()->getContent()
+            $this->getTrans('oro.user.messages.user_added'),
+            $result
         );
 
         $this->assertContains(
             'test@oro.com',
-            $this->client->getResponse()->getContent()
+            $result
         );
 
-        //edit
-        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
+        $url = $this->client->getHistory()->current()->getUri();
+        $id = $this->getIdFromUrl($url);
 
-        $form = $crawler->selectButton('Update')->form();
+        $this->assertNotNull($id);
+
+        return $id;
+    }
+
+    /**
+     * @param int $id
+     * @depends testCreate
+     */
+    public function testUpdate($id)
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('user_update', array('id' => $id)));
+
+        /** @var Crawler $crawler */
+        $form = $crawler->selectButton($this->getTrans('oro.user.update'))->form();
         $form->setValues(array(
             'oro_userbundle_user[email]'          => 'test@oro.com',
             'oro_userbundle_user[username]'       => 'test',
@@ -68,7 +84,7 @@ class UserControllerTest extends WebTestCase
         ));
 
         $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertContains(
             'John Doe - Changed',
@@ -76,9 +92,9 @@ class UserControllerTest extends WebTestCase
         );
 
         //check in users list
-        $this->client->click($crawler->selectLink('« Back to the Users list')->link());
+        $this->client->request('GET', $this->getUrl('user'));
         $this->assertContains(
-            '<h1>Users</h1>',
+            '<h1>' . $this->getTrans('oro.user.users_title') .'</h1>',
             $this->client->getResponse()->getContent()
         );
 
@@ -93,6 +109,19 @@ class UserControllerTest extends WebTestCase
         );
 
         $this->removeTestUser('test@oro.com');
+    }
+
+    /**
+     * Extract user id from url
+     *
+     * @param $url
+     * @return int|null
+     */
+    protected function getIdFromUrl($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        $router = $this->getRouter()->match($path);
+        return (isset($router['id'])) ? $router['id'] : null;
     }
 
     /**

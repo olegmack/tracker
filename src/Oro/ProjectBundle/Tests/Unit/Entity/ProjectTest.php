@@ -3,11 +3,15 @@
 namespace Oro\ProjectBundle\Tests\Unit;
 
 use Oro\ProjectBundle\Entity\Project;
+use Oro\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param $property
+     * @param $value
+     * @param $expected
      * @dataProvider getSetDataProvider
      */
     public function testGetSet($property, $value, $expected)
@@ -28,5 +32,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'summary' => array('summary', 'Test Project Summary', 'Test Project Summary'),
             'users'   => array('users', new ArrayCollection(array($user)), new ArrayCollection(array($user)))
         );
+    }
+
+    public function testUserAddRemove()
+    {
+        $obj = new Project();
+        $user = new User();
+        $obj->addUser($user);
+        $this->assertTrue($obj->hasUser($user));
+
+        $obj->removeUser($user);
+        $this->assertFalse($obj->hasUser($user));
     }
 }

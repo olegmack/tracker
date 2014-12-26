@@ -6,42 +6,43 @@ use Oro\TestBundle\Test\WebTestCase;
 
 class ProjectControllerTest extends WebTestCase
 {
+    const PROJECT_NAME = 'Test Project';
+    const PROJECT_CODE = 'TEST';
+    const PROJECT_SUMMARY = 'Test Project Description';
+    const PROJECT_NAME_CHANGED = 'Test Project - Changed';
+    const PROJECT_CODE_CHANGED = 'TEST-CHG';
+    const PROJECT_SUMMARY_CHANGED = 'Test Project Description - Changed';
+
     protected function setUp()
     {
         $this->initClient(array(), $this->generateBasicAuthHeader());
     }
 
-    public function testCompleteScenario()
+    public function testIndex()
     {
-        $container = self::$kernel->getContainer();
-
-        // Create a new entry in the database
-        $crawler = $this->client->request('GET', $this->getUrl('project'));
+        $this->client->request('GET', $this->getUrl('project'));
         $this->assertEquals(
             200,
             $this->client->getResponse()->getStatusCode(),
-            "Unexpected HTTP status code for GET /user/"
+            "Unexpected HTTP status code for GET /project/"
         );
 
         $this->assertContains(
-            "Projects",
+            $this->getTrans('oro.project.projects_title'),
             $this->client->getResponse()->getContent()
         );
+    }
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->click($crawler->selectLink(
-            $container->get('translator')->trans('oro.project.create_label')
-        )->link());
+    public function testCreate()
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('project_create'));
 
         // Fill in the form and submit it
-        $form = $crawler->selectButton(
-            $container->get('translator')->trans('oro.project.create_label')
-        )->form();
-        $projectName = 'Test Project';
+        $form = $crawler->selectButton($this->getTrans('oro.project.create_label'))->form();
         $form->setValues(array(
-            'oro_projectbundle_project[name]'     => $projectName,
-            'oro_projectbundle_project[code]'     => 'TEST',
-            'oro_projectbundle_project[summary]'  => 'Test Project Description'
+            'oro_projectbundle_project[name]'     => self::PROJECT_NAME,
+            'oro_projectbundle_project[code]'     => self::PROJECT_CODE,
+            'oro_projectbundle_project[summary]'  => self::PROJECT_SUMMARY
         ));
 
         $form['oro_projectbundle_project[users]']->select(
@@ -50,56 +51,89 @@ class ProjectControllerTest extends WebTestCase
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
+        $result = $this->client->getResponse()->getContent();
         $this->assertContains(
-            'Project has been successfully created',
-            $this->client->getResponse()->getContent()
+            $this->getTrans('oro.project.messages.project_added'),
+            $result
         );
 
         $this->assertContains(
-            $container->get('translator')->trans('oro.project.show_title', array('name' => $projectName)),
-            $this->client->getResponse()->getContent()
+            $this->getTrans('oro.project.show_title', array('name' => self::PROJECT_NAME)),
+            $result
         );
 
-        //edit
-        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
+        $url = $this->client->getHistory()->current()->getUri();
+        $id = $this->getIdFromUrl($url);
 
-        $form = $crawler->selectButton('Update')->form();
-        $projectName .= ' Changed';
+        $this->assertNotNull($id);
+
+        return $id;
+    }
+
+    /**
+     * Extract project id from url
+     *
+     * @param $url
+     * @return int|null
+     */
+    protected function getIdFromUrl($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        $router = $this->getRouter()->match($path);
+        return (isset($router['id'])) ? $router['id'] : null;
+    }
+
+    /**
+     * @param int $id
+     * @depends testCreate
+     * @return int
+     */
+    public function testUpdate($id)
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('project_update', array('id' => $id)));
+
+        $form = $crawler->selectButton($this->getTrans('oro.project.update_label'))->form();
         $form->setValues(array(
-            'oro_projectbundle_project[name]'     => $projectName,
-            'oro_projectbundle_project[code]'     => 'TEST-CHG',
-            'oro_projectbundle_project[summary]'  => 'Test Project Description - Changed'
+            'oro_projectbundle_project[name]'     => self::PROJECT_NAME_CHANGED,
+            'oro_projectbundle_project[code]'     => self::PROJECT_CODE_CHANGED,
+            'oro_projectbundle_project[summary]'  => self::PROJECT_SUMMARY_CHANGED
         ));
 
         $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
-
-        $this->assertContains($projectName, $this->client->getResponse()->getContent());
-
-        $this->assertContains('Test Project Description - Changed', $this->client->getResponse()->getContent());
-
-        //check in projects list
-        $crawler = $this->client->click($crawler->selectLink(
-            '« Back to the Projects list'
-        )->link());
+        $this->client->followRedirect();
 
         $this->assertContains(
-            $container->get('translator')->trans('oro.project.projects_title'),
+            self::PROJECT_NAME_CHANGED,
             $this->client->getResponse()->getContent()
         );
 
-        $this->assertContains($projectName, $this->client->getResponse()->getContent());
+        $this->assertContains(self::PROJECT_SUMMARY_CHANGED, $this->client->getResponse()->getContent());
 
-        //delete
-        $crawler = $this->client->click($crawler->selectLink('TEST-CHG')->link());
-        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
-        $form = $crawler->selectButton('Delete')->form();
+        //check in projects list
+        $this->client->request('GET', $this->getUrl('project'));
+        $this->assertContains(
+            self::PROJECT_NAME_CHANGED,
+            $this->client->getResponse()->getContent()
+        );
+
+        return $id;
+    }
+
+    /**
+     * @param int $id
+     * @depends testUpdate
+     * @return int
+     */
+    public function testDelete($id)
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('project_update', array('id' => $id)));
+        $form = $crawler->selectButton($this->getTrans('oro.project.delete_label'))->form();
         $this->client->submit($form);
         $this->client->followRedirect();
 
-        $this->assertNotContains($projectName, $this->client->getResponse()->getContent());
-        $this->assertNotContains('TEST-CHG', $this->client->getResponse()->getContent());
+        $this->assertNotContains(self::PROJECT_NAME_CHANGED, $this->client->getResponse()->getContent());
+        $this->assertNotContains(self::PROJECT_CODE_CHANGED, $this->client->getResponse()->getContent());
     }
 }

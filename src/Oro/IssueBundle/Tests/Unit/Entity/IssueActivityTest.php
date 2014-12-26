@@ -7,6 +7,9 @@ use Oro\IssueBundle\Entity\IssueActivity;
 class IssueActivityTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param $property
+     * @param $value
+     * @param $expected
      * @dataProvider getSetDataProvider
      */
     public function testGetSet($property, $value, $expected)
@@ -17,6 +20,9 @@ class IssueActivityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
     }
 
+    /**
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $now = new \DateTime('now');

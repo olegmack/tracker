@@ -2,6 +2,7 @@
 
 namespace Oro\TestBundle\Test;
 
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 abstract class WebTestCase extends BaseWebTestCase
@@ -46,7 +47,6 @@ abstract class WebTestCase extends BaseWebTestCase
 
         $this->client = self::$clientInstance;
     }
-
 
     /**
      * Reset client and rollback transaction
@@ -119,6 +119,27 @@ abstract class WebTestCase extends BaseWebTestCase
     protected function getUrl($name, $parameters = array(), $absolute = false)
     {
         return self::getContainer()->get('router')->generate($name, $parameters, $absolute);
+    }
+
+    /**
+     * Get router
+     */
+    protected function getRouter()
+    {
+        return self::getContainer()->get('router');
+    }
+
+    /**
+     * Get translation based on parameters
+     *
+     * @param $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     */
+    protected function getTrans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
+        return self::getContainer()->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
     /**
