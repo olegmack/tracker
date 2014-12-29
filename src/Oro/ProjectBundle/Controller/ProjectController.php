@@ -30,7 +30,8 @@ class ProjectController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = (false === $this->get('security.context')->isGranted('VIEW_LIST', new Project()))
+        $entities =
+            (false === $this->get('security.context')->isGranted('VIEW_LIST', 'Oro\ProjectBundle\Entity\Project'))
             ? $em->getRepository('OroProjectBundle:Project')->findByMember($this->getUser()->getId())
             : $em->getRepository('OroProjectBundle:Project')->findAll();
 
@@ -85,10 +86,7 @@ class ProjectController extends Controller
      */
     private function createCreateForm(Project $entity)
     {
-        $form = $this->createForm('oro_projectbundle_project', $entity, array(
-            'action' => $this->generateUrl('project_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm('oro_projectbundle_project', $entity);
 
         return $form;
     }
@@ -126,10 +124,7 @@ class ProjectController extends Controller
     */
     private function createEditForm(Project $entity)
     {
-        $form = $this->createForm('oro_projectbundle_project', $entity, array(
-            'action' => $this->generateUrl('project_update', array('id' => $entity->getId())),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm('oro_projectbundle_project', $entity);
 
         return $form;
     }

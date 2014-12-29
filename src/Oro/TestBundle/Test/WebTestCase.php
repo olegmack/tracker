@@ -4,6 +4,7 @@ namespace Oro\TestBundle\Test;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
@@ -115,6 +116,7 @@ abstract class WebTestCase extends BaseWebTestCase
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
+     * @return string
      */
     protected function getUrl($name, $parameters = array(), $absolute = false)
     {
@@ -132,10 +134,11 @@ abstract class WebTestCase extends BaseWebTestCase
     /**
      * Get translation based on parameters
      *
-     * @param $id
+     * @param string $id
      * @param array $parameters
      * @param null $domain
      * @param null $locale
+     * @return string
      */
     protected function getTrans($id, array $parameters = array(), $domain = null, $locale = null)
     {
@@ -150,5 +153,18 @@ abstract class WebTestCase extends BaseWebTestCase
     protected static function getContainer()
     {
         return static::getClientInstance()->getContainer();
+    }
+
+    /**
+     * Extract user id from url
+     *
+     * @param string $url
+     * @return int|null
+     */
+    protected function getIdFromUrl($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        $router = $this->getRouter()->match($path);
+        return (isset($router['id'])) ? $router['id'] : null;
     }
 }

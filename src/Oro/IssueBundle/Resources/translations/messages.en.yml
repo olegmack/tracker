@@ -59,6 +59,7 @@ oro:
             issue_priority_label: Priority
             collaborators_label: Collaborators
             parent_label: Parent
+            parent_label_empty: Please choose a parent Issue
             created_label: Created At
             updated_label: Updated At
 

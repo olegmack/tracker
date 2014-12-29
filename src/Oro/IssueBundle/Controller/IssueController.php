@@ -25,8 +25,8 @@ class IssueController extends Controller
      * @Route("/create/{project}/{parent}", name="issue_create", defaults={"parent" = 0})
      * @Template()
      *
-     * @param $project
-     * @param $parent
+     * @param int $project
+     * @param int $parent
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -73,7 +73,7 @@ class IssueController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (false === $this->get('security.context')->isGranted('ACCESS', $entity)) {
-                throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.access_denied'));
+                throw new AccessDeniedException($this->get('translator')->trans('oro.issue.messages.parent_empty'));
             }
 
             $currentUser = $this->getUser();
@@ -152,11 +152,7 @@ class IssueController extends Controller
     {
         $form = $this->createForm(
             'oro_issuebundle_issue',
-            $entity,
-            array(
-                'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
-                'method' => 'POST',
-            )
+            $entity
         );
 
         return $form;

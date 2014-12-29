@@ -4,8 +4,6 @@ namespace Oro\UserBundle\Security;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-use Oro\UserBundle\Entity\User;
-
 class UserVoter implements VoterInterface
 {
     const VIEW = 'VIEW';
@@ -13,6 +11,12 @@ class UserVoter implements VoterInterface
     const EDIT_ROLE = 'EDIT_ROLE';
     const VIEW_LIST = 'VIEW_LIST';
 
+    /**
+     * Check for supported actions
+     *
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -23,8 +27,16 @@ class UserVoter implements VoterInterface
         ));
     }
 
-    public function supportsClass($class)
+    /**
+     * Check for supported class
+     *
+     * @param string|object $object
+     * @return bool
+     */
+    public function supportsClass($object)
     {
+        //check for supported class
+        $class = (is_object($object)) ? get_class($object) : $object;
         $supportedClass = 'Oro\UserBundle\Entity\User';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
@@ -32,14 +44,14 @@ class UserVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param \Oro\UserBundle\Entity\User $object
+     * @param \Oro\UserBundle\Entity\User|string $object
      * @param array $attributes
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         //check for supported class
-        if (!$this->supportsClass(get_class($object))) {
+        if (!$this->supportsClass($object)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -53,9 +65,6 @@ class UserVoter implements VoterInterface
 
         //get auth user
         $user = $token->getUser();
-        if (!$user instanceof User) {
-            return VoterInterface::ACCESS_DENIED;
-        }
 
         switch($attribute) {
             case self::VIEW:

@@ -5,8 +5,6 @@ namespace Oro\IssueBundle\Security;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-use Oro\UserBundle\Entity\User;
-
 class CommentVoter implements VoterInterface
 {
     const CREATE = 'CREATE';
@@ -25,11 +23,14 @@ class CommentVoter implements VoterInterface
     }
 
     /**
-     * @param string $class
+     * @param string|object $object
      * @return bool
      */
-    public function supportsClass($class)
+    public function supportsClass($object)
     {
+        //check for supported class
+        $class = (is_object($object)) ? get_class($object) : $object;
+
         $supportedClass = 'Oro\IssueBundle\Entity\Comment';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
@@ -37,14 +38,14 @@ class CommentVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param \Oro\ProjectBundle\Entity\Project $object
+     * @param \Oro\ProjectBundle\Entity\Project|string $object
      * @param array $attributes
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         //check for supported class
-        if (!$this->supportsClass(get_class($object))) {
+        if (!$this->supportsClass($object)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -56,11 +57,12 @@ class CommentVoter implements VoterInterface
             $attribute = $attributes[0];
         }
 
+        if (is_string($object)) {
+            $object = new $object;
+        }
+
         //get auth user
         $user = $token->getUser();
-        if (!$user instanceof User) {
-            return VoterInterface::ACCESS_DENIED;
-        }
 
         switch($attribute) {
             case self::CREATE:

@@ -46,7 +46,7 @@ class CommentListener
      * @param EntityManager $entityManager
      * @param Comment $comment
      */
-    protected function addCollaborator($entityManager, $comment)
+    protected function addCollaborator(EntityManager $entityManager, Comment $comment)
     {
         /** @var Issue $issue */
         $issue = $comment->getIssue();
@@ -62,7 +62,7 @@ class CommentListener
      * @param EntityManager $entityManager
      * @param Comment $comment
      */
-    protected function createActivityFromComment($entityManager, $comment)
+    protected function createActivityFromComment(EntityManager $entityManager, Comment $comment)
     {
         $activity = new IssueActivity();
         $activity

@@ -52,7 +52,6 @@ class Comment
      */
     private $issue;
 
-
     /**
      * @var User
      *

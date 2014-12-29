@@ -112,25 +112,12 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
-     * Extract user id from url
-     *
-     * @param $url
-     * @return int|null
-     */
-    protected function getIdFromUrl($url)
-    {
-        $path = parse_url($url, PHP_URL_PATH);
-        $router = $this->getRouter()->match($path);
-        return (isset($router['id'])) ? $router['id'] : null;
-    }
-
-    /**
      * Remove user with defined e-mail
      * @param $email
      */
     protected function removeTestUser($email)
     {
-        $container = self::$kernel->getContainer();
+        $container = self::getContainer();
         $em = $container->get('doctrine')->getManager();
         $testUser = $em->getRepository('OroUserBundle:User')->findOneByEmail($email);
         $em->remove($testUser);

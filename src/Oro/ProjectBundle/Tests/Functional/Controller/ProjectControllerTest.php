@@ -73,19 +73,6 @@ class ProjectControllerTest extends WebTestCase
     }
 
     /**
-     * Extract project id from url
-     *
-     * @param $url
-     * @return int|null
-     */
-    protected function getIdFromUrl($url)
-    {
-        $path = parse_url($url, PHP_URL_PATH);
-        $router = $this->getRouter()->match($path);
-        return (isset($router['id'])) ? $router['id'] : null;
-    }
-
-    /**
      * @param int $id
      * @depends testCreate
      * @return int

@@ -2,9 +2,12 @@
 
 namespace Oro\IssueBundle\Tests\Unit;
 
-use Oro\IssueBundle\Form\CommentType;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
-class CommentTypeTest extends \PHPUnit_Framework_TestCase
+use Oro\IssueBundle\Form\CommentType;
+use Oro\IssueBundle\Entity\Comment;
+
+class CommentTypeTest extends FormIntegrationTestCase
 {
     /**
      * @var CommentType
@@ -13,6 +16,7 @@ class CommentTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        parent::setUp();
         $this->type = new CommentType();
     }
 
@@ -50,5 +54,24 @@ class CommentTypeTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->type->buildForm($builder, array());
+    }
+
+    /**
+     * Test form submit
+     */
+    public function testSubmitData()
+    {
+        $form = $this->factory->create($this->type);
+
+        $formData = [
+            'body' => 'Test Comment body'
+        ];
+
+        $form->submit($formData);
+        $this->assertTrue($form->isSynchronized());
+
+        /** @var Comment $result */
+        $result = $form->getData();
+        $this->assertEquals($formData['body'], $result->getBody());
     }
 }

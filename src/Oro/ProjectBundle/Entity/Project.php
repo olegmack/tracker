@@ -217,7 +217,7 @@ class Project
 
     /**
      * Check is user a member of the project by username
-     * @param $username
+     * @param string $username
      * @return bool
      */
     public function isMember($username)

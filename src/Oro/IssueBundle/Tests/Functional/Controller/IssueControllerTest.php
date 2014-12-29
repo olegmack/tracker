@@ -76,19 +76,6 @@ class IssueControllerTest extends WebTestCase
     }
 
     /**
-     * Extract issue id from url
-     *
-     * @param $url
-     * @return int|null
-     */
-    protected function getIdFromUrl($url)
-    {
-        $path = parse_url($url, PHP_URL_PATH);
-        $router = $this->getRouter()->match($path);
-        return (isset($router['id'])) ? $router['id'] : null;
-    }
-
-    /**
      * @param int $id
      * @depends testCreate
      * @return int|null
@@ -165,11 +152,12 @@ class IssueControllerTest extends WebTestCase
 
     /**
      * Remove test issue
-     * @param $id
+     *
+     * @param int $id
      */
     protected function removeTestIssue($id)
     {
-        $container = self::$kernel->getContainer();
+        $container = self::getContainer();
         $em = $container->get('doctrine')->getManager();
         $testIssue = $em->getRepository('OroIssueBundle:Issue')->find($id);
         $em->remove($testIssue);

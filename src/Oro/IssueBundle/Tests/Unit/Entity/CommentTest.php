@@ -7,9 +7,9 @@ use Oro\IssueBundle\Entity\Comment;
 class CommentTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param $property
-     * @param $value
-     * @param $expected
+     * @param string $property
+     * @param string $value
+     * @param string $expected
      * @dataProvider getSetDataProvider
      */
     public function testGetSet($property, $value, $expected)

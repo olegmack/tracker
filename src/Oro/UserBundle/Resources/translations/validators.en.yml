@@ -1,0 +1,5 @@
+oro:
+    user:
+        avatar:
+            max_size: The maxmimum allowed file size is 5MB.
+            incorrect_type: Only the filetypes image are allowed.

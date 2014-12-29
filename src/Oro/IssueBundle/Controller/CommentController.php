@@ -28,7 +28,7 @@ class CommentController extends Controller
      * @Template()
      *
      * @param Issue $issue
-     * @return RedirectResponse
+     * @return array|RedirectResponse
      */
     public function createAction(Issue $issue)
     {

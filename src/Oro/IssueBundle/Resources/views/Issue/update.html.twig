@@ -9,7 +9,7 @@
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{{ path('project_show', { 'id': entity.project.id }) }}">{{ entity.project.name }}</a></li>
-        {% if (entity.issueType.code == 'subtask') %}
+        {% if (entity.issueType.code == 'subtask' and entity.parent) %}
             <li><a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">{{ entity.parent }}</a></li>
         {% endif %}
         <li><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a></li>

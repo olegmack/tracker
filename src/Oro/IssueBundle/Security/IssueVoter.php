@@ -22,11 +22,13 @@ class IssueVoter implements VoterInterface
     }
 
     /**
-     * @param string $class
+     * @param string|object $object
      * @return bool
      */
-    public function supportsClass($class)
+    public function supportsClass($object)
     {
+        //check for supported class
+        $class = (is_object($object)) ? get_class($object) : $object;
         $supportedClass = 'Oro\IssueBundle\Entity\Issue';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
@@ -34,14 +36,14 @@ class IssueVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
-     * @param \Oro\ProjectBundle\Entity\Project $object
+     * @param \Oro\ProjectBundle\Entity\Project|string $object
      * @param array $attributes
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         //check for supported class
-        if (!$this->supportsClass(get_class($object))) {
+        if (!$this->supportsClass($object)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -52,7 +54,6 @@ class IssueVoter implements VoterInterface
             //use only first attribute
             $attribute = $attributes[0];
         }
-
 
         //get auth user
         $user = $token->getUser();

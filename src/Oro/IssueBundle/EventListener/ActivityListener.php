@@ -33,10 +33,6 @@ class ActivityListener
         //send e-mail to issue collaborators
         /** @var IssueActivity $entity */
         $activityType = $entity->getType();
-        if ($activityType == IssueActivity::ACTIVITY_ISSUE) {
-            //it's not necessary to send e-mail about new issue only to person who created it
-            return;
-        }
 
         $collaborators = $entity->getIssue()->getCollaborators();
         if (!empty($collaborators)) {

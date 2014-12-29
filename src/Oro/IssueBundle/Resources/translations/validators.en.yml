@@ -1,0 +1,4 @@
+oro:
+    issue:
+        messages:
+            parent_empty: Parent Issue should be defined for Sub-task issues

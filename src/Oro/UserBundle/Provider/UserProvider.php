@@ -13,7 +13,7 @@ class UserProvider
     private $container;
 
     /**
-     * @param $container
+     * @param Container $container
      */
     public function __construct(Container $container)
     {

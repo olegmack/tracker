@@ -60,7 +60,6 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-
     /**
      * @param int $expected
      * @param string $objectClass

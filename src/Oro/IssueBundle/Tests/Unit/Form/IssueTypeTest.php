@@ -41,12 +41,12 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
         $expectedFields = array(
             'summary' => 'text',
             'description' => 'textarea',
+            'assignee' => 'entity',
+            'parent' => 'entity',
             'issueType' => 'entity',
             'issuePriority' => 'entity',
             'issueResolution' => 'entity',
-            'issueStatus' => 'entity',
-            'assignee' => 'entity',
-            'parent' => 'entity'
+            'issueStatus' => 'entity'
         );
 
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')

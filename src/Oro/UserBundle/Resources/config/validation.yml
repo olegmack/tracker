@@ -14,8 +14,8 @@ Oro\UserBundle\Entity\User:
             - File:
                  maxSize: 5M
                  mimeTypes: [image/jpeg, image/gif, image/png, image/tiff]
-                 maxSizeMessage: The maxmimum allowed file size is 5MB.
-                 mimeTypesMessage: Only the filetypes image are allowed.
+                 maxSizeMessage: "oro.user.avatar.max_size"
+                 mimeTypesMessage: "oro.user.avatar.incorrect_type"
 
 Oro\UserBundle\Entity\Role:
     constraints:

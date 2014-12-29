@@ -88,10 +88,7 @@ class UserController extends Controller
      */
     private function createCreateForm(User $entity)
     {
-        $form = $this->createForm('oro_userbundle_user', $entity, array(
-            'action' => $this->generateUrl('user_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm('oro_userbundle_user', $entity);
 
         return $form;
     }
@@ -134,10 +131,7 @@ class UserController extends Controller
     */
     private function createUpdateForm(User $entity)
     {
-        $form = $this->createForm('oro_userbundle_user', $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm('oro_userbundle_user', $entity);
 
         return $form;
     }
@@ -195,7 +189,7 @@ class UserController extends Controller
      * Encode plain password
      *
      * @param User $user
-     * @param $plainPassword
+     * @param string $plainPassword
      * @return string
      */
     protected function encodePassword(User $user, $plainPassword)

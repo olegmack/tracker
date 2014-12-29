@@ -1,9 +1,11 @@
 <?php
+
 namespace Oro\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 use Oro\UserBundle\Entity\User;
@@ -85,7 +87,7 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $user4->setPassword($encoder->encodePassword('operator123', $user4->getSalt()));
         $user4->getRolesCollection()->add($userRole);
         $manager->persist($user4);
-        
+
         $manager->flush();
 
         $this->addReference('user_admin', $user);

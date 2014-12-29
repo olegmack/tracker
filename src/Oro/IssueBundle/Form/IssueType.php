@@ -40,6 +40,46 @@ class IssueType extends AbstractType
                 )
             )
             ->add(
+                'assignee',
+                'entity',
+                array(
+                    'label' => 'oro.issue.fields.assignee_label',
+                    'property_path' => 'assignee',
+                    'class'         => 'OroUserBundle:User',
+                    'property'      => 'name',
+                    'multiple'      => false,
+                    'attr' => array('class'=>'form-control')
+                )
+            )
+            ->add(
+                'parent',
+                'entity',
+                array(
+                    'label' => 'oro.issue.fields.parent_label',
+                    'property_path' => 'parent',
+                    'class'         => 'OroIssueBundle:Issue',
+                    'empty_value'   => 'oro.issue.fields.parent_label_empty',
+                    'required'      => false,
+                    'query_builder' => function (IssueRepository $er) use ($projectId, $issueId) {
+                        return $er->getIssuesByProjectId($projectId, $issueId);
+                    },
+                    'multiple'      => false,
+                    'attr' => array('class'=>'form-control')
+                )
+            );
+
+        $this->addTypeFields($builder);
+        $builder->remove('reporter');
+    }
+
+    /**
+     * @param $builder
+     * @return IssueType $this
+     */
+    protected function addTypeFields($builder)
+    {
+        $builder
+            ->add(
                 'issueType',
                 'entity',
                 array(
@@ -98,38 +138,11 @@ class IssueType extends AbstractType
                     },
                     'attr' => array('class'=>'form-control')
                 )
-            )
-            ->add(
-                'assignee',
-                'entity',
-                array(
-                    'label' => 'oro.issue.fields.assignee_label',
-                    'property_path' => 'assignee',
-                    'class'         => 'OroUserBundle:User',
-                    'property'      => 'name',
-                    'multiple'      => false,
-                    'attr' => array('class'=>'form-control')
-                )
-            )
-            ->add(
-                'parent',
-                'entity',
-                array(
-                    'label' => 'oro.issue.fields.parent_label',
-                    'property_path' => 'parent',
-                    'class'         => 'OroIssueBundle:Issue',
-                    'empty_value'   => '--- Please choose a parent Issue ---',
-                    'required'      => false,
-                    'query_builder' => function (IssueRepository $er) use ($projectId, $issueId) {
-                        return $er->getIssuesByProjectId($projectId, $issueId);
-                    },
-                    'multiple'      => false,
-                    'attr' => array('class'=>'form-control')
-                )
-            )
-            ->remove('reporter');
+            );
+
+        return $this;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

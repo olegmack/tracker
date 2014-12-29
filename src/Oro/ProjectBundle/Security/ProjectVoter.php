@@ -3,7 +3,6 @@ namespace Oro\ProjectBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectVoter implements VoterInterface
 {
@@ -11,6 +10,12 @@ class ProjectVoter implements VoterInterface
     const MODIFY    = 'MODIFY';
     const VIEW_LIST = 'VIEW_LIST';
 
+    /**
+     * Check for supported actions
+     *
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -20,8 +25,17 @@ class ProjectVoter implements VoterInterface
         ));
     }
 
-    public function supportsClass($class)
+    /**
+     * Check for supported class
+     *
+     * @param string|object $object
+     * @return bool
+     */
+    public function supportsClass($object)
     {
+        //check for supported class
+        $class = (is_object($object)) ? get_class($object) : $object;
+
         $supportedClass = 'Oro\ProjectBundle\Entity\Project';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
@@ -35,12 +49,8 @@ class ProjectVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        //check for supported class
-        $class = (is_object($object))
-            ? get_class($object)
-            : $object;
-
-        if (!$this->supportsClass($class)) {
+        //check for supported attribute
+        if (!($attribute = $this->getAttribute($object, $attributes))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -48,19 +58,8 @@ class ProjectVoter implements VoterInterface
             $object = new $object;
         }
 
-        //check for supported attribute
-        if (!isset($attributes[0]) || !$this->supportsAttribute($attributes[0])) {
-            return VoterInterface::ACCESS_ABSTAIN;
-        } else {
-            //use only first attribute
-            $attribute = $attributes[0];
-        }
-
         //get auth user
         $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
-            return VoterInterface::ACCESS_DENIED;
-        }
 
         switch($attribute) {
             case self::VIEW:
@@ -80,5 +79,23 @@ class ProjectVoter implements VoterInterface
         }
 
         return VoterInterface::ACCESS_DENIED;
+    }
+
+    /**
+     * @param string|object $object
+     * @param $attributes
+     * @return int
+     */
+    protected function getAttribute($object, $attributes)
+    {
+        $attribute = false;
+        if ($this->supportsClass($object)
+            && isset($attributes[0])
+            && $this->supportsAttribute($attributes[0])) {
+            //use only first attribute
+            $attribute = $attributes[0];
+        }
+
+        return $attribute;
     }
 }
