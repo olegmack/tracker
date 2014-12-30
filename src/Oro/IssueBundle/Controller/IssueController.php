@@ -203,7 +203,7 @@ class IssueController extends Controller
     /**
      * Load project
      *
-     * @param $projectId
+     * @param int $projectId
      * @return Project
      */
     protected function getProject($projectId)

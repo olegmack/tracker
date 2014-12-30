@@ -114,7 +114,6 @@ class UserController extends Controller
                 'assignee' => $entity->getId())
             );
 
-
         return array(
             'entity' => $entity,
             'issues' => $issues,

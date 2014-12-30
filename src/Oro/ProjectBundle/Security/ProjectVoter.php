@@ -83,7 +83,7 @@ class ProjectVoter implements VoterInterface
 
     /**
      * @param string|object $object
-     * @param $attributes
+     * @param array $attributes
      * @return int
      */
     protected function getAttribute($object, $attributes)

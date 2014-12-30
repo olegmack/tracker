@@ -73,7 +73,7 @@ class IssueType extends AbstractType
     }
 
     /**
-     * @param $builder
+     * @param FormBuilderInterface $builder
      * @return IssueType $this
      */
     protected function addTypeFields($builder)
